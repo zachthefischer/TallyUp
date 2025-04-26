@@ -4,10 +4,10 @@ import { group } from "console";
 
 // Define how the user stores groups
 const userGroupSchema = new Schema({
-  groupId: { 
-    type: Schema.Types.ObjectId, 
-    ref: "Group", 
-    required: true
+  groupId: {
+    type: Schema.Types.ObjectId,
+    ref: "Group",
+    required: true,
   },
   groupName: { type: String, required: true },
   isAdmin: { type: Boolean, required: true },
@@ -29,14 +29,14 @@ const userSchema = new Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: false },
-  
+
   totalOwed: { type: Number, required: true },
   totalPaid: { type: Number, required: true },
   balance: { type: Number, required: true },
 
-  groups: { 
+  groups: {
     type: [userGroupSchema],
-    required: true 
+    required: true,
   },
 });
 
