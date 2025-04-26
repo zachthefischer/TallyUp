@@ -79,7 +79,7 @@ export default function EventSelect(
                     className="p-2 hover:bg-indigo-100 rounded-lg transition-colors duration-150 flex items-center gap-2 text-gray-700"
                     onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedGroupForSubgroup(group.name);
+                        setSelectedGroupForSubgroup(group.id);
                         setShowAddSubgroupModal(true);
                     }}
                     >
@@ -88,14 +88,14 @@ export default function EventSelect(
                     </button>
                 </div>
                 <div className="flex items-center gap-4 text-sm text-gray-600 mt-3">
-                    <span className="whitespace-nowrap"><span className="font-semibold">${group.amountToReimburse}</span> to reimburse</span>
+                    <span className="whitespace-nowrap"><span className="font-semibold">${group.owed}</span> to reimburse</span>
                     <div className="relative flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div 
                         className="absolute top-0 left-0 h-full bg-indigo-600 transition-all duration-500 ease-out" 
-                        style={{ width: `${group.percentPaid}%` }}
+                        style={{ width: `${(group.paid / (group.paid + group.owed)) * 100 || 0}%` }}
                     ></div>
                     </div>
-                    <span className="whitespace-nowrap">{group.percentPaid}% paid</span>
+                    <span className="whitespace-nowrap">{Math.round((group.paid / (group.paid + group.owed)) * 100) || 0}% paid</span>
                 </div>
                 </div>
             </div>

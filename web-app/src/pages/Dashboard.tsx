@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Group } from "../types/Group";
 import AddGroupModal from "../components/AddGroupModal";
 import BalanceSheet from "../components/BalanceSheet";
@@ -9,16 +9,13 @@ import { BalanceSheetItem } from "../types/BalanceSheet";
 import EventSelect from "../components/subpages/EventSelect";
 import EventDetails from "../components/subpages/EventDetails";
 
+import { fetchUserGroups, createGroup, createSubgroup } from "../services/apiService";
+import { User } from "../types/User";
 
 // Main App Component
 export default function Dashboard() {
-  const [activeGroup, setActiveGroup = () => {
-    setState(1); // Transition to state 2
-    console.log("Active group set to:", activeGroup);
-  }] = useState<number | null>(null);
-  const [activeSubGroup, setActiveSubGroup = () => {
-    setState(2); // Transition to state 2
-  }] = useState<number | null>(null);
+  const [activeGroup, setActiveGroup] = useState<number | null>(null);
+  const [activeSubGroup, setActiveSubGroup] = useState<number | null>(null);
 
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -27,6 +24,20 @@ export default function Dashboard() {
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
   const [state, setState] = useState(1); // Initial state is 1
 
+  // Update state when active group changes
+  useEffect(() => {
+    if (activeGroup !== null) {
+      setState(1);
+      console.log("Active group set to:", activeGroup);
+    }
+  }, [activeGroup]);
+
+  // Update state when active subgroup changes
+  useEffect(() => {
+    if (activeSubGroup !== null) {
+      setState(2);
+    }
+  }, [activeSubGroup]);
 
   const handleBox2Click = () => {
     setState(3); // Transition to state 3
@@ -36,7 +47,8 @@ export default function Dashboard() {
     setState(Math.max(state - 1, 1)); // Transition to state 3
   };
 
-  const groups: Group[] = [
+  // Define mock data
+  const mockGroups: Group[] = [
     {
       id: "1",
       name: "ACM",
@@ -190,8 +202,96 @@ export default function Dashboard() {
       ],
     },
   ];
-  
 
+  // Initialize state with mock data
+  const [groups, setGroups] = useState<Group[]>(mockGroups);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch groups - now only fetch if we want to override mock data
+  useEffect(() => {
+    const loadGroups = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchUserGroups();
+        console.log("Fetched groups:", data);
+        // Uncomment the line below if you want to override mock data with fetched data
+        // setGroups(data);
+      } catch (error) {
+        console.error("Failed to fetch groups", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Uncomment the line below if you want to fetch data from the API
+    // loadGroups();
+  }, []);
+
+  // Handle adding a new group
+  const handleAddGroup = async (groupName: string) => {
+    try {
+      // Create a properly structured group object
+      const newGroup = await createGroup({ 
+        name: groupName,
+        paid: 0,
+        owed: 0,
+        members: [],
+        subGroups: []
+      });
+      console.log("New group created:", newGroup);
+      
+      // Update the groups state with the new group
+      setGroups(prevGroups => [...prevGroups, newGroup]);
+      setShowAddGroupModal(false);
+    } catch (error) {
+      console.error("Failed to create group:", error);
+    }
+  };
+
+  // Handle adding a new subgroup
+  const handleAddSubgroup = async (subgroupName: string) => {
+    try {
+      // Find the parent group
+      const parentGroup = groups.find(group => group.id === selectedGroupForSubgroup);
+      
+      if (!parentGroup) {
+        console.error("Parent group not found");
+        return;
+      }
+      
+      // Create a properly structured subgroup object
+      const newSubgroup = {
+        id: `${parentGroup.id}-${parentGroup.subGroups.length + 1}`,
+        name: subgroupName,
+        paid: 0,
+        owed: 0,
+        members: [],
+        subGroups: []
+      };
+      
+      // In a real app, you would call the API here
+      // const newSubgroup = await createSubgroup(parentGroup.id, { name: subgroupName });
+      
+      // Update the groups state with the new subgroup
+      setGroups(prevGroups => {
+        return prevGroups.map(group => {
+          if (group.id === parentGroup.id) {
+            return {
+              ...group,
+              subGroups: [...group.subGroups, newSubgroup]
+            };
+          }
+          return group;
+        });
+      });
+      
+      console.log("New subgroup created:", newSubgroup);
+      setShowAddSubgroupModal(false);
+    } catch (error) {
+      console.error("Failed to create subgroup:", error);
+    }
+  };
+  
   const balanceSheetData: BalanceSheetItem[] = [
     { group: "Spring Retreat", budget: 2000, spent: 1650, reimbursed: 1245, balance: 405 },
     { group: "Tournament Travel", budget: 3500, spent: 2850, reimbursed: 1282.5, balance: 1567.5 },
@@ -256,22 +356,14 @@ export default function Dashboard() {
       {showAddGroupModal && (
         <AddGroupModal 
           onClose={() => setShowAddGroupModal(false)}
-          onAdd={(groupName) => {
-            // Here you would handle adding the new group
-            console.log('Adding new group:', groupName);
-            setShowAddGroupModal(false);
-          }}
+          onAdd={handleAddGroup}
         />
       )}
 
       {showAddSubgroupModal && (
         <AddSubgroupModal
           onClose={() => setShowAddSubgroupModal(false)}
-          onAdd={(subgroupName) => {
-            // Here you would handle adding the new subgroup
-            console.log('Adding new subgroup:', subgroupName, 'to group:', selectedGroupForSubgroup);
-            setShowAddSubgroupModal(false);
-          }}
+          onAdd={handleAddSubgroup}
           parentGroupName={selectedGroupForSubgroup}
         />
       )}
