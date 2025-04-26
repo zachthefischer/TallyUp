@@ -16,7 +16,7 @@ export default function EventSelect(
 
 
     return (
-        <div className="w-1/2 bg-white rounded-lg shadow-lg border border-gray-200">
+        <div className=" bg-white rounded-lg shadow-lg border border-gray-200">
               {activeSubGroup !== null && activeSubSubGroup !== null ? (
                 <MembersList 
                   members={groups[activeSubGroup].subGroups[activeSubSubGroup].members}

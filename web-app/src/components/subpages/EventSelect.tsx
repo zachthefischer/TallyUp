@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import WelcomeBanner from "../../components/WelcomeBanner";
 import {  DollarSign, CreditCard, Plus } from "lucide-react";
 import { Group } from "../../types/Group";
@@ -34,7 +34,7 @@ export default function EventSelect(
 
 
     return (
-        <div className="w-1/2 bg-white rounded-lg shadow-lg border border-gray-200">
+        <div className="bg-white rounded-lg shadow-lg border border-gray-200">
         <div className="p-6">
         <WelcomeBanner />
         

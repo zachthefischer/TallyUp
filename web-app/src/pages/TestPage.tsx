@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchUserGroups } from "../services/apiService";
 import { User } from "../types/User";
-import './TestPage.css'
+import './Dashboard.css'
 
 const TestPage = () => {
   const [state, setState] = useState(1); // Initial state is 1

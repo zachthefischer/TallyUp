@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Group } from "../types/Group";
-import AddGroupModal from "../components/AddGroupModal";
+import { BalanceSheetItem } from "../types/BalanceSheet";
+import Header from "../components/Header";
+import EventSelect from "../components/subpages/EventSelect";
 import BalanceSheet from "../components/BalanceSheet";
 import PaymentModal from "../components/PaymentModal";
-import AddSubgroupModal from "../components/AddSubgroupModal";
-import Header from "../components/Header";
-import { BalanceSheetItem } from "../types/BalanceSheet";
-import EventSelect from "../components/subpages/EventSelect";
 import EventDetails from "../components/subpages/EventDetails";
-
+import GroupSelect from "../components/subpages/GroupSelect";
+import AddGroupModal from "../components/AddGroupModal";
+import AddSubgroupModal from "../components/AddSubgroupModal";
+import './Dashboard.css';
 
 // Main App Component
 export default function Dashboard() {
@@ -27,21 +28,21 @@ export default function Dashboard() {
     _setActiveGroup(newValue);
     _setActiveSubGroup(null);
     _setActiveSubSubGroup(null);
-    setPageState(1);
+    setPageState(2);
     console.log("Active group set to:", pageState);
   };
 
   const setActiveSubGroup = (newValue: number | null) => {
     _setActiveSubGroup(newValue);
     _setActiveSubSubGroup(null);
-    setPageState(2);
+    setPageState(3);
     console.log("Active group set to:", pageState);
   };
 
   const setActiveSubSubGroup = (newValue: number | null) => {
     _setActiveSubSubGroup(newValue);
-    setPageState(3);
-    console.log("Active group set to:", pageState);
+    // setPageState(3);
+    // console.log("Active group set to:", pageState);
   };
 
 
@@ -237,27 +238,55 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="w-full flex gap-8">
+            <div className={`box 
+              ${pageState === 1 ? 'center' : ''}
+              ${pageState === 2 ? 'box-left' : ''}
+              ${pageState === 3 ? 'offscreen-left' : ''} 
+            `}>
+              <GroupSelect 
+                groups={groups} 
+                activeSubGroup={activeSubGroup}
+                setActiveSubGroup={(value) => setActiveGroup(value as number | null)}
+                activeSubSubGroup={activeSubSubGroup} 
+                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as number | null)} 
+                setShowBalanceSheet={setShowBalanceSheet}
+                setShowPaymentModal={setShowPaymentModal}
+                setShowAddGroupModal={setShowAddGroupModal}
+                setShowAddSubgroupModal={setShowAddSubgroupModal}
+                setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
+              />            
+            </div>
             
-            
-            
-            <EventSelect 
-              groups={groups} 
-              activeSubGroup={activeSubGroup}
-              setActiveSubGroup={(value) => setActiveSubGroup(value as number | null)}
-              activeSubSubGroup={activeSubSubGroup} 
-              setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as number | null)} 
-              setShowBalanceSheet={setShowBalanceSheet}
-              setShowPaymentModal={setShowPaymentModal}
-              setShowAddGroupModal={setShowAddGroupModal}
-              setShowAddSubgroupModal={setShowAddSubgroupModal}
-              setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
-            />            
-            
+            <div className={`box
+              ${pageState === 1 ? 'offscreen-right' : ''}
+              ${pageState === 2 ? 'box-right' : ''}
+              ${pageState === 3 ? 'box-left' : ''} 
+            `}>
+              <EventSelect 
+                groups={groups} 
+                activeSubGroup={activeSubGroup}
+                setActiveSubGroup={(value) => setActiveSubGroup(value as number | null)}
+                activeSubSubGroup={activeSubSubGroup} 
+                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as number | null)} 
+                setShowBalanceSheet={setShowBalanceSheet}
+                setShowPaymentModal={setShowPaymentModal}
+                setShowAddGroupModal={setShowAddGroupModal}
+                setShowAddSubgroupModal={setShowAddSubgroupModal}
+                setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
+              />            
+            </div>
+
+            <div className={`box 
+              ${pageState === 1 ? 'offscreen-right' : ''}
+              ${pageState === 2 ? 'offscreen-right' : ''}
+              ${pageState === 3 ? 'box-right' : ''} 
+            `}>
             <EventDetails 
               groups={groups} 
               activeSubGroup={activeSubGroup} 
               activeSubSubGroup={activeSubSubGroup} 
             />
+            </div>
       
           </div>
         )}
