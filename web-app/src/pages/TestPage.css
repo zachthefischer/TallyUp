@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* General box styles */
+  .box {
+    width: 50%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #3498db;
+    color: white;
+    font-size: 24px;
+    position: absolute;
+    transition: all 0.5s ease-in-out;
+  }
+    
+  
+  .box.center {
+    left: 25%;
+  }  
+  
+  .box.box-left {
+    left: 0%;
+  }
+
+  .box.box-right {
+    left: 50%;
+  }
+
+  .box.offscreen-left {
+    left: -50%;
+  }
+
+  .box.offscreen-right {
+    left: 100%;
+  }
+
+ 
+  
+
+  
+  
+  /* Box 3 in state 3
+  .box3.slide-in-right {
+    left: 50%;
+    width: 50%;
+    transform: translate(-50%, -50%);
+  } */
