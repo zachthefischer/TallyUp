@@ -4,12 +4,12 @@ import { Member } from "../types/Members";
 
 interface MembersListProps {
   members: Member[];
-  categoryName: string;
+  groupName: string;
   subCategoryName: string;
   onEditMembers: () => void;
 }
 
-function MembersList({ members, categoryName, subCategoryName, onEditMembers }: MembersListProps) {
+function MembersList({ members, groupName, subCategoryName, onEditMembers }: MembersListProps) {
   const membersWhoOwe = members.filter(member => member.amount < 0);
   const membersOwed = members.filter(member => member.amount > 0);
 
@@ -17,7 +17,7 @@ function MembersList({ members, categoryName, subCategoryName, onEditMembers }: 
     <div className="p-6">
       <div className="mb-8 flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-semibold text-gray-800">{categoryName}</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">{groupName}</h2>
           <p className="text-gray-600 mt-1">{subCategoryName}</p>
         </div>
         <button

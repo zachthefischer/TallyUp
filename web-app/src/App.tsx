@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import AuthPage from './pages/AuthPage';
 import TestPage from './pages/TestPage';
 import './App.css'
+import Header from './components/Header';
 
 
 function App() {

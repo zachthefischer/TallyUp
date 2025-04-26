@@ -38,7 +38,7 @@ function BalanceSheet({ balanceSheetData, totalBudget, totalSpent, totalReimburs
             <tbody>
               {balanceSheetData.map((item, index) => (
                 <tr key={index} className="border-t border-gray-200">
-                  <td className="py-3 px-4">{item.category}</td>
+                  <td className="py-3 px-4">{item.group}</td>
                   <td className="py-3 px-4">${item.budget.toFixed(2)}</td>
                   <td className="py-3 px-4">${item.spent.toFixed(2)}</td>
                   <td className="py-3 px-4">${item.reimbursed.toFixed(2)}</td>

@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, DollarSign, CreditCard, ArrowDown, ArrowUp, Plus } from "lucide-react";
-import { Category } from '../types/Groups';
+import { Group } from '../types/Groups';
 
 interface PaymentModalProps {
     onClose: () => void;
-    categories: Category[];
+    groups: Group[];
   }
     
-function PaymentModal({ onClose, categories }: PaymentModalProps) {
-    const [selectedCategory, setSelectedCategory] = useState("");
+function PaymentModal({ onClose, groups }: PaymentModalProps) {
+    const [selectedGroup, setSelectedGroup] = useState("");
     const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
   
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // Here you would handle payment submission
-      console.log({ selectedCategory, amount, description });
+      console.log({ selectedGroup, amount, description });
       onClose();
     };
   
@@ -38,14 +38,14 @@ function PaymentModal({ onClose, categories }: PaymentModalProps) {
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none"
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  value={selectedGroup}
+                  onChange={(e) => setSelectedGroup(e.target.value)}
                   required
                 >
-                  <option value="">Select a category</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
+                  <option value="">Select a group</option>
+                  {groups.map((group) => (
+                    <option key={group.id} value={group.id}>
+                      {group.name}
                     </option>
                   ))}
                 </select>

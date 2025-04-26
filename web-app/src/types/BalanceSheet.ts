@@ -1,5 +1,5 @@
 export interface BalanceSheetItem {
-    category: string;
+    group: string;
     budget: number;
     spent: number;
     reimbursed: number;
