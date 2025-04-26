@@ -1,7 +1,8 @@
 import { InferSchemaType, Schema, model, Types } from "mongoose";
 import transactionSchema from "./transactions";
 
-const groupUserSchema = new Schema({
+// Define how the group stores members
+const groupMemberSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "Group", required: true },
   userName: { type: String, required: true },
   isAdmin: { type: Boolean, required: true },
@@ -12,11 +13,10 @@ const groupUserSchema = new Schema({
 
 const groupSchema = new Schema({
   name: { type: String, required: true },
-  total: { type: Number, required: true },
   paid: { type: Number, required: true },
   owed: { type: Number, required: true },
-  percentage: { type: Number, required: true },
-  members: { type: [groupUserSchema], required: true },
+
+  members: { type: [groupMemberSchema], required: true },
   subGroups: [{ type: Types.ObjectId, ref: "Group", required: false }],
 });
 
