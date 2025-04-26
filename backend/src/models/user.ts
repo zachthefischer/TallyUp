@@ -16,21 +16,11 @@ const userGroupSchema = new Schema({
   transactions: [{ type: Types.ObjectId, required: true }],
   requests: [{ type: Types.ObjectId, required: true }],
 
-  subGroups: [
-    {
-      groupId: { 
-        type: Schema.Types.ObjectId, 
-        ref: "Group", 
-        required: true
-      },
-      groupName: { type: String, required: true },
-      isAdmin: { type: Boolean, required: true },
-      balance: { type: Number, required: true },
-      transactions: [{ type: Schema.Types.ObjectId, required: true }],
-      requests: [{ type: Schema.Types.ObjectId, required: true }],
-      subGroups: []
-    }
-  ],
+  subGroups: [] // Temporary
+});
+
+userGroupSchema.add({
+  subGroups: [userGroupSchema]  // Recursively refer to itself
 });
 
 // Define the user

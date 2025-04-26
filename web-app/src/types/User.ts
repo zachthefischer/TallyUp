@@ -14,7 +14,7 @@ export interface UserGroups {
 }
 
 export interface User {
-    id: string;
+    _id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -24,5 +24,5 @@ export interface User {
     totalPaid: number;
     balance: number;
 
-    groups: UserGroups[];
+    groupsOwed: UserGroups[];
 }
