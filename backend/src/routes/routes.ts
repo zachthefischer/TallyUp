@@ -16,5 +16,6 @@ router.get("/group", GroupController.getAllGroups);
 router.post("/pair", PairController.addTransaction);
 router.post("/pair/update", PairController.updateRequest);
 router.post("/pair/delete", PairController.deleteTransaction);
+router.post("/pair/split", PairController.splitTransaction);
 
 export default router;
