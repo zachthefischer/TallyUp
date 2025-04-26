@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import AuthPage from './pages/AuthPage';
 import TestPage from './pages/TestPage';
 import './App.css'
+import Header from './components/Header';
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
 
           {/* Protected Routes: With Navbar */}
           <Route path="/dashboard" element={<Dashboard/> } />
-         <Route path="/test" element={<TestPage/> } />
+          <Route path="/test" element={<TestPage/> } />
        </Routes>
     </>
  );
