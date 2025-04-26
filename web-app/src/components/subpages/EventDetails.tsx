@@ -25,7 +25,7 @@ export default function EventDetails(
 
 
     return (
-        <div className="w-1/2 bg-white rounded-lg shadow-lg border border-gray-200">
+        <div className=" bg-white rounded-lg shadow-lg border border-gray-200">
               {hasActiveSubGroup && hasActiveSubSubGroup && activeSubSubGroupData ? (
                 <MembersList 
                   members={activeSubSubGroupData.members}

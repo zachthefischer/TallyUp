@@ -11,14 +11,10 @@
   /* General box styles */
   .box {
     width: 50%;
+    /* padding: 20px; */
     height: 80%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #3498db;
-    color: white;
-    font-size: 24px;
     position: absolute;
     transition: all 0.5s ease-in-out;
   }
@@ -30,10 +26,14 @@
   
   .box.box-left {
     left: 0%;
+    padding-left: 20px;
+    padding-right: 10px;
   }
 
   .box.box-right {
     left: 50%;
+    padding-right: 20px;
+    padding-left: 10px;
   }
 
   .box.offscreen-left {
