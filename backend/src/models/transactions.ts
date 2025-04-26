@@ -7,6 +7,7 @@ const transactionSchema = new Schema({
   from: { type: String },
   dateTime: { type: Date, default: Date.now, required: true },
   fulfilled: { type: Boolean, default: false },
+  history: { type: [String], default: [] },
 });
 
 type Transaction = InferSchemaType<typeof transactionSchema>;

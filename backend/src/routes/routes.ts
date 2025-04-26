@@ -13,8 +13,8 @@ router.post("/group", GroupController.createGroup);
 router.get("/group/:id", GroupController.getGroupById);
 router.get("/group", GroupController.getAllGroups);
 
-router.post("/pair", PairController.addPair);
+router.post("/pair", PairController.addTransaction);
 router.post("/pair/update", PairController.updateRequest);
-router.post("/pair/delete", PairController.deletePair);
+router.post("/pair/delete", PairController.deleteTransaction);
 
 export default router;

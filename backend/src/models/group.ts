@@ -17,7 +17,7 @@ const groupSchema = new Schema({
   owed: { type: Number, required: true },
   percentage: { type: Number, required: true },
   members: { type: [groupUserSchema], required: true },
-  subGroups: [{ type: Schema.Types.ObjectId, ref: "Group", required: false }],
+  subGroups: [{ type: Types.ObjectId, ref: "Group", required: false }],
 });
 
 export type Group = InferSchemaType<typeof groupSchema>;
