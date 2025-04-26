@@ -1,27 +1,21 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AdminPage from './pages/AdminPage';
 import Dashboard from './pages/Dashboard';
-import ClubFinanceManager from './components/Dashboard';
-
+import AuthPage from './pages/AuthPage';
 import './App.css'
 
+
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
        <Routes>
           {/* Public Routes: No Navbar */}
+          <Route path="/auth" element={<AuthPage />} />
+
           {/* Protected Routes: With Navbar */}
-          <Route path="/" element={
-            <>
-              <div className="min-h-screen bg-gray-100">
-                <ClubFinanceManager />
-              </div>
-            </>
-          } />
+          <Route path="/dashboard" element={<Dashboard/> } />
        </Routes>
     </>
  );
