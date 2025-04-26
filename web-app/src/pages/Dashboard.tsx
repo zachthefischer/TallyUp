@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {  DollarSign, CreditCard, Plus } from "lucide-react";
-import { Group } from "../types/Groups";
+import { Group } from "../types/Group";
 import AddGroupModal from "../components/AddGroupModal";
 import MembersList from "../components/MembersList";
 import BalanceSheet from "../components/BalanceSheet";
@@ -169,7 +169,7 @@ export default function Dashboard() {
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header/>
 
-      <div className="flex-1 flex p-8">
+      <div className="flex-1 flex p-8 mt-15">
         {showBalanceSheet ? (
           <div className="w-full bg-white rounded-lg shadow-lg">
             <BalanceSheet 

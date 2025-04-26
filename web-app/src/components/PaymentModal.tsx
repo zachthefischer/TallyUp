@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, DollarSign } from "lucide-react";
-import { Group } from '../types/Groups';
+import { Group } from '../types/Group';
 
 interface PaymentModalProps {
     onClose: () => void;

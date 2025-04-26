@@ -1,8 +1,8 @@
 import { DollarSign, CreditCard, ArrowDown, ArrowUp } from "lucide-react";
-import { Member } from "../types/Members";
+import { GroupMember } from "../types/Group";
 
 interface MembersListProps {
-  members: Member[];
+  members: GroupMember[];
   groupName: string;
   subCategoryName: string;
   onEditMembers: () => void;

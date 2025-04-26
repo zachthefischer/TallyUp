@@ -1,5 +1,5 @@
 import { CreditCard } from "lucide-react";
-import { Group } from "../../types/Groups";
+import { Group } from "../../types/Group";
 import MembersList from '../MembersList';
 
 interface EventSelectProps {

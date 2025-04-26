@@ -11,7 +11,7 @@ export const createUser: RequestHandler = async (req, res) => {
   const { firstName, lastName, email, phone, balance } = req.body;
   try {
     const user = await UserModel.create({
-      groupsOwed: [],
+      groups: [],
       totalOwed: 0,
       totalPaid: 0,
       firstName,
@@ -89,8 +89,8 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 //       res.status(404).json({ message: "User not found" });
 //       return;
 //     }
-//     if (!user.groupsOwed.includes(groupNameStr)) {
-//       console.log(user.groupsOwed);
+//     if (!user.groups.includes(groupNameStr)) {
+//       console.log(user.groups);
 //       res.status(400).json({ message: "User does not owe this group" });
 //       return;
 //     }
@@ -100,7 +100,7 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 //     }
 //     user.balance -= amount;
 //     user.totalPaid += amount;
-//     user.groupsOwed = user.groupsOwed.filter((group) => group !== groupNameStr);
+//     user.groups = user.groups.filter((group) => group !== groupNameStr);
 //     user.totalOwed -= amount;
 
 //     const group = await GroupModel.findOne({ name: groupNameStr });

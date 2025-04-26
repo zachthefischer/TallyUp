@@ -56,14 +56,14 @@ export const addTransaction: RequestHandler = async (req, res) => {
     };
     console.log("groupUser created: ", groupUser);
 
-    const existingUserGroup = user.groupsOwed.find(
+    const existingUserGroup = user.groups.find(
       (group) => group?.groupId?.toString() === groupId.toString()
     );
-    if (existingUserGroup) {
+    if (existingUserGroup){
       existingUserGroup.balance += amount;
       existingUserGroup.requests.push(request._id);
     } else {
-      user.groupsOwed.push(userGroup);
+      user.groups.push(userGroup);
     }
     user.totalOwed += amount;
     user.save();
@@ -73,7 +73,7 @@ export const addTransaction: RequestHandler = async (req, res) => {
     //   userId,
     //   {
     //     $inc: { totalOwed: amount },
-    //     $addToSet: { groupsOwed: userGroup },
+    //     $addToSet: { groups: userGroup },
     //   },
     //   { new: false }
     // );
@@ -104,7 +104,7 @@ export const addTransaction: RequestHandler = async (req, res) => {
 
     res.status(201).json({ message: "Paid added successfully", request });
   } catch (error) {
-    console.error("Error creating request and pair: ", error);
+    console.error("Error crgroupsuest and pair: ", error);
     res.status(500).json({ message: "Error creating request and pair", error });
   }
 };
@@ -137,7 +137,7 @@ export const updateRequest: RequestHandler = async (req, res) => {
       { new: true }
     );
 
-    const userGroup = user.groupsOwed.find(
+    const userGroup = user.groups.find(
       (group) => group?.groupId?.toString() === groupId.toString()
     );
     if (userGroup) {
@@ -193,7 +193,7 @@ export const deleteTransaction: RequestHandler = async (req, res) => {
       return;
     }
 
-    const userGroup = user.groupsOwed.find(
+    const userGroup = user.groups.find(
       (group) => group?.groupId?.toString() === groupId.toString()
     );
     if (userGroup) {
