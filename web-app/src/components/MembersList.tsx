@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { DollarSign, CreditCard, ArrowDown, ArrowUp } from "lucide-react";
 import { Member } from "../types/Members";
 

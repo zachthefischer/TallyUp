@@ -189,24 +189,18 @@ export default function Dashboard() {
               setActiveGroup={setActiveGroup}
               activeSubGroup={activeSubGroup} 
               setActiveSubGroup={setActiveSubGroup} 
-              // showBalanceSheet={showBalanceSheet}
               setShowBalanceSheet={setShowBalanceSheet}
-              // showPaymentModal={showPaymentModal}
               setShowPaymentModal={setShowPaymentModal}
-              // showAddGroupModal={showAddGroupModal}
               setShowAddGroupModal={setShowAddGroupModal}
-              // showAddSubgroupModal={showAddSubgroupModal}
               setShowAddSubgroupModal={setShowAddSubgroupModal}
-              // selectedGroupForSubgroup={selectedGroupForSubgroup}
               setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
             />            
-            
             
             <EventDetails 
               groups={groups} 
               activeGroup={activeGroup} 
               activeSubGroup={activeSubGroup} 
-              />
+            />
       
           </div>
         )}

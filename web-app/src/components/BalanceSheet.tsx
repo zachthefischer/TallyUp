@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, DollarSign, CreditCard, ArrowDown, ArrowUp, Plus } from "lucide-react";
+import { ChevronUp } from "lucide-react";
 import { BalanceSheetItem } from "../types/BalanceSheet";
 
 interface BalanceSheetProps {

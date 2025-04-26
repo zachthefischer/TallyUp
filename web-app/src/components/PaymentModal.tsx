@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, DollarSign, CreditCard, ArrowDown, ArrowUp, Plus } from "lucide-react";
+import { ChevronDown, DollarSign } from "lucide-react";
 import { Group } from '../types/Groups';
 
 interface PaymentModalProps {

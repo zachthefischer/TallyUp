@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import WelcomeBanner from "../../components/WelcomeBanner";
 import {  DollarSign, CreditCard, Plus } from "lucide-react";
 import { Group } from "../../types/Groups";
