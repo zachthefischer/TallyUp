@@ -2,7 +2,7 @@ function AdminPage() {
 
   return (
     <>
-      <div className='h1'>Admin Page</div>
+      <div >Admin Page</div>
     </>
  );
 }

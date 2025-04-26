@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import AuthPage from './pages/AuthPage';
+import TestPage from './pages/TestPage';
 import './App.css'
 
 
@@ -16,6 +17,7 @@ function App() {
 
           {/* Protected Routes: With Navbar */}
           <Route path="/dashboard" element={<Dashboard/> } />
+         <Route path="/test" element={<TestPage/> } />
        </Routes>
     </>
  );
