@@ -1,7 +1,17 @@
 import { InferSchemaType, Schema, model, Types } from "mongoose";
+import transactionSchema from "./transactions";
+
+const userGroupSchema = new Schema({
+  groupId: { type: Schema.Types.ObjectId, ref: "Group", required: true },
+  groupName: { type: String, required: true },
+  isAdmin: { type: Boolean, required: true },
+  balance: { type: Number, required: true },
+  transactions: [{ type: Types.ObjectId, required: true }],
+  requests: [{ type: Types.ObjectId, required: true }],
+});
 
 const userSchema = new Schema({
-  groupsOwed: { type: [String], required: true },
+  groupsOwed: { type: [userGroupSchema], required: true },
   totalOwed: { type: Number, required: true },
   totalPaid: { type: Number, required: true },
   firstName: { type: String, required: true },

@@ -6,23 +6,21 @@ import { Types } from "mongoose";
 dotenv.config();
 
 export const createGroup: RequestHandler = async (req, res) => {
-  const { name, total, paid, members, subGroups } = req.body;
-  const owed = total - paid;
-  const percentage = paid / total;
+  const { name, subGroups } = req.body;
   try {
+    console.log("Creating group: ", name, subGroups);
     const group = await GroupModel.create({
       name,
-      total,
-      paid,
-      owed,
-      percentage,
-      members: members.map((member: string) => new Types.ObjectId(member)),
-      paidMembers: [],
-      owedMembers: members.map((member: string) => new Types.ObjectId(member)),
+      total: 0,
+      paid: 0,
+      owed: 0,
+      percentage: 0,
+      members: [],
       subGroups: subGroups
         ? subGroups.map((subGroup: string) => new Types.ObjectId(subGroup))
         : [],
     });
+    console.log("Group created: ", group);
     res.status(201).json(group);
   } catch (error) {
     console.error("Error creating group: ", error);
@@ -63,38 +61,43 @@ export const getAllGroups: RequestHandler = async (req, res) => {
   }
 };
 
-export const receivePayment: RequestHandler = async (req, res) => {
-  const { id } = req.params;
-  const { amount, userId } = req.body;
-  try {
-    console.log("Received payment: ", amount, userId);
-    const group = await GroupModel.findById(id);
-    if (!group) {
-      res.status(404).json({ message: "Group not found" });
-      return;
-    }
-    const user = group.members.find(
-      (member: { _id: Types.ObjectId }) => member._id.toString() === userId
-    );
-    if (!user) {
-      res.status(404).json({ message: "User not found in group" });
-      return;
-    }
-    console.log("Updating values");
-    group.paid += amount;
-    group.owed -= amount;
-    console.log("Paid: ", group.paid, " Owed: ", group.owed);
-    group.paidMembers.push(new Types.ObjectId(userId));
-    console.log("Paid members: ", group.paidMembers);
-    group.owedMembers = group.owedMembers.filter(
-      (member: any) => member.toString() !== userId
-    ) as unknown as typeof group.owedMembers;
-    console.log("Owed members: ", group.owedMembers);
-    await group.save();
-    console.log("Payment received and group updated");
-    res.status(200).json(group);
-  } catch (error) {
-    console.error("Error receiving payment: ", error);
-    res.status(500).json({ message: "Error receiving payment" });
-  }
-};
+// export const receivePayment: RequestHandler = async (req, res) => {
+//   const { id } = req.params;
+//   const { amount, userId } = req.body;
+//   try {
+//     console.log("Received payment: ", amount, userId);
+//     const group = await GroupModel.findById(id);
+//     if (!group) {
+//       res.status(404).json({ message: "Group not found" });
+//       return;
+//     }
+//     const user = group.members.find(
+//       (member: { _id: Types.ObjectId }) => member._id.toString() === userId
+//     );
+//     if (!user) {
+//       res.status(404).json({ message: "User not found in group" });
+//       return;
+//     }
+
+//     console.log("Updating values");
+//     group.paid += amount;
+//     group.owed -= amount;
+//     group.percentage = group.paid / group.total;
+//     console.log("Paid: ", group.paid, " Owed: ", group.owed);
+
+//     const previousPaid = group.paidMembers.get(userId) || 0;
+//     group.paidMembers.set(userId, previousPaid + amount);
+//     const previousOwed = group.owedMembers.get(userId) || 0;
+//     group.owedMembers.set(userId, previousOwed - amount);
+
+//     console.log("Paid members: ", group.paidMembers);
+//     console.log("Owed members: ", group.owedMembers);
+
+//     await group.save();
+//     console.log("Payment received and group updated");
+//     res.status(200).json(group);
+//   } catch (error) {
+//     console.error("Error receiving payment: ", error);
+//     res.status(500).json({ message: "Error receiving payment" });
+//   }
+// };
