@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, DollarSign, CreditCard, ArrowDown, ArrowUp, Plus } from "lucide-react";
-import { Category } from '../types/Categories';
+import { Category } from '../types/Groups';
 
 interface PaymentModalProps {
     onClose: () => void;

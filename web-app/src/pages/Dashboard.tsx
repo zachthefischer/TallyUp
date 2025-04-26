@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {  DollarSign, CreditCard, Plus } from "lucide-react";
 import { Member } from "../types/Members";
-import { Category } from "../types/Categories";
+import { Group } from "../types/Groups";
 import AddGroupModal from "../components/AddGroupModal";
 import MembersList from "../components/MembersList";
 import BalanceSheet from "../components/BalanceSheet";
@@ -13,21 +13,21 @@ import WelcomeBanner from "../components/WelcomeBanner";
 
 // Main App Component
 export default function Dashboard() {
-  const [activeCategory, setActiveEvent] = useState<number | null>(null);
-  const [activeSubCategory, setActiveSubCategory] = useState<number | null>(null);
+  const [activeGroup, setActiveGroup] = useState<number | null>(null);
+  const [activeSubGroup, setActiveSubGroup] = useState<number | null>(null);
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(false);
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
 
-  const categories: Category[] = [
+  const categories: Group[] = [
     {
       id: 1,
       name: "Spring Retreat",
       amountToReimburse: 1250,
       percentPaid: 75,
-      subCategories: [
+      subGroups: [
         {
           id: 1,
           name: "Accommodation",
@@ -58,7 +58,7 @@ export default function Dashboard() {
       name: "Tournament Travel",
       amountToReimburse: 2350,
       percentPaid: 45,
-      subCategories: [
+      subGroups: [
         {
           id: 1,
           name: "Transportation",
@@ -88,7 +88,7 @@ export default function Dashboard() {
       name: "Annual Fundraiser",
       amountToReimburse: 3600,
       percentPaid: 90,
-      subCategories: [
+      subGroups: [
         {
           id: 1,
           name: "Venue Rental",
@@ -124,7 +124,7 @@ export default function Dashboard() {
       name: "Equipment Purchase",
       amountToReimburse: 850,
       percentPaid: 60,
-      subCategories: [
+      subGroups: [
         {
           id: 1,
           name: "Tennis Rackets",
@@ -227,12 +227,12 @@ export default function Dashboard() {
                     <div className="flex flex-col gap-4">
                       <div 
                         className={`p-4 rounded-lg border-2 border-gray-300 hover:border-indigo-600 transition-colors duration-150 ease-in-out
-                          ${activeCategory === index ? "border-indigo-600 bg-indigo-50" : ""}`}
+                          ${activeGroup === index ? "border-indigo-600 bg-indigo-50" : ""}`}
                       >
                         <div className="flex items-center justify-between">
                           <span 
                             className="font-medium text-gray-800 flex-1 cursor-pointer"
-                            onClick={() => setActiveEvent(activeCategory === index ? null : index)}
+                            onClick={() => setActiveGroup(activeGroup === index ? null : index)}
                           >
                             {category.name}
                           </span>
@@ -261,16 +261,16 @@ export default function Dashboard() {
                       </div>
                     </div>
                     
-                    {activeCategory === index && (
+                    {activeGroup === index && (
                       <div className="mt-2 ml-4 space-y-2">
-                        {category.subCategories.map((subCategory, subIndex) => (
+                        {category.subGroups.map((subCategory, subIndex) => (
                           <div
                             key={subCategory.id}
                             className={`p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out
-                              ${activeSubCategory === subIndex ? 
+                              ${activeSubGroup === subIndex ? 
                                 "bg-gray-100 border-l-4 border-l-indigo-400" : ""
                               }`}
-                            onClick={() => setActiveSubCategory(activeSubCategory === subIndex ? null : subIndex)}
+                            onClick={() => setActiveSubGroup(activeSubGroup === subIndex ? null : subIndex)}
                           >
                             <div className="flex items-center justify-between">
                               <div className="font-medium text-sm text-gray-700">{subCategory.name}</div>
@@ -288,24 +288,24 @@ export default function Dashboard() {
             </div>
             
             <div className="w-1/2 bg-white rounded-lg shadow-lg border border-gray-200">
-              {activeCategory !== null && activeSubCategory !== null ? (
+              {activeGroup !== null && activeSubGroup !== null ? (
                 <MembersList 
-                  members={categories[activeCategory].subCategories[activeSubCategory].members}
-                  categoryName={categories[activeCategory].name}
-                  subCategoryName={categories[activeCategory].subCategories[activeSubCategory].name}
+                  members={categories[activeGroup].subGroups[activeSubGroup].members}
+                  categoryName={categories[activeGroup].name}
+                  subCategoryName={categories[activeGroup].subGroups[activeSubGroup].name}
                   onEditMembers={() => {
                     // Here you would handle editing members
-                    console.log('Editing members for:', categories[activeCategory].subCategories[activeSubCategory].name);
+                    console.log('Editing members for:', categories[activeGroup].subGroups[activeSubGroup].name);
                   }}
                 />
-              ) : activeCategory !== null ? (
+              ) : activeGroup !== null ? (
                 <div className="p-6">
                   <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-800">{categories[activeCategory].name}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">{categories[activeGroup].name}</h2>
                     <p className="text-gray-600 mt-1">All Members</p>
                   </div>
                   <div className="space-y-4">
-                    {categories[activeCategory].subCategories.flatMap(subCat => subCat.members).map((member, idx) => (
+                    {categories[activeGroup].subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
                       <div 
                         key={`${member.id}-${idx}`}
                         className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200 ease-in-out"
