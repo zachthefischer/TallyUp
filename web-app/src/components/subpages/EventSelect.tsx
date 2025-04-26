@@ -9,14 +9,28 @@ interface EventSelectProps {
     setActiveGroup: React.Dispatch<SetStateAction<number | null>>;
     activeSubGroup: number | null;
     setActiveSubGroup: React.Dispatch<SetStateAction<number | null>>;
+
+    // Show modals
+    setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
+    setShowBalanceSheet: Dispatch<SetStateAction<boolean>>;
+    setShowAddGroupModal: Dispatch<SetStateAction<boolean>>;
+    setShowAddSubgroupModal: Dispatch<SetStateAction<boolean>>;
+    setSelectedGroupForSubgroup: Dispatch<SetStateAction<string>>;
 }
 
-export default function EventSelect({ groups, activeGroup, setActiveGroup, activeSubGroup, setActiveSubGroup }: EventSelectProps) {
-    const [showBalanceSheet, setShowBalanceSheet] = useState(false);
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
-    const [showAddGroupModal, setShowAddGroupModal] = useState(false);
-    const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(false);
-    const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
+export default function EventSelect(
+    { groups, 
+        activeGroup, 
+        setActiveGroup, 
+        activeSubGroup, 
+        setActiveSubGroup,
+        setShowPaymentModal,
+        setShowBalanceSheet,
+        setShowAddGroupModal,
+        setShowAddSubgroupModal,
+        setSelectedGroupForSubgroup
+    
+    }: EventSelectProps) {
 
 
     return (
@@ -26,25 +40,22 @@ export default function EventSelect({ groups, activeGroup, setActiveGroup, activ
         
         <div className="flex gap-4 mb-6">
             <button 
-            className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg font-semibold text-base hover:bg-indigo-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-            onClick={() => setShowPaymentModal(true)}
-            >
-            <DollarSign size={18} />
-            Log Payment
+                className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg font-semibold text-base hover:bg-indigo-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                onClick={() => setShowPaymentModal(true)}>
+                <DollarSign size={18} />
+                Log Payment
+                </button>
+            <button 
+                className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                onClick={() => setShowBalanceSheet(true)}>
+                <CreditCard size={18} />
+                View Balance Sheet
             </button>
             <button 
-            className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-            onClick={() => setShowBalanceSheet(true)}
-            >
-            <CreditCard size={18} />
-            View Balance Sheet
-            </button>
-            <button 
-            className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-            onClick={() => setShowAddGroupModal(true)}
-            >
-            <Plus size={18} />
-            Add Group
+                className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                onClick={() => setShowAddGroupModal(true)}>
+                <Plus size={18} />
+                Add Group
             </button>
         </div>
         </div>
