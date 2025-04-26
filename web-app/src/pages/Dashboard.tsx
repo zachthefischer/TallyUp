@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import {  DollarSign, CreditCard, Plus } from "lucide-react";
 import { Group } from "../types/Group";
 import AddGroupModal from "../components/AddGroupModal";
-import MembersList from "../components/MembersList";
 import BalanceSheet from "../components/BalanceSheet";
 import PaymentModal from "../components/PaymentModal";
 import AddSubgroupModal from "../components/AddSubgroupModal";
@@ -14,142 +12,185 @@ import EventDetails from "../components/subpages/EventDetails";
 
 // Main App Component
 export default function Dashboard() {
-  const [activeGroup, setActiveGroup] = useState<number | null>(null);
-  const [activeSubGroup, setActiveSubGroup] = useState<number | null>(null);
+  const [activeGroup, setActiveGroup = () => {
+    setState(1); // Transition to state 2
+    console.log("Active group set to:", activeGroup);
+  }] = useState<number | null>(null);
+  const [activeSubGroup, setActiveSubGroup = () => {
+    setState(2); // Transition to state 2
+  }] = useState<number | null>(null);
+
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(false);
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
+  const [state, setState] = useState(1); // Initial state is 1
+
+
+  const handleBox2Click = () => {
+    setState(3); // Transition to state 3
+  };
+
+  const handleBack = () => {
+    setState(Math.max(state - 1, 1)); // Transition to state 3
+  };
 
   const groups: Group[] = [
     {
-      id: 1,
-      name: "Spring Retreat",
-      amountToReimburse: 1250,
-      percentPaid: 75,
+      id: "1",
+      name: "ACM",
+      paid: 1200,
+      owed: 300,
+      members: [
+        { id: "m1", name: "Alice", transaction: "Paid for venue", timeAgo: "2 days ago", amount: 500 },
+        { id: "m2", name: "Bob", transaction: "Paid for snacks", timeAgo: "1 day ago", amount: 200 },
+      ],
       subGroups: [
         {
-          id: 1,
-          name: "Accommodation",
+          id: "1-1",
+          name: "Retreat",
+          paid: 600,
+          owed: 100,
           members: [
-            { id: 1, name: "Sarah Johnson", transaction: "Lodging fee", timeAgo: "3 days ago", amount: -150 },
-            { id: 2, name: "Michael Smith", transaction: "Room service", timeAgo: "5 days ago", amount: 85 }
-          ]
+            { id: "m3", name: "Charlie", transaction: "Paid for lodging", timeAgo: "5 days ago", amount: 400 },
+          ],
+          subGroups: [
+            {
+              id: "1-1-1",
+              name: "Car 1",
+              paid: 200,
+              owed: 0,
+              members: [
+                { id: "m4", name: "Dave", transaction: "Gas money", timeAgo: "4 days ago", amount: 100 },
+              ],
+              subGroups: [],
+            },
+            {
+              id: "1-1-2",
+              name: "Car 2",
+              paid: 150,
+              owed: 50,
+              members: [
+                { id: "m5", name: "Eve", transaction: "Snacks for trip", timeAgo: "3 days ago", amount: 50 },
+              ],
+              subGroups: [],
+            },
+          ],
         },
         {
-          id: 2,
-          name: "Activities",
+          id: "1-2",
+          name: "Merch",
+          paid: 300,
+          owed: 50,
           members: [
-            { id: 3, name: "Chris Davis", transaction: "Equipment rental", timeAgo: "2 days ago", amount: -210 },
-            { id: 5, name: "Taylor Rogers", transaction: "Activity costs", timeAgo: "1 day ago", amount: 120 }
-          ]
+            { id: "m6", name: "Frank", transaction: "Ordered Tote Bags", timeAgo: "1 week ago", amount: 100 },
+          ],
+          subGroups: [
+            {
+              id: "1-2-1",
+              name: "Tote Bags",
+              paid: 100,
+              owed: 0,
+              members: [],
+              subGroups: [],
+            },
+            {
+              id: "1-2-2",
+              name: "Hoodies",
+              paid: 150,
+              owed: 0,
+              members: [],
+              subGroups: [],
+            },
+            {
+              id: "1-2-3",
+              name: "Stickers",
+              paid: 50,
+              owed: 0,
+              members: [],
+              subGroups: [],
+            },
+          ],
         },
-        {
-          id: 3,
-          name: "Food & Beverages",
-          members: [
-            { id: 4, name: "Jessica Williams", transaction: "Food and drinks", timeAgo: "4 days ago", amount: -180 }
-          ]
-        }
-      ]
+      ],
     },
     {
-      id: 2,
-      name: "Tournament Travel",
-      amountToReimburse: 2350,
-      percentPaid: 45,
+      id: "2",
+      name: "Tennis Club",
+      paid: 800,
+      owed: 200,
+      members: [
+        { id: "m7", name: "Grace", transaction: "Paid for court rental", timeAgo: "3 days ago", amount: 300 },
+      ],
       subGroups: [
         {
-          id: 1,
-          name: "Transportation",
+          id: "2-1",
+          name: "Retreat",
+          paid: 500,
+          owed: 150,
           members: [
-            { id: 2, name: "Amanda Lee", transaction: "Flight tickets", timeAgo: "6 days ago", amount: -450 },
-            { id: 4, name: "Ella Parker", transaction: "Equipment transport", timeAgo: "2 days ago", amount: 130 }
-          ]
+            { id: "m8", name: "Hank", transaction: "Paid for retreat house", timeAgo: "2 weeks ago", amount: 400 },
+          ],
+          subGroups: [
+            {
+              id: "2-1-1",
+              name: "Food",
+              paid: 200,
+              owed: 50,
+              members: [],
+              subGroups: [],
+            },
+            {
+              id: "2-1-2",
+              name: "Activities",
+              paid: 100,
+              owed: 50,
+              members: [],
+              subGroups: [],
+            },
+          ],
         },
         {
-          id: 2,
-          name: "Accommodation",
-          members: [
-            { id: 1, name: "David Thompson", transaction: "Hotel booking", timeAgo: "1 week ago", amount: -320 }
-          ]
+          id: "2-2",
+          name: "Annual Fundraiser",
+          paid: 400,
+          owed: 0,
+          members: [],
+          subGroups: [
+            {
+              id: "2-2-1",
+              name: "Catering",
+              paid: 400,
+              owed: 0,
+              members: [],
+              subGroups: [],
+            },
+          ],
         },
-        {
-          id: 3,
-          name: "Tournament Fees",
-          members: [
-            { id: 3, name: "Robert Martin", transaction: "Tournament fees", timeAgo: "3 days ago", amount: 275 }
-          ]
-        }
-      ]
+      ],
     },
     {
-      id: 3,
-      name: "Annual Fundraiser",
-      amountToReimburse: 3600,
-      percentPaid: 90,
+      id: "3",
+      name: "UPE",
+      paid: 400,
+      owed: 0,
+      members: [
+        { id: "m9", name: "Ivan", transaction: "Paid for UPE conference", timeAgo: "1 month ago", amount: 400 },
+      ],
       subGroups: [
         {
-          id: 1,
-          name: "Venue Rental",
-          members: [
-            { id: 1, name: "Emma Wilson", transaction: "Venue rental", timeAgo: "2 weeks ago", amount: -950 }
-          ]
+          id: "3-1",
+          name: "Fees",
+          paid: 300,
+          owed: 0,
+          members: [],
+          subGroups: [],
         },
-        {
-          id: 2,
-          name: "Catering Services",
-          members: [
-            { id: 2, name: "James Brown", transaction: "Catering services", timeAgo: "10 days ago", amount: -1200 }
-          ]
-        },
-        {
-          id: 3,
-          name: "Decoration",
-          members: [
-            { id: 3, name: "Olivia Jones", transaction: "Decoration", timeAgo: "1 week ago", amount: 300 }
-          ]
-        },
-        {
-          id: 4,
-          name: "Promotional Materials",
-          members: [
-            { id: 4, name: "Daniel Miller", transaction: "Promotional materials", timeAgo: "5 days ago", amount: -420 }
-          ]
-        }
-      ]
+      ],
     },
-    {
-      id: 4,
-      name: "Equipment Purchase",
-      amountToReimburse: 850,
-      percentPaid: 60,
-      subGroups: [
-        {
-          id: 1,
-          name: "Tennis Rackets",
-          members: [
-            { id: 1, name: "Ryan Taylor", transaction: "Tennis rackets", timeAgo: "2 weeks ago", amount: -350 }
-          ]
-        },
-        {
-          id: 2,
-          name: "Tennis Balls",
-          members: [
-            { id: 2, name: "Sophia Clark", transaction: "Tennis balls", timeAgo: "1 week ago", amount: -120 }
-          ]
-        },
-        {
-          id: 3,
-          name: "Court Equipment",
-          members: [
-            { id: 3, name: "Ethan White", transaction: "Court equipment", timeAgo: "3 days ago", amount: 180 }
-          ]
-        }
-      ]
-    }
   ];
+  
 
   const balanceSheetData: BalanceSheetItem[] = [
     { group: "Spring Retreat", budget: 2000, spent: 1650, reimbursed: 1245, balance: 405 },
@@ -183,6 +224,9 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="w-full flex gap-8">
+            
+            
+            
             <EventSelect 
               groups={groups} 
               activeGroup={activeGroup}
