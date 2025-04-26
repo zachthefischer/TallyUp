@@ -4,37 +4,37 @@ import MembersList from '../MembersList';
 
 interface EventSelectProps {
     groups: Group[];
-    activeGroup: number | null;
     activeSubGroup: number | null;
+    activeSubSubGroup: number | null;
 }
 
 export default function EventSelect(
     {   groups, 
-        activeGroup, 
         activeSubGroup, 
+        activeSubSubGroup, 
     }: EventSelectProps) {
 
 
     return (
         <div className="w-1/2 bg-white rounded-lg shadow-lg border border-gray-200">
-              {activeGroup !== null && activeSubGroup !== null ? (
+              {activeSubGroup !== null && activeSubSubGroup !== null ? (
                 <MembersList 
-                  members={groups[activeGroup].subGroups[activeSubGroup].members}
-                  groupName={groups[activeGroup].name}
-                  subCategoryName={groups[activeGroup].subGroups[activeSubGroup].name}
+                  members={groups[activeSubGroup].subGroups[activeSubSubGroup].members}
+                  groupName={groups[activeSubGroup].name}
+                  subCategoryName={groups[activeSubGroup].subGroups[activeSubSubGroup].name}
                   onEditMembers={() => {
                     // Here you would handle editing members
-                    console.log('Editing members for:', groups[activeGroup].subGroups[activeSubGroup].name);
+                    console.log('Editing members for:', groups[activeSubGroup].subGroups[activeSubSubGroup].name);
                   }}
                 />
-              ) : activeGroup !== null ? (
+              ) : activeSubGroup !== null ? (
                 <div className="p-6">
                   <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-800">{groups[activeGroup].name}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">{groups[activeSubGroup].name}</h2>
                     <p className="text-gray-600 mt-1">All Members</p>
                   </div>
                   <div className="space-y-4">
-                    {groups[activeGroup].subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
+                    {groups[activeSubGroup].subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
                       <div 
                         key={`${member.id}-${idx}`}
                         className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200 ease-in-out"

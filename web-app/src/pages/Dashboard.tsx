@@ -12,28 +12,41 @@ import EventDetails from "../components/subpages/EventDetails";
 
 // Main App Component
 export default function Dashboard() {
-  const [activeGroup, setActiveGroup = () => {
-    setState(1); // Transition to state 2
-    console.log("Active group set to:", activeGroup);
-  }] = useState<number | null>(null);
-  const [activeSubGroup, setActiveSubGroup = () => {
-    setState(2); // Transition to state 2
-  }] = useState<number | null>(null);
+  const [activeGroup, _setActiveGroup] = useState<number | null>(null);
+  const [activeSubGroup, _setActiveSubGroup] = useState<number | null>(null);
+  const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<number | null>(null);
 
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(false);
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
-  const [state, setState] = useState(1); // Initial state is 1
+  const [pageState, setPageState] = useState(1); // Initial state is 1
 
-
-  const handleBox2Click = () => {
-    setState(3); // Transition to state 3
+  const setActiveGroup = (newValue: number | null) => {
+    _setActiveGroup(newValue);
+    _setActiveSubGroup(null);
+    _setActiveSubSubGroup(null);
+    setPageState(1);
+    console.log("Active group set to:", pageState);
   };
 
+  const setActiveSubGroup = (newValue: number | null) => {
+    _setActiveSubGroup(newValue);
+    _setActiveSubSubGroup(null);
+    setPageState(2);
+    console.log("Active group set to:", pageState);
+  };
+
+  const setActiveSubSubGroup = (newValue: number | null) => {
+    _setActiveSubSubGroup(newValue);
+    setPageState(3);
+    console.log("Active group set to:", pageState);
+  };
+
+
   const handleBack = () => {
-    setState(Math.max(state - 1, 1)); // Transition to state 3
+    setPageState(Math.max(pageState - 1, 1)); // Transition to state 3
   };
 
   const groups: Group[] = [
@@ -229,10 +242,10 @@ export default function Dashboard() {
             
             <EventSelect 
               groups={groups} 
-              activeGroup={activeGroup}
-              setActiveGroup={setActiveGroup}
-              activeSubGroup={activeSubGroup} 
-              setActiveSubGroup={setActiveSubGroup} 
+              activeSubGroup={activeSubGroup}
+              setActiveSubGroup={(value) => setActiveSubGroup(value as number | null)}
+              activeSubSubGroup={activeSubSubGroup} 
+              setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as number | null)} 
               setShowBalanceSheet={setShowBalanceSheet}
               setShowPaymentModal={setShowPaymentModal}
               setShowAddGroupModal={setShowAddGroupModal}
@@ -242,8 +255,8 @@ export default function Dashboard() {
             
             <EventDetails 
               groups={groups} 
-              activeGroup={activeGroup} 
               activeSubGroup={activeSubGroup} 
+              activeSubSubGroup={activeSubSubGroup} 
             />
       
           </div>
