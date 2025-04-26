@@ -12,7 +12,7 @@ function App() {
     <>
        <Routes>
           {/* Public Routes: No Navbar */}
-          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/" element={<AuthPage />} />
 
           {/* Protected Routes: With Navbar */}
           <Route path="/dashboard" element={<Dashboard/> } />
