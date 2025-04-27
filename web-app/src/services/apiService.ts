@@ -1,4 +1,5 @@
 import axios from "axios";
+import { User } from "../types/User";
 
 // Create an axios instance with default settings
 const api = axios.create({
@@ -6,11 +7,32 @@ const api = axios.create({
     withCredentials: true, // optional: if you need cookies/auth
 });
 
+const userID = 1;
+
 // Example function: fetch groups for the current user
 export const testAPI = async () => {
     const response = await api.get("/");
     return response.data;
   };
+
+export const createUser = async (name: String) => {
+  const userData = {
+    groups: [],
+    totalOwed: 0,
+    totalPaid: 0,
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'email.com',
+    phone: '123456789',
+    balance: 0,
+  }
+
+  const response = await api.post("/user", userData);
+  return response.data;
+};
+  
+
+
 
 
 // Example function: fetch groups for the current user

@@ -1,17 +1,20 @@
 import { Dispatch, SetStateAction } from 'react';
 import WelcomeBanner from "../../components/WelcomeBanner";
 import { Group } from "../../types/Group";
+import { Plus } from 'lucide-react';
 
 interface GroupSelectProps {
     groups: Group[];
     activeGroup: Group | null;
     setActiveGroup: Dispatch<SetStateAction<Group | null>>;
+    setShowAddGroupModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function GroupSelect(
     { groups, 
         activeGroup, 
         setActiveGroup, 
+        setShowAddGroupModal,
     }: GroupSelectProps) {
 
 
@@ -53,7 +56,15 @@ export default function GroupSelect(
             </div>
             </div>
         ))}
+
+        <button 
+            className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+            onClick={() => setShowAddGroupModal(true)}>
+            <Plus size={18} />
+            Add Group
+        </button>
+
         </div>
-        </div>
+    </div>
     )
 }
