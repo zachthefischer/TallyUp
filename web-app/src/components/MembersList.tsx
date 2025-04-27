@@ -52,7 +52,7 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
 
       {membersWhoOwe.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4 text-red-600 font-medium">
+          <div className="flex items-center gap-2 mb-4 text-[#98351b] font-medium">
             <ArrowDown size={18} />
             <h3 className="text-lg">Members Who Owe Money</h3>
           </div>
@@ -60,14 +60,14 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
             {membersWhoOwe.map((member) => (
               <div 
                 key={member._id} 
-                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-red-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                className="p-4 border border-[#98351b] rounded-lg border-l-4 border-l-[#98351b] hover:shadow-md transition-shadow duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="font-medium text-gray-800">{member.userName}</div>
+                    <div className="font-medium text-[#98351b]">{member.userName}</div>
                     {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                   </div>
-                  <div className="font-semibold text-red-500 text-lg">
+                  <div className="font-semibold text-[#98351b] text-lg">
                     -${Math.abs(calculateAmount(member))}
                   </div>
                 </div>
@@ -87,14 +87,14 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
             {membersOwed.map((member) => (
               <div 
                 key={member._id} 
-                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                className="p-4 border border-[#396e7c] rounded-lg border-l-4 border-l-[#396e7c] hover:shadow-md transition-shadow duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="font-medium text-gray-800">{member.userName}</div>
+                    <div className="font-medium text-[#396e7c]">{member.userName}</div>
                     {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                   </div>
-                  <div className="font-semibold text-green-500 text-lg">
+                  <div className="font-semibold text-[#396e7c] text-lg">
                     +${Math.abs(calculateAmount(member))}
                   </div>
                 </div>
@@ -106,7 +106,7 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
 
       {membersEven.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4 text-gray-500 font-medium">
+          <div className="flex items-center gap-2 mb-4 text-[#082341] font-medium">
             <Minus size={18} />
             <h3 className="text-lg">Other Users</h3>
           </div>
@@ -114,14 +114,14 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
             {membersEven.map((member) => (
               <div 
                 key={member._id}
-                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                className="p-4 border border-[#082341] rounded-lg border-l-4 border-l-[#082341] hover:shadow-md transition-shadow duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="font-medium text-gray-800">{member.userName}</div>
+                    <div className="font-medium text-[#082341]">{member.userName}</div>
                     {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                   </div>
-                  <div className="font-semibold text-green-500 text-lg">
+                  <div className="font-semibold text-[#082341] text-lg">
                     +${Math.abs(calculateAmount(member))}
                   </div>
                 </div>

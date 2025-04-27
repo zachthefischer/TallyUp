@@ -63,7 +63,7 @@ export default function GroupSelect(
                 className="add-group-button"
                 onClick={() => setShowAddUserModal(true)}>
                 <Plus size={18} />
-                Add User
+                New User
             </button>
 
             <button 

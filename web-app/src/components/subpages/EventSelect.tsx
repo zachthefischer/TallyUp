@@ -99,7 +99,7 @@ export default function EventSelect(
                 <div className="mt-6 space-y-6">
                     {membersWhoOwe && membersWhoOwe.length > 0 && (
                         <div>
-                        <div className="flex items-center gap-2 mb-3 text-red-600 font-medium">
+                        <div className="flex items-center gap-2 mb-3 text-[#98351b] font-medium">
                             <ArrowDown size={18} />
                             <h3 className="text-lg">Members Who Owe Money</h3>
                         </div>
@@ -107,14 +107,14 @@ export default function EventSelect(
                             {membersWhoOwe.map((member) => (
                             <div 
                                 key={member._id} 
-                                className="p-3 border border-gray-200 rounded-lg border-l-4 border-l-red-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                                className="p-3 border border-[#98351b] rounded-lg border-l-4 border-l-[#98351b] hover:shadow-md transition-shadow duration-200 ease-in-out"
                             >
                                 <div className="flex justify-between items-center">
                                 <div>
                                     <div className="font-medium text-gray-800">{member.userName}</div>
                                     {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                                 </div>
-                                <div className="font-semibold text-red-500 text-lg">
+                                <div className="font-semibold text-[#98351b] text-lg">
                                     -${Math.abs(calculateAmount(member))}
                                 </div>
                                 </div>
@@ -134,14 +134,14 @@ export default function EventSelect(
                             {membersOwed.map((member) => (
                             <div 
                                 key={member._id} 
-                                className="p-3 border border-gray-200 rounded-lg border-l-4 border-l-gray-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                                className="p-3 border border-[#396e7c] rounded-lg border-l-4 border-l-[#396e7c] hover:shadow-md transition-shadow duration-200 ease-in-out"
                             >
                                 <div className="flex justify-between items-center">
                                 <div>
                                     <div className="font-medium text-gray-800">{member.userName}</div>
                                     {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                                 </div>
-                                <div className="font-semibold text-green-500 text-lg">
+                                <div className="font-semibold text-[#396e7c] text-lg">
                                     +${Math.abs(calculateAmount(member))}
                                 </div>
                                 </div>
@@ -153,7 +153,7 @@ export default function EventSelect(
 
                     {membersEven && membersEven.length > 0 && (
                         <div>
-                        <div className="flex items-center gap-2 mb-3 text-gray-500 font-medium">
+                        <div className="flex items-center gap-2 mb-3 text-[#082341] font-medium">
                             <Minus size={18} />
                             <h3 className="text-lg">Other Users</h3>
                         </div>
@@ -161,14 +161,14 @@ export default function EventSelect(
                             {membersEven.map((member) => (
                             <div 
                                 key={member._id}
-                                className="p-3 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                                className="p-3 border border-[#082341] rounded-lg border-l-4 border-l-[#082341] hover:shadow-md transition-shadow duration-200 ease-in-out"
                             >
                                 <div className="flex justify-between items-center">
                                 <div>
                                     <div className="font-medium text-gray-800">{member.userName}</div>
                                     {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                                 </div>
-                                <div className="font-semibold text-green-500 text-lg">
+                                <div className="font-semibold text-[#082341] text-lg">
                                     +${Math.abs(calculateAmount(member))}
                                 </div>
                                 </div>
