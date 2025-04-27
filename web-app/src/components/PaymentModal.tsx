@@ -94,9 +94,9 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
               </button>
               <button 
                 type="submit"
-                className="px-4 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 flex items-center gap-2"
+                className="px-4 py-2 bg-[#396e7c] text-white rounded-md font-medium hover:bg-[#396e7c]/90 flex items-center gap-2"
               >
-                <DollarSign size={16} />
+                <DollarSign size={18} />
                 Submit Payment
               </button>
             </div>

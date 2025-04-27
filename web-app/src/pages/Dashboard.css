@@ -18,7 +18,6 @@
     position: absolute;
     transition: all 0.5s ease-in-out;
   }
-    
   
   .box.center {
     left: 25%;
@@ -43,11 +42,6 @@
   .box.offscreen-right {
     left: 100%;
   }
-
- 
-  
-
-  
   
   /* Box 3 in state 3
   .box3.slide-in-right {
