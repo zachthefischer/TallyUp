@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { UserGroup } from "../types/User";
 import { BalanceSheetItem } from "../types/BalanceSheet";
 import Header from "../components/Header";
@@ -61,7 +61,7 @@ export default function Dashboard() {
 
   // Initialize state with mock data
   const [isLoading, setIsLoading] = useState(false);
-
+  const hasMounted = useRef(false);
 
   // Fetch groups - now only fetch if we want to override mock data
   useEffect(() => {
@@ -71,6 +71,7 @@ export default function Dashboard() {
         const data = await fetchUserGroups(ZACH_USER_ID);
         console.log("Fetched user groups:", data);
         setGroups(data);
+
         // Uncomment the line below if you want to override mock data with fetched data
         // setGroups(data);
       } catch (error) {
@@ -79,10 +80,12 @@ export default function Dashboard() {
         setIsLoading(false);
       }
     };
-
+    // setActiveSubSubGroup(activeSubSubGroup);   // example: custom functio    
     // Uncomment the line below if you want to fetch data from the API
-    loadGroups();
+    loadGroups(); 
+
   }, [showAddGroupModal, showAddSubgroupModal, showAddUserModal, showPaymentModal]);
+
 
 
   const handleAddUser = async (firstName: string, lastName: string) => {
