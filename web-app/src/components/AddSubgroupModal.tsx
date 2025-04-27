@@ -4,7 +4,7 @@ import { UserGroup } from "../types/User";
 
 interface AddSubgroupModalProps {
   onClose: () => void;
-  onAdd: (groupId ?: string, subGroupId ?: string, subgroupName ?: string) => void;
+  onAdd: (groupId ?: string, subgroupName ?: string, subGroupId ?: string) => void;
   modalType: number;
   group: UserGroup | null;
   subGroup : UserGroup | null;
@@ -23,7 +23,7 @@ function AddSubgroupModal({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onAdd(group?.groupId, subGroup?.groupId, subgroupName);
+    onAdd(group?.groupId, subgroupName, subGroup?.groupId);
   };
 
   return (

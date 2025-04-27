@@ -111,15 +111,15 @@ export default function Dashboard() {
 
 
   // Handle adding a new subgroup
-  const handleAddSubgroup = async (groupId ?: string, subgroupName ?: string) => {
+  const handleAddSubgroup = async (groupId ?: string, subgroupName ?: string, subgroupId ?: string) => {
     if (!groupId || !subgroupName) {
       console.error("Group ID and subgroup name are required");
       return;
     }
     try {
-      console.log("Create subgroup:", groupId, subgroupName);
+      console.log("Create subgroup:", groupId, subgroupName, ZACH_USER_ID);
 
-      const result = await createSubGroup( groupId, subgroupName);
+      const result = await createSubGroup( groupId, subgroupName, ZACH_USER_ID, subgroupId);
       
       console.log("New subgroup created:", result);
       setShowAddSubgroupModal(0);
