@@ -16,9 +16,9 @@ import './Dashboard.css';
 
 // Main App Component
 export default function Dashboard() {
-  const [activeGroup, _setActiveGroup] = useState<number | null>(null);
-  const [activeSubGroup, _setActiveSubGroup] = useState<number | null>(null);
-  const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<number | null>(null);
+  const [activeGroup, _setActiveGroup] = useState<Group | null>(null);
+  const [activeSubGroup, _setActiveSubGroup] = useState<Group | null>(null);
+  const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<Group | null>(null);
 
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -27,22 +27,22 @@ export default function Dashboard() {
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
   const [pageState, setPageState] = useState(1); // Initial state is 1
 
-  const setActiveGroup = (newValue: number | null) => {
+  const setActiveGroup = (newValue: Group | null) => {
     _setActiveGroup(newValue);
-    _setActiveSubGroup(null);
-    _setActiveSubSubGroup(null);
+    // _setActiveSubGroup(null);
+    // _setActiveSubSubGroup(null);
     setPageState(2);
-    console.log("Active group set to:", pageState);
+    console.log("Active group set to:", activeGroup);
   };
 
-  const setActiveSubGroup = (newValue: number | null) => {
+  const setActiveSubGroup = (newValue: Group | null) => {
     _setActiveSubGroup(newValue);
-    _setActiveSubSubGroup(null);
+    // _setActiveSubSubGroup(null);
     setPageState(3);
-    console.log("Active group set to:", pageState);
+    console.log("Active group set to:", activeGroup);
   };
 
-  const setActiveSubSubGroup = (newValue: number | null) => {
+  const setActiveSubSubGroup = (newValue: Group | null) => {
     _setActiveSubSubGroup(newValue);
     // setPageState(3);
     // console.log("Active group set to:", pageState);
@@ -337,18 +337,12 @@ export default function Dashboard() {
             `}>
               <GroupSelect 
                 groups={groups} 
-                activeSubGroup={activeSubGroup}
-                setActiveSubGroup={(value) => setActiveGroup(value as number | null)}
-                activeSubSubGroup={activeSubSubGroup} 
-                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as number | null)} 
-                setShowBalanceSheet={setShowBalanceSheet}
-                setShowPaymentModal={setShowPaymentModal}
-                setShowAddGroupModal={setShowAddGroupModal}
-                setShowAddSubgroupModal={setShowAddSubgroupModal}
-                setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
+                activeGroup={activeGroup}
+                setActiveGroup={(value) => setActiveGroup(value as Group | null)} 
               />            
             </div>
             
+
             <div className={`box
               ${pageState === 1 ? 'offscreen-right' : ''}
               ${pageState === 2 ? 'box-right' : ''}
@@ -356,10 +350,11 @@ export default function Dashboard() {
             `}>
               <EventSelect 
                 groups={groups} 
+                activeGroup={activeGroup}
                 activeSubGroup={activeSubGroup}
-                setActiveSubGroup={(value) => setActiveSubGroup(value as number | null)}
+                setActiveSubGroup={(value) => setActiveSubGroup(value as Group | null)}
                 activeSubSubGroup={activeSubSubGroup} 
-                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as number | null)} 
+                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as Group | null)} 
                 setShowBalanceSheet={setShowBalanceSheet}
                 setShowPaymentModal={setShowPaymentModal}
                 setShowAddGroupModal={setShowAddGroupModal}
@@ -367,6 +362,7 @@ export default function Dashboard() {
                 setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
               />            
             </div>
+
 
             <div className={`box 
               ${pageState === 1 ? 'offscreen-right' : ''}

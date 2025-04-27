@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction } from 'react';
-import WelcomeBanner from "../../components/WelcomeBanner";
 import {  DollarSign, CreditCard, Plus } from "lucide-react";
 import { Group } from "../../types/Group";
+import { Dispatch, SetStateAction } from 'react';
+import GroupBanner from "../../components/GroupBanner";
 
 interface EventSelectProps {
-    groups: Group[];
-    activeSubGroup: number | null;
-    setActiveSubGroup: Dispatch<SetStateAction<number | null>>;
-    activeSubSubGroup: number | null;
-    setActiveSubSubGroup: Dispatch<SetStateAction<number | null>>;
+    activeGroup: Group | null;
+    activeSubGroup: Group | null;
+    setActiveSubGroup: Dispatch<SetStateAction<Group | null>>;
+    activeSubSubGroup: Group | null;
+    setActiveSubSubGroup: Dispatch<SetStateAction<Group | null>>;
 
     // Show modals
     setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
@@ -19,7 +19,8 @@ interface EventSelectProps {
 }
 
 export default function EventSelect(
-    { groups, 
+    { 
+        activeGroup, 
         activeSubGroup, 
         setActiveSubGroup, 
         activeSubSubGroup, 
@@ -36,7 +37,7 @@ export default function EventSelect(
     return (
         <div className="bg-white rounded-lg shadow-lg border border-gray-200">
         <div className="p-6">
-        <WelcomeBanner />
+        {activeGroup !== null && <GroupBanner groupName={activeGroup.name}/>}
         
         <div className="flex gap-4 mb-6">
             <button 
@@ -49,7 +50,7 @@ export default function EventSelect(
                 className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
                 onClick={() => setShowBalanceSheet(true)}>
                 <CreditCard size={18} />
-                View Balance Sheet
+                Transactions
             </button>
             <button 
                 className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
@@ -61,17 +62,17 @@ export default function EventSelect(
         </div>
 
         <div className="border-t border-gray-200">
-        {groups.map((group, index) => (
+        {activeGroup?.subGroups.map((group) => (
             <div key={group.id} className="p-4">
             <div className="flex flex-col gap-4">
                 <div 
                 className={`p-4 rounded-lg border-2 border-gray-300 hover:border-indigo-600 transition-colors duration-150 ease-in-out
-                    ${activeSubGroup === index ? "border-indigo-600 bg-indigo-50" : ""}`}
+                    ${activeSubGroup === group ? "border-indigo-600 bg-indigo-50" : ""}`}
                 >
                 <div className="flex items-center justify-between">
                     <span 
                     className="font-medium text-gray-800 flex-1 cursor-pointer"
-                    onClick={() => setActiveSubGroup(activeSubGroup === index ? null : index)}
+                    onClick={() => setActiveSubGroup(activeSubGroup === group ? null : group)}
                     >
                     {group.name}
                     </span>
@@ -101,16 +102,17 @@ export default function EventSelect(
                 </div>
             </div>
             
-            {activeSubGroup === index && (
+            {/* Display list of subSubGroups - eg Cars for Retreat for UPE */}
+            {activeSubGroup?.id === activeSubGroup?.id && (
                 <div className="mt-2 ml-4 space-y-2">
-                {group.subGroups.map((subSubGroup, subIndex) => (
+                {group?.subGroups?.map((subSubGroup) => (
                     <div
                     key={subSubGroup.id}
                     className={`p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out
-                        ${activeSubSubGroup === subIndex ? 
+                        ${activeSubSubGroup?.id === subSubGroup?.id ? 
                         "bg-gray-100 border-l-4 border-l-indigo-400" : ""
                         }`}
-                    onClick={() => setActiveSubSubGroup(activeSubSubGroup === subIndex ? null : subIndex)}
+                    onClick={() => setActiveSubSubGroup(activeSubSubGroup?.id === subSubGroup?.id ? null : subSubGroup)}
                     >
                     <div className="flex items-center justify-between">
                         <div className="font-medium text-sm text-gray-700">{subSubGroup.name}</div>
