@@ -3,8 +3,8 @@ export interface GroupMember {
   userName: string;
   transaction: string;
   timeAgo: string;
-  paid: number;
-  owed: number;
+  userPaid: number;
+  userOwed: number;
   balance: number;
 }
 

@@ -45,16 +45,17 @@ export default function EventSelect(
                         </button>
                     <button 
                         className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => setShowAddSubgroupModal(1)}>
-                        <Plus size={18} />
+                        onClick={() => setShowBalanceSheet(true)}>
+                        <CreditCard size={18} />
                         Submit Payment
                     </button>
                     <button 
                         className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => setShowBalanceSheet(true)}>
-                        <CreditCard size={18} />
-                        Transactions
+                        onClick={() => setShowAddSubgroupModal(1)}>
+                        <Plus size={18} />
+                        Add Subgroup
                     </button>
+
                 </div>
             </div>
 

@@ -13,7 +13,7 @@ function PaymentModal({
   onAdd,
   onClose,
 }: PaymentModalProps) {
-    const ZACH_USER_ID = "680e022d0986b10805664049"
+    const ZACH_USER_ID = "680e10f496794424d85bb535"
     const [amount, setAmount] = useState(1.25);
     const [description, setDescription] = useState("");
     const [userId, setUserId] = useState(ZACH_USER_ID);
@@ -50,7 +50,6 @@ function PaymentModal({
                 <input 
                   type="number" 
                   step="0.01"
-                  min="0"
                   className="w-full pl-8 pr-3 text-black py-2 border border-gray-300 rounded-md"
                   placeholder="0.00"
                   value={amount}
