@@ -26,16 +26,17 @@ export default function GroupSelect(
 
         <div>
         {groups.map((group) => (
-            <div key={group.id} className="group-item">
+            <div 
+                key={group.id} 
+                className="group-item"
+                onClick={() => setActiveGroup(activeGroup === group ? null : group)}
+            >
             <div className="group-item-inner">
                 <div 
                 className={`group-card ${activeGroup === group ? "active" : ""}`}
                 >
                 <div className="flex items-center justify-between">
-                    <span 
-                    className="group-name"
-                    onClick={() => setActiveGroup(activeGroup === group ? null : group)}
-                    >
+                    <span className="group-name">
                     {group.name}
                     </span>
                 </div>
@@ -56,12 +57,22 @@ export default function GroupSelect(
             </div>
         ))}
 
-        <button
-            className="add-group-button"
-            onClick={() => setShowAddGroupModal(true)}>
-            <Plus size={18} />
-            Add Group
-        </button>
+        <div className="buttons-container">
+            <button
+                className="add-group-button"
+                onClick={() => setShowAddGroupModal(true)}>
+                <Plus size={18} />
+                Add Group
+            </button>
+
+            <button
+                className="add-group-button"
+                onClick={() => setShowAddGroupModal(true)}>
+                <Plus size={18} />
+                Join Group
+            </button>
+        </div>
+        
 
         </div>
     </div>

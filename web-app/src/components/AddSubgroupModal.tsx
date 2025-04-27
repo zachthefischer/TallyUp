@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import './Modal.css';
 
 interface AddSubgroupModalProps {
   onClose: () => void;
@@ -16,24 +17,23 @@ function AddSubgroupModal({ onClose, onAdd, parentGroupName }: AddSubgroupModalP
   };
 
   return (
-    <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Add New Subgroup to {parentGroupName}</h3>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h3 className="modal-title">Add New Subgroup to {parentGroupName}</h3>
           <button 
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="modal-close-button"
           >
             ✕
           </button>
         </div>
         
         <form onSubmit={handleSubmit}>
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2 font-medium">Subgroup Name</label>
+          <div className="modal-form-group">
             <input 
               type="text" 
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="modal-input"
               placeholder="Enter subgroup name"
               value={subgroupName}
               onChange={(e) => setSubgroupName(e.target.value)}
@@ -41,17 +41,17 @@ function AddSubgroupModal({ onClose, onAdd, parentGroupName }: AddSubgroupModalP
             />
           </div>
           
-          <div className="flex justify-end gap-3">
+          <div className="modal-actions">
             <button 
               type="button"
-              className="px-4 py-2 bg-white text-[#082341] border border-gray-300 rounded-md font-medium hover:bg-gray-50"
+              className="modal-button modal-button-secondary"
               onClick={onClose}
             >
               Cancel
             </button>
             <button 
               type="submit"
-              className="px-4 py-2 bg-[#082341] text-white rounded-md font-medium hover:bg-[#082341]/90 flex items-center gap-2"
+              className="modal-button modal-button-teal"
             >
               <Plus size={16} />
               Add Subgroup

@@ -38,9 +38,9 @@ export default function EventSelect(
         <div className="event-select-header">
         {activeGroup !== null && <GroupBanner groupName={activeGroup.name}/>}
         
-        <div className="event-select-actions">
+        <div className="buttons-container">
             <button 
-                className="action-button action-button-primary"
+                className="action-button action-button-dark"
                 onClick={() => setShowPaymentModal(true)}>
                 <Plus size={20} />
                 Add Payment
@@ -52,10 +52,10 @@ export default function EventSelect(
                 Transactions
             </button>
             <button 
-                className="action-button action-button-dark"
+                className="action-button action-button-teal"
                 onClick={() => setShowAddSubgroupModal(true)}>
                 <Plus size={18} />
-                Add Group
+                Add Subgroup
             </button>
         </div>
         </div>

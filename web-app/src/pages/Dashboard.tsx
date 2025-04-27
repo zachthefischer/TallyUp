@@ -187,8 +187,8 @@ export default function Dashboard() {
     {
       id: "3",
       name: "UPE",
-      paid: 400,
-      owed: 0,
+      paid: 20,
+      owed: 100,
       members: [
         { id: "m9", name: "Ivan", transaction: "Paid for UPE conference", timeAgo: "1 month ago", amount: 400 },
       ],

@@ -10,6 +10,12 @@
   padding: 1.5rem;
 }
 
+.buttons-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
 /* GroupSelect styles */
 .group-select-container {
   padding: 0;
@@ -17,6 +23,8 @@
 
 .group-item {
   padding: 0.5rem 0;
+  cursor: pointer;
+  margin: 0.5rem 0;
 }
 
 .group-item-inner {
@@ -119,12 +127,6 @@
   padding: 1.5rem;
 }
 
-.event-select-actions {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-
 .action-button {
   flex: 1;
   padding: 0.75rem 1rem;
@@ -143,12 +145,12 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.action-button-primary {
+.action-button-teal {
   background-color: #396e7c;
   color: white;
 }
 
-.action-button-primary:hover {
+.action-button-teal:hover {
   background-color: rgba(57, 110, 124, 0.9);
 }
 
@@ -172,11 +174,12 @@
 }
 
 .subgroup-item {
-  padding: 1rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
 }
 
 .subgroup-card {
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   border: 2px solid #d1d5db;
   transition: all 150ms ease-in-out;
@@ -206,6 +209,7 @@
   align-items: center;
   gap: 0.5rem;
   color: #374151;
+  margin: 0 0.5rem;
 }
 
 .add-subgroup-button:hover {

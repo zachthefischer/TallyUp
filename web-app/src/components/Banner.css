@@ -1,0 +1,94 @@
+/* WelcomeBanner styles */
+.welcome-banner {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to right, #051527, #396e7c);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-banner-content {
+  position: relative;
+  z-index: 10;
+}
+
+.welcome-banner-header {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.welcome-banner-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.025em;
+}
+
+.welcome-banner-logo {
+  height: 4rem;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.welcome-banner-description {
+  color: #e5e7eb;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  max-width: 42rem;
+  font-style: italic;
+}
+
+.welcome-banner-circle-1 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 8rem;
+  height: 8rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  transform: translate(2rem, 3rem);
+}
+
+.welcome-banner-circle-2 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12rem;
+  height: 12rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  transform: translate(3rem, 4rem);
+}
+
+.welcome-banner-circle-3 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16rem;
+  height: 16rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  transform: translate(4rem, 5rem);
+}
+
+/* GroupBanner styles */
+.group-banner {
+  background: linear-gradient(to right, rgba(57, 110, 124, 0.05), rgba(57, 110, 124, 0.5));
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  display: flex;
+  align-items: center;
+}
+
+.group-banner-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #082341;
+}
