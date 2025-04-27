@@ -39,7 +39,7 @@ export default function EventSelect(
         <div className="p-6">
         {activeGroup !== null && <GroupBanner groupName={activeGroup.name}/>}
         
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-4 mb-2">
             <button 
                 className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-semibold text-base hover:bg-[#396e7c]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
                 onClick={() => setShowPaymentModal(true)}>
@@ -61,7 +61,7 @@ export default function EventSelect(
         </div>
         </div>
 
-        <div className="border-t border-gray-200">
+        <div>
         {activeGroup?.subGroups.map((subGroup) => (
             <div key={subGroup.id} className="p-4">
             <div className="flex flex-col gap-4">

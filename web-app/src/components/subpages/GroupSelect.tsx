@@ -21,7 +21,7 @@ export default function GroupSelect(
         <WelcomeBanner />
         </div>
 
-        <div className="border-t border-gray-200">
+        <div>
         {groups.map((group) => (
             <div key={group.id} className="py-2 px-0">
             <div className="flex flex-col gap-0">

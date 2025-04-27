@@ -12,7 +12,6 @@ export const testAPI = async () => {
     return response.data;
   };
 
-
 // Example function: fetch groups for the current user
 export const fetchUserGroups = async () => {
   const response = await api.get("/user");
