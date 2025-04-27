@@ -29,29 +29,25 @@ export default function Dashboard() {
 
   const setActiveGroup = (newValue: Group | null) => {
     _setActiveGroup(newValue);
-    // _setActiveSubGroup(null);
-    // _setActiveSubSubGroup(null);
     setPageState(2);
     console.log("Active group set to:", activeGroup);
   };
 
   const setActiveSubGroup = (newValue: Group | null) => {
     _setActiveSubGroup(newValue);
-    // _setActiveSubSubGroup(null);
     setPageState(3);
     console.log("Active group set to:", activeGroup);
   };
 
   const setActiveSubSubGroup = (newValue: Group | null) => {
     _setActiveSubSubGroup(newValue);
-    // setPageState(3);
-    // console.log("Active group set to:", pageState);
   };
 
 
   const handleBack = () => {
     setPageState(Math.max(pageState - 1, 1)); // Transition to state 3
   };
+
 
   // Define mock data
   const mockGroups: Group[] = [
@@ -213,6 +209,7 @@ export default function Dashboard() {
   const [groups, setGroups] = useState<Group[]>(mockGroups);
   const [isLoading, setIsLoading] = useState(false);
 
+
   // Fetch groups - now only fetch if we want to override mock data
   useEffect(() => {
     const loadGroups = async () => {
@@ -232,6 +229,28 @@ export default function Dashboard() {
     // Uncomment the line below if you want to fetch data from the API
     // loadGroups();
   }, []);
+
+
+  const handleAddUser = async (name: String) => {
+    try {
+      // Create a properly structured group object
+      const newGroup = await createGroup({ 
+        name: name,
+        paid: 0,
+        owed: 0,
+        members: [],
+        subGroups: []
+      });
+      console.log("New group created:", newGroup);
+      
+      // Update the groups state with the new group
+      setGroups(prevGroups => [...prevGroups, newGroup]);
+      setShowAddGroupModal(false);
+    } catch (error) {
+      console.error("Failed to create group:", error);
+    }
+  };
+
 
   // Handle adding a new group
   const handleAddGroup = async (groupName: string) => {
@@ -315,7 +334,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header/>
-
+      
       <div className="flex-1 flex p-8 mt-15">
         {showBalanceSheet ? (
           <div className="w-full bg-white rounded-lg shadow-lg">
@@ -339,6 +358,7 @@ export default function Dashboard() {
                 groups={groups} 
                 activeGroup={activeGroup}
                 setActiveGroup={(value) => setActiveGroup(value as Group | null)} 
+                setShowAddGroupModal={setShowAddGroupModal}
               />            
             </div>
             
@@ -356,7 +376,6 @@ export default function Dashboard() {
                 setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as Group | null)} 
                 setShowBalanceSheet={setShowBalanceSheet}
                 setShowPaymentModal={setShowPaymentModal}
-                setShowAddGroupModal={setShowAddGroupModal}
                 setShowAddSubgroupModal={setShowAddSubgroupModal}
                 setSelectedGroupForSubgroup={setSelectedGroupForSubgroup}
               />            

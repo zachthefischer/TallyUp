@@ -13,7 +13,6 @@ interface EventSelectProps {
     // Show modals
     setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
     setShowBalanceSheet: Dispatch<SetStateAction<boolean>>;
-    setShowAddGroupModal: Dispatch<SetStateAction<boolean>>;
     setShowAddSubgroupModal: Dispatch<SetStateAction<boolean>>;
     setSelectedGroupForSubgroup: Dispatch<SetStateAction<string>>;
 }
@@ -27,7 +26,6 @@ export default function EventSelect(
         setActiveSubSubGroup,
         setShowPaymentModal,
         setShowBalanceSheet,
-        setShowAddGroupModal,
         setShowAddSubgroupModal,
         setSelectedGroupForSubgroup
     
@@ -54,7 +52,7 @@ export default function EventSelect(
             </button>
             <button 
                 className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                onClick={() => setShowAddGroupModal(true)}>
+                onClick={() => setShowAddSubgroupModal(true)}>
                 <Plus size={18} />
                 Add Group
             </button>
