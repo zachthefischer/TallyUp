@@ -92,6 +92,66 @@ async function createTransaction(
   }
 }
 
+export const addPair: RequestHandler = async (req, res) => {
+  const { userId, groupId, amount, description } = req.body;
+  try {
+    const group = await GroupModel.findById(groupId);
+    if (!group) {
+      throw new Error("Group not found");
+    }
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const userGroup = {
+      groupId: group._id,
+      groupName: group.name,
+      isAdmin: false,
+      balance: amount,
+      transactions: [],
+      requests: [],
+    };
+    console.log("userGroup created: ", userGroup);
+    const groupUser = {
+      userId: user?._id,
+      userName: user?.firstName + " " + user?.lastName,
+      isAdmin: false,
+      balance: amount,
+      transactions: [],
+      requests: [],
+    };
+    console.log("groupUser created: ", groupUser);
+
+    const existingUserGroup = user.groups.find(
+      (group) => group?.groupId?.toString() === groupId.toString()
+    );
+    if (existingUserGroup) {
+      return;
+    } else {
+      user.groups.push(userGroup);
+    }
+    await user.save();
+    console.log("User group updated: ", user);
+
+    const existingGroupUser = group.members.find(
+      (member) => member?.userId?.toString() === userId.toString()
+    );
+    if (existingGroupUser) {
+      return;
+    } else {
+      group.members.push(groupUser);
+    }
+    await group.save();
+    console.log("Group updated: ", group);
+
+    res.status(201).json({ message: "Pair added successfully" });
+  } catch (error) {
+    console.error("Error creating request and pair: ", error);
+    res.status(500).json({ message: "Error creating request and pair", error });
+  }
+};
+
 export const addTransaction: RequestHandler = async (req, res) => {
   const { userId, groupId, amount, description } = req.body;
   try {
@@ -101,9 +161,9 @@ export const addTransaction: RequestHandler = async (req, res) => {
       amount,
       description
     );
-    res.status(201).json({ message: "Pair added successfully", request });
+    res.status(201).json({ message: "Transactionadded successfully", request });
   } catch (error) {
-    console.error("Error crgroupsuest and pair: ", error);
+    console.error("Error creating groups and pair: ", error);
     res.status(500).json({ message: "Error creating request and pair", error });
   }
 };
