@@ -7,13 +7,21 @@ import "./subpages/Subpages.css";
 
 interface MembersListProps {
   setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
+  setShowAddPairModal: Dispatch<SetStateAction<UserGroup | null>>;
   members: GroupMember[];
   group: UserGroup;
   onEditMembers: () => void;
   onClose?: () => void;
 }
 
-function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClose }: MembersListProps) {
+function MembersList({ 
+  members, 
+  group, 
+  onEditMembers, 
+  setShowPaymentModal,
+  setShowAddPairModal,
+  onClose
+}: MembersListProps) {
   // they owe money: + owed
   // they are owed money: - owed
   // they have paid money: + paid
@@ -136,20 +144,20 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
             <button 
                 className="flex-1 action-button action-button-teal"
                 onClick={() => setShowPaymentModal(group)}>
-                <Plus size={20} />
-                Submit Request
+                <Plus size={18} />
+                Request/Payment
                 </button>
             <button 
                 className="flex-1 action-button action-button-teal"
-                onClick={() => setShowPaymentModal(group)}>
+                onClick={() => setShowAddPairModal(group)}>
                 <Plus size={18} />
-                Submit Payment
+                Invite Member
             </button>
             <button 
                 className="flex-1 action-button action-button-dark"
                 onClick={() => {}}>
                 <CreditCard size={18} />
-                Reimburse All
+                Reimburse
             </button>
         </div>
       </div>

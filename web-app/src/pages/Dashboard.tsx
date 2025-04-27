@@ -152,7 +152,8 @@ export default function Dashboard() {
     try {
       // Create a properly structured subgroup object
       if (showAddPairModal === null) { return; }
-
+      console.log("Pair modal", showAddPairModal)
+      console.log("Active subgroup", activeSubGroup)
       const result = await addToGroup(userId, showAddPairModal.groupId);
       console.log("New group created:", result);
       setShowAddPairModal(null);
@@ -237,6 +238,7 @@ export default function Dashboard() {
             `}>
             <EventDetails 
               setShowPaymentModal={setShowPaymentModal}
+              setShowAddPairModal={setShowAddPairModal}
               groups={groups} 
               activeSubGroup={activeSubGroup} 
               activeSubSubGroup={activeSubSubGroup} 

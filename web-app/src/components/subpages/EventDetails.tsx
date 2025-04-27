@@ -10,6 +10,7 @@ interface EventDetailsProps {
     groups: UserGroup[];
     activeSubGroup: UserGroup | null;
     activeSubSubGroup: UserGroup | null;
+    setShowAddPairModal: Dispatch<SetStateAction<UserGroup | null>>;
     setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
     handleBack: () => void;
   }
@@ -19,6 +20,7 @@ export default function EventDetails({
       activeSubSubGroup,
       setShowPaymentModal,
       handleBack,
+      setShowAddPairModal,
     }: EventDetailsProps) {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +62,7 @@ export default function EventDetails({
                 <>
                 <MembersList 
                   setShowPaymentModal={setShowPaymentModal}
+                  setShowAddPairModal={setShowAddPairModal}
                   members={subGroup?.members || []}
                   group={activeSubGroup}
                   onEditMembers={() => {
