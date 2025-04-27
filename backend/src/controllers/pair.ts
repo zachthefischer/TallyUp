@@ -94,7 +94,6 @@ async function createTransaction(
 
 export const addPair: RequestHandler = async (req, res) => {
   console.log("userId : ");
-
   const { userId, groupId, isAdmin } = req.body;
   console.log("userId : ", userId);
   console.log("groupId : ", groupId);

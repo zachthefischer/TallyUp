@@ -15,9 +15,9 @@ const groupSchema = new Schema({
   name: { type: String, required: true },
   paid: { type: Number, required: true },
   owed: { type: Number, required: true },
-
   members: { type: [groupMemberSchema], required: true },
   subGroups: [{ type: Types.ObjectId, ref: "Group", required: false }],
+  joinCode: { type: String, required: false },
 });
 
 export type Group = InferSchemaType<typeof groupSchema>;

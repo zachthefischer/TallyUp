@@ -4,27 +4,33 @@ import { UserGroup } from "../types/User";
 
 interface AddSubgroupModalProps {
   onClose: () => void;
-  onAdd: (subgroupName: string) => void;
+  onAdd: (groupId ?: string, subGroupId ?: string, subgroupName ?: string) => void;
+  modalType: number;
   group: UserGroup | null;
+  subGroup : UserGroup | null;
 }
 
 function AddSubgroupModal({ 
   onClose, 
   onAdd,
-  group
+  modalType,
+  group,
+  subGroup,
 }: AddSubgroupModalProps) {
   const [subgroupName, setSubgroupName] = useState("");
 
+  console.log("AddSubgroupModal", group);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onAdd(subgroupName);
+    onAdd(group?.groupId, subGroup?.groupId, subgroupName);
   };
 
   return (
     <div className="fixed inset-0 text-black bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Add New Subgroup to {group?.groupName}</h3>
+          <h3 className="text-lg font-semibold">Add new {modalType === 1 ? 'group' : 'subgroup'} to {group?.groupName}</h3>
           <button 
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600"
@@ -59,7 +65,7 @@ function AddSubgroupModal({
               className="px-4 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 flex items-center gap-2"
             >
               <Plus size={16} />
-              Add Subgroup
+              Add SubGroup
             </button>
           </div>
         </form>

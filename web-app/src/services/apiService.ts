@@ -63,10 +63,22 @@ export const createTransaction = async (userId: string, groupId: string, amount:
   return response.data.user;
 }
 
+// Create a new subgroup
 export const createSubGroup = async (groupId: string, subGroupName: string ) => {
   console.log("Group ID: ", groupId);
   const response = await api.post(`/group/subgroup`, { groupId, subGroupName });
   return response.data;
+}
+
+// Delete a user-group pair and the transaction
+export const deleteUserGroupPair = async (userId: string, groupId: string, transactionId: string) => {
+  const deleteObject = {
+    userId: userId,
+    groupId: groupId,
+    transactionId: transactionId
+  };
+  const response = await api.post("/pair/delete", deleteObject);
+  return response;
 }
 
 // Example function: fetch groups for the current user

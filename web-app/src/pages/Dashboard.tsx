@@ -27,7 +27,7 @@ export default function Dashboard() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(false);
+  const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(0);
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
   const [pageState, setPageState] = useState(1); // Initial state is 1
 
@@ -38,9 +38,10 @@ export default function Dashboard() {
   };
 
   const setActiveSubGroup = (newValue: UserGroup | null) => {
+    console.log("Active sub group set to:", newValue);
+
     _setActiveSubGroup(newValue);
     setPageState(3);
-    console.log("Active group set to:", activeGroup);
   };
 
   const setActiveSubSubGroup = (newValue: UserGroup | null) => {
@@ -110,15 +111,18 @@ export default function Dashboard() {
 
 
   // Handle adding a new subgroup
-  const handleAddSubgroup = async (subgroupName: string) => {
+  const handleAddSubgroup = async (groupId ?: string, subgroupName ?: string) => {
+    if (!groupId || !subgroupName) {
+      console.error("Group ID and subgroup name are required");
+      return;
+    }
     try {
-      if (activeGroup === null) { return; }
-      console.log("Create subgroup:", activeGroup.groupId, subgroupName);
+      console.log("Create subgroup:", groupId, subgroupName);
 
-      const result = await createSubGroup(activeGroup.groupId, subgroupName);
+      const result = await createSubGroup( groupId, subgroupName);
       
       console.log("New subgroup created:", result);
-      setShowAddSubgroupModal(false);
+      setShowAddSubgroupModal(0);
     } catch (error) {
       console.error("Failed to create subgroup:", error);
     }
@@ -244,9 +248,11 @@ export default function Dashboard() {
 
       {showAddSubgroupModal && (
         <AddSubgroupModal
-          onClose={() => setShowAddSubgroupModal(false)}
+          onClose={() => setShowAddSubgroupModal(0)}
+          modalType={showAddSubgroupModal}
           onAdd={handleAddSubgroup}
           group={activeGroup}
+          subGroup={activeSubGroup}
         />
       )}
       </div>
