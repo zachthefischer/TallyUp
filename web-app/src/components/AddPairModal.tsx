@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import { DollarSign } from "lucide-react";
 import { UserGroup } from '../types/User';
 
-interface PaymentModalProps {
+interface AddPairModalProps {
     group: UserGroup | null;
-    onAdd: (userId: string, amount: number, description: string) => void;
+    onAdd: (userId: string) => void;
     onClose: () => void;
   }
     
-function PaymentModal({ 
+function AddPairModal({ 
   group,
   onAdd,
   onClose,
-}: PaymentModalProps) {
+}: AddPairModalProps) {
     const ZACH_USER_ID = "680e1ba6a3b6cd1dffc43805"
     const [amount, setAmount] = useState(1.25);
     const [description, setDescription] = useState("");
     const [userId, setUserId] = useState(ZACH_USER_ID);
+
     console.log("MODAL GROUP", group)
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // Here you would handle payment submission
 
-      onAdd(userId, amount, description);
+      onAdd(userId);
       console.log({amount, description });
       onClose();
     };
@@ -31,7 +32,7 @@ function PaymentModal({
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold  text-black">Request or Send for {group?.groupName}</h3>
+            <h3 className="text-lg font-semibold  text-black">Add user to {group?.groupName}</h3>
             <button 
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
@@ -40,39 +41,9 @@ function PaymentModal({
             </button>
           </div>
           
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2 font-medium">Amount</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500">$</span>
-                </div>
-                <input 
-                  type="number" 
-                  step="0.01"
-                  className="w-full pl-8 pr-3 text-black py-2 border border-gray-300 rounded-md"
-                  placeholder="0.00"
-                  value={amount}
-                  onChange={(e) => setAmount(parseFloat(e.target.value))}
-                  required
-                />
-              </div>
-            </div>
-            
+          <form onSubmit={handleSubmit}>            
             <div className="mb-6">
-              <label className="block text-gray-700 mb-2 font-medium">Description</label>
-              <input 
-                type="text" 
-                className="w-full px-3 py-2 border border-gray-300 text-gray-700 rounded-md"
-                placeholder="Enter payment description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-gray-700 mb-2 font-medium">Request Payment From:</label>
+              <label className="block text-gray-700 mb-2 font-medium">Member</label>
               <input 
                 type="text" 
                 className="w-full px-3 py-2 border border-gray-300 text-gray-700 rounded-md"
@@ -105,4 +76,4 @@ function PaymentModal({
       </div>
     );
   }
-export default PaymentModal;  
+export default AddPairModal;  

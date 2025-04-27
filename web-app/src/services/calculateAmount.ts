@@ -6,7 +6,7 @@ import { GroupMember } from "../types/Group";
 // they have been paid:  - paid
 
 export function calculateAmount(member: GroupMember) : number {
-    let amount = (Math.abs(member.userOwed) + Math.abs(member.userPaid));
+    let amount = member.userOwed;
     return amount;
 }
 
