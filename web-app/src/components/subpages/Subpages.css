@@ -13,7 +13,7 @@
 .buttons-container {
     display: flex;
     gap: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: -0.75rem;
   }
 
 /* GroupSelect styles */
@@ -313,7 +313,7 @@
 }
 
 .member-amount.negative {
-  color: #ef4444;
+  color: #98351b;
 }
 
 .member-amount.positive {

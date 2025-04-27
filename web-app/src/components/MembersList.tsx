@@ -1,8 +1,9 @@
-import { DollarSign, CreditCard, ArrowDown, ArrowUp, Minus, Plus } from "lucide-react";
+import { DollarSign, CreditCard, ArrowDown, ArrowUp, Minus, Plus, X } from "lucide-react";
 import { GroupMember } from "../types/Group";
 import { calculateAmount } from "../services/calculateAmount";
 import { Dispatch, SetStateAction } from "react";
 import { UserGroup } from "../types/User";
+import "./subpages/Subpages.css";
 
 interface MembersListProps {
   setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
@@ -33,7 +34,7 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
         <div className="flex items-center gap-2">
           <button
             onClick={onEditMembers}
-            className="px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-all duration-200"
+            className="action-button action-button-secondary"
           >
             Edit Members
           </button>
@@ -132,25 +133,25 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
 
       <div className="flex gap-4 flex-col">
       <div className="flex gap-4 mb-6">
-                    <button 
-                        className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-semibold text-base hover:bg-[#396e7c]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => setShowPaymentModal(group)}>
-                        <Plus size={20} />
-                        Submit Request
-                        </button>
-                    <button 
-                        className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => setShowPaymentModal(group)}>
-                        <Plus size={18} />
-                        Submit Payment
-                    </button>
-                    <button 
-                        className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => {}}>
-                        <CreditCard size={18} />
-                        Reimburse All
-                    </button>
-                </div>
+        <button 
+            className="flex-1 action-button action-button-teal"
+            onClick={() => setShowPaymentModal(group)}>
+            <Plus size={20} />
+            Submit Request
+            </button>
+        <button 
+            className="flex-1 action-button action-button-teal"
+            onClick={() => setShowPaymentModal(group)}>
+            <Plus size={18} />
+            Submit Payment
+        </button>
+        <button 
+            className="flex-1 action-button action-button-dark"
+            onClick={() => {}}>
+            <CreditCard size={18} />
+            Reimburse All
+        </button>
+    </div>
       </div>
     </div>
   );

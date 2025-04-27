@@ -32,7 +32,6 @@ export default function EventSelect(
     
     }: EventSelectProps) {
 
-
     return (
         <div className="event-select-container">
             <div className="event-select-header">
@@ -48,21 +47,21 @@ export default function EventSelect(
                         className="action-button action-button-teal"
                         onClick={() => setShowAddSubgroupModal(1)}>
                         <Plus size={18} />
-                        Submit Payment
+                        Make Payment
                     </button>
                     <button 
                         className="action-button action-button-secondary"
-                        onClick={() => setShowBalanceSheet(true)}>
+                        onClick={() => setShowAddSubgroupModal(2)}>
                         <CreditCard size={18} />
-                        Transactions
+                        AddGroup
                     </button>
                 </div>
             </div>
 
         {/* Display list of sub subgroups */}
-        <div className="border-t border-gray-200">
+        <div>
             {activeGroup?.subGroups?.map((subGroup) => (
-            <div key={subGroup.groupId} className="p-4">
+            <div key={subGroup.groupId} className="p-0">
                 <div className="subgroup-item"
                     onClick={() => {setActiveSubGroup(activeSubGroup === subGroup ? null : subGroup)}}>
                     <div 
@@ -98,7 +97,7 @@ export default function EventSelect(
             </div>
             
             {/* Display list of subSubGroups - eg Cars for Retreat for UPE */}
-            {activeSubGroup === subGroup && activeSubGroup?.subGroups?.length > 0 && (
+            {activeSubGroup === subGroup &&  ( /* activeSubGroup?.subGroups?.length > 0 && */
                 <div className="subsubgroup-list">
                 {subGroup?.subGroups?.map((subSubGroup) => (
                     <div

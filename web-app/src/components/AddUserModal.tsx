@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import './Modal.css';
 
 interface AddUserModalProps {
     onClose: () => void;
@@ -10,58 +11,59 @@ function AddUserModal({ onClose, onAdd }: AddUserModalProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onAdd(firstName, lastName);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-black">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold ">Add New User</h3>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h3 className="modal-title">Add New User</h3>
           <button 
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="modal-close-button"
           >
             ✕
           </button>
         </div>
         
         <form onSubmit={handleSubmit}>
-          <div className="mb-6 flex flex-row gap-4">
-            <label className="block text-gray-700 mb-2 font-medium">User Name</label>
+          <div className="modal-form-group">
+            <label className="modal-label">First Name</label>
             <input 
               type="text" 
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter user name"
+              className="modal-input"
+              placeholder="Enter first name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
             />
-            <label className="block text-gray-700 mb-2 font-medium">User Name</label>
+          </div>
+          <div className="modal-form-group">
+            <label className="modal-label">Last Name</label>
             <input 
               type="text" 
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter user name"
+              className="modal-input"
+              placeholder="Enter last name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
             />
           </div>
           
-          <div className="flex justify-end gap-3">
+          <div className="modal-actions">
             <button 
               type="button"
-              className="px-4 py-2 bg-white border border-gray-300 rounded-md font-medium hover:bg-gray-50"
+              className="modal-button modal-button-secondary"
               onClick={onClose}
             >
               Cancel
             </button>
             <button 
               type="submit"
-              className="px-4 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 flex items-center gap-2" 
+              className="modal-button modal-button-navy" 
             >
               <Plus size={16} />
               Add User
