@@ -51,7 +51,7 @@ export default function EventSelect(
                 Transactions
             </button>
             <button 
-                className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                className="flex-1 px-4 py-3 bg-[#082341] text-white rounded-lg font-semibold text-base hover:bg-[#082341]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
                 onClick={() => setShowAddSubgroupModal(true)}>
                 <Plus size={18} />
                 Add Group
@@ -88,14 +88,16 @@ export default function EventSelect(
                 </div>
                 <div className="flex items-center gap-4 text-sm text-gray-600 mt-3">
                     <span className="whitespace-nowrap"><span className="font-semibold">${subGroup.owed}</span> to reimburse</span>
-                    <div className="relative flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    {/* TODO - there should be a total due  */}
-                    <div 
-                        className="absolute top-0 left-0 h-full bg-[#396e7c] transition-all duration-500 ease-out" 
-                        style={{ width: `${subGroup.paid}%` }}
-                    ></div>
+                    <div className="flex items-center gap-2 ml-auto">
+                        <div className="relative w-72 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        {/* TODO - there should be a total due  */}
+                        <div 
+                            className="absolute top-0 left-0 h-full bg-[#396e7c] transition-all duration-500 ease-out" 
+                            style={{ width: `${subGroup.paid}%` }}
+                        ></div>
+                        </div>
+                        <span className="whitespace-nowrap">{subGroup.paid}% paid</span>
                     </div>
-                    <span className="whitespace-nowrap">{subGroup.paid}% paid</span>
                 </div>
                 </div>
             </div>

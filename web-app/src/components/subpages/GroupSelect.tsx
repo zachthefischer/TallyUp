@@ -17,7 +17,6 @@ export default function GroupSelect(
         setShowAddGroupModal,
     }: GroupSelectProps) {
 
-
     return (
         <div>
         <div className="p-0">
@@ -57,8 +56,8 @@ export default function GroupSelect(
             </div>
         ))}
 
-        <button 
-            className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+        <button
+            className="flex-1 px-4 py-3 bg-[#082341] text-white rounded-lg font-semibold text-base hover:bg-[#082341]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md mt-4"
             onClick={() => setShowAddGroupModal(true)}>
             <Plus size={18} />
             Add Group

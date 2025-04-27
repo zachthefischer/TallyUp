@@ -20,7 +20,7 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
     };
   
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Log Payment</h3>
@@ -87,7 +87,7 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
             <div className="flex justify-end gap-3">
               <button 
                 type="button"
-                className="px-4 py-2 bg-white border border-gray-300 rounded-md font-medium hover:bg-gray-50"
+                className="px-4 py-2 bg-white text-[#082341] border border-gray-300 rounded-md font-medium hover:bg-gray-50"
                 onClick={onClose}
               >
                 Cancel
