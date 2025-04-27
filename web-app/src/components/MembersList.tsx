@@ -1,4 +1,4 @@
-import { DollarSign, CreditCard, ArrowDown, ArrowUp, Minus, Plus, X } from "lucide-react";
+import { DollarSign, CreditCard, ArrowDown, ArrowUp, Minus, Plus, X, BanknoteArrowUp } from "lucide-react";
 import { GroupMember } from "../types/Group";
 import { calculateAmount } from "../services/calculateAmount";
 import { Dispatch, SetStateAction } from "react";
@@ -40,12 +40,6 @@ function MembersList({
           <h2 className="text-2xl font-semibold text-gray-800">{group.groupName}</h2>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={onEditMembers}
-            className="action-button action-button-secondary"
-          >
-            Edit Members
-          </button>
           {onClose && (
             <button
               onClick={onClose}
@@ -142,9 +136,9 @@ function MembersList({
       <div className="flex gap-4 flex-col">
       <div className="flex gap-4 mb-6">
             <button 
-                className="flex-1 action-button action-button-teal"
+                className="flex-1 action-button action-button-dark"
                 onClick={() => setShowPaymentModal(group)}>
-                <Plus size={18} />
+                <CreditCard size={18} />
                 Request/Payment
                 </button>
             <button 
@@ -154,9 +148,9 @@ function MembersList({
                 Invite Member
             </button>
             <button 
-                className="flex-1 action-button action-button-dark"
+                className="flex-1 action-button action-button-secondary"
                 onClick={() => {}}>
-                <CreditCard size={18} />
+                <BanknoteArrowUp size={18} />
                 Reimburse
             </button>
         </div>

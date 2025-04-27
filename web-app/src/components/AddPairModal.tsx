@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign } from "lucide-react";
+import { Plus } from "lucide-react";
 import { UserGroup } from '../types/User';
 
 interface AddPairModalProps {
@@ -32,7 +32,7 @@ function AddPairModal({
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold  text-black">Add user to {group?.groupName}</h3>
+            <h3 className="text-lg font-semibold  text-black">Add User to {group?.groupName}</h3>
             <button 
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
@@ -67,8 +67,8 @@ function AddPairModal({
                 type="submit"
                 className="px-4 py-2 bg-[#396e7c] rounded-md font-medium hover:bg-[#396e7c]/90 flex items-center gap-2"
               >
-                <DollarSign size={18} />
-                Submit Request
+                <Plus size={18} />
+                Add a New User
               </button>
             </div>
           </form>

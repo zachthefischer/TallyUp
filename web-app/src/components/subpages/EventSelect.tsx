@@ -199,7 +199,7 @@ export default function EventSelect(
                             setShowAddSubgroupModal(2);
                         }}>
                             <Plus size={18} />
-                            Add sub group
+                            Add Subgroup
                         </button>
                     </div>
                    

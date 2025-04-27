@@ -31,7 +31,7 @@ function AddSubgroupModal({
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h3 className="modal-title">Add new {modalType === 1 ? 'group' : 'subgroup'} to {group?.groupName}</h3>
+          <h3 className="modal-title">Add New {modalType === 1 ? 'Event' : 'Subgroup'} to {group?.groupName}</h3>
           <button 
             onClick={onClose}
             className="modal-close-button"
@@ -65,7 +65,7 @@ function AddSubgroupModal({
               className="modal-button modal-button-teal"
             >
               <Plus size={16} />
-              Add SubGroup
+              Add Event
             </button>
           </div>
         </form>

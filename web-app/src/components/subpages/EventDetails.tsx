@@ -105,8 +105,17 @@ export default function EventDetails({
                 </div>
               ) : 
                 // No subgroup selected
-                <div className="select-group-prompt">
-                  <div className="prompt-icon">
+                <div className="select-group-prompt relative">
+                  <div className="absolute top-6 right-6">
+                    <button 
+                      onClick={handleBack}
+                      className="close-button"
+                      aria-label="Back"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                  <div className="prompt-icon mt-8">
                     <CreditCard size={32} className="text-gray-400" />
                   </div>
                   <h3 className="prompt-title">Select a group</h3>
