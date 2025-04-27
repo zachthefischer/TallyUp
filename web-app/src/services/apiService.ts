@@ -7,21 +7,16 @@ const api = axios.create({
     withCredentials: true, // optional: if you need cookies/auth
 });
 
-const userID = 1;
-
 // Example function: fetch groups for the current user
 export const testAPI = async () => {
     const response = await api.get("/");
     return response.data;
   };
 
-export const createUser = async (name: String) => {
+export const createUser = async (firstName: string, lastName: string) => {
   const userData = {
-    groups: [],
-    totalOwed: 0,
-    totalPaid: 0,
-    firstName: 'John',
-    lastName: 'Doe',
+    firstName: firstName,
+    lastName: lastName,
     email: 'email.com',
     phone: '123456789',
     balance: 0,
@@ -32,19 +27,54 @@ export const createUser = async (name: String) => {
 };
   
 
+// Create a new group
+export const createGroup = async (groupName: string, userId: string, isAdmin: boolean) => {
+  const groupData = {
+    name: groupName,
+    total: 0,
+    paid: 0,
+    owed: 0,
+    percentage: 0,
+    members: [],
+    subGroups: [],
+  };
+  const group = await api.post("/group", groupData);
+  const groupId = group.data._id;
 
+  console.log("User ID: ", userId);
+  console.log("Group ID: ", groupId);
 
-
-// Example function: fetch groups for the current user
-export const fetchUserGroups = async () => {
-  const response = await api.get("/user");
+  const response = await api.post("/pair/add", {userId: userId, groupId: groupId, isAdmin: isAdmin});
   return response.data;
 };
 
-// Example function: create a new group
-export const createGroup = async (groupData: any) => {
-  const response = await api.post("/group", groupData);
+// Create a new transaction
+export const createTransaction = async (userId: string, groupId: string, amount: number, description: string) => {
+  console.log("Called createTransaction");
+  const transactionInput = {
+    userId: userId,
+    groupId: groupId,
+    amount: amount,
+    description: description
+  };
+  console.log("Calling API with: ", transactionInput);
+  const response = await api.post("/pair", transactionInput);
+  console.log("Response: ", response.data);
+  return response.data.user;
+}
+
+export const createSubGroup = async (groupId: string, subGroupName: string ) => {
+  console.log("Group ID: ", groupId);
+  const response = await api.post(`/group/subgroup`, { groupId, subGroupName });
   return response.data;
+}
+
+// Example function: fetch groups for the current user
+export const fetchUserGroups = async (userId: string) => {
+  console.log(`${userId}`);
+  const response = await api.get(`/user/${userId}`);
+  console.log(response.data.groups);
+  return response.data.groups;
 };
 
 // Example function: update a group's balance

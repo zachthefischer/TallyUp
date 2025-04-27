@@ -1,7 +1,8 @@
 import { Transaction } from "./Transaction";
 
 // Define how the user stores groups
-export interface UserGroups {
+export interface UserGroup {
+    _id: string;
     groupId: string;
     groupName: string;
     isAdmin: boolean;
@@ -10,7 +11,7 @@ export interface UserGroups {
     transactions: Transaction[];
     requests: Transaction[];
 
-    supGroups ?: UserGroups[];
+    subGroups ?: UserGroup[];
 }
 
 export interface User {
@@ -24,5 +25,5 @@ export interface User {
     totalPaid: number;
     balance: number;
 
-    groupsOwed: UserGroups[];
+    groupsOwed: UserGroup[];
 }

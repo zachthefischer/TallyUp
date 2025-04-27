@@ -1,5 +1,6 @@
 import { RequestHandler } from "express-serve-static-core";
 import GroupModel from "../models/group";
+import UserModel from "../models/user";
 import * as dotenv from "dotenv";
 import { Types } from "mongoose";
 
@@ -27,6 +28,89 @@ export const createGroup: RequestHandler = async (req, res) => {
     res.status(500).json({ message: "Error creating group" });
   }
 };
+
+export const addSubGroup: RequestHandler = async (req, res) => {
+  const { groupId, subGroupName } = req.body;
+
+  try {
+    console.log("Adding subgroup to group: ", groupId, subGroupName);
+    const subgroup = await GroupModel.create({
+      name: subGroupName,
+      total: 0,
+      paid: 0,
+      owed: 0,
+      percentage: 0,
+      members: [],
+    });
+    
+    console.log("Subgroup created: ", subgroup);
+
+    const group = await GroupModel.findByIdAndUpdate(
+      groupId,
+      { $push: { subGroups: subgroup._id } },
+      { new: true }
+    );
+
+    if (!group) {
+      res.status(404).json({ message: "Group not found" });
+      return;
+    }
+
+    console.log(group.members);
+    console.log("Subgroup created: ", subgroup);
+
+    if (group.members && group.members.length > 0) {
+      for (const member of group.members) {
+        console.log("Member: ", member);
+        
+        const user = await UserModel.findById(member.userId);
+        console.log("User: ", user);
+
+        const groupUser = await group.members.find(
+          (member) => member.userId.toString() === user?._id.toString()
+        );
+
+        const userGroup = await user?.groups.find(
+          (g) => g.groupId?.toString() === group._id.toString()
+        );
+        console.log("User group: ", userGroup);
+        
+        if (user) {
+          const existingSubGroup = userGroup?.subGroups.find(
+            (g) => g.groupId?.toString() == subgroup._id.toString()
+          );
+
+          if (!existingSubGroup) {
+            userGroup?.subGroups.push({
+              groupId: subgroup._id,
+              groupName: subgroup.name,
+              isAdmin: groupUser.isAdmin,
+              balance: 0,
+              transactions: [],
+              requests: [],
+            });
+            await user.save();
+          }
+
+          subgroup.members.push({
+            userId: user._id,
+            userName: user.firstName + " " + user.lastName,
+            isAdmin: groupUser.isAdmin,
+            balance: 0,
+            transactions: [],
+            requests: [],
+          })
+        }
+      }
+    }
+    await subgroup.save();
+    console.log("Subgroup members updated: ", subgroup.members);
+    res.status(201).json(subgroup);
+  } catch (error) {
+    console.error("Error creating subgroup: ", error);
+    res.status(500).json({ message: "Error creating subgroup" });
+  }
+}
 
 export const getGroupById: RequestHandler = async (req, res) => {
   const { id } = req.params;

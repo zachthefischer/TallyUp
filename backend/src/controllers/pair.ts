@@ -85,25 +85,94 @@ async function createTransaction(
     await group.save();
     console.log("Group updated: ", group);
 
-    return request;
+    return user;
   } catch (error) {
     console.error("Error creating transaction: ", error);
     throw new Error("Error creating transaction");
   }
 }
 
+export const addPair: RequestHandler = async (req, res) => {
+  console.log("userId : ");
+
+  const { userId, groupId, isAdmin } = req.body;
+  console.log("userId : ", userId);
+  console.log("groupId : ", groupId);
+  console.log("isAdmin : ", isAdmin);
+  
+  try {
+    const group = await GroupModel.findById(groupId);
+    console.log("group : ", group);
+    if (!group) {
+      res.status(404).json({ message: "Group not found" });
+    }    
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+    console.log("user : ", user);
+    
+    const userGroup = {
+      groupId: group?._id,
+      groupName: group?.name,
+      isAdmin: isAdmin,
+      balance: 0,
+      transactions: [],
+      requests: [],
+    };
+    console.log("userGroup created: ", userGroup);
+    const groupUser = {
+      userId: user?._id,
+      userName: user?.firstName + " " + user?.lastName,
+      isAdmin: isAdmin,
+      balance: 0,
+      transactions: [],
+      requests: [],
+    };
+
+    const existingUserGroup = user?.groups.find(
+      (group) => group?.groupId?.toString() === groupId.toString()
+    );
+
+    if (existingUserGroup) {
+      return;
+    } else {
+      user?.groups.push(userGroup);
+    }
+    await user?.save();
+
+    const existingGroupUser = group?.members.find(
+      (member) => member?.userId?.toString() === userId.toString()
+    );
+    if (existingGroupUser) {
+      return;
+    } else {
+      group?.members.push(groupUser);
+    }
+    await group?.save();
+    console.log("Group updated: ", group);
+
+    res.status(201).json(user);
+  } catch (error) {
+    console.error("Error creating pair: ", error);
+    res.status(500).json({ message: "Error creating pair", error });
+  }
+};
+
 export const addTransaction: RequestHandler = async (req, res) => {
   const { userId, groupId, amount, description } = req.body;
+
   try {
-    const request = await createTransaction(
+    console.log("Creating transaction with userId: ", userId);
+    const user = await createTransaction(
       userId,
       groupId,
       amount,
       description
     );
-    res.status(201).json({ message: "Pair added successfully", request });
+    res.status(201).json({ message: "Pair added successfully", user: user });
   } catch (error) {
-    console.error("Error crgroupsuest and pair: ", error);
+    console.error("Error creating request and pair: ", error);
     res.status(500).json({ message: "Error creating request and pair", error });
   }
 };

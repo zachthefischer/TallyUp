@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Group } from "../types/Group";
+import { useState, useEffect } from "react";
+import { UserGroup } from "../types/User";
 import { BalanceSheetItem } from "../types/BalanceSheet";
 import Header from "../components/Header";
 import EventSelect from "../components/subpages/EventSelect";
@@ -7,39 +7,43 @@ import BalanceSheet from "../components/BalanceSheet";
 import PaymentModal from "../components/PaymentModal";
 import EventDetails from "../components/subpages/EventDetails";
 
-import { fetchUserGroups, createGroup, createSubgroup } from "../services/apiService";
-import { User } from "../types/User";
+import { fetchUserGroups, createGroup, createUser, createTransaction, createSubGroup } from "../services/apiService";
 import GroupSelect from "../components/subpages/GroupSelect";
 import AddGroupModal from "../components/AddGroupModal";
 import AddSubgroupModal from "../components/AddSubgroupModal";
 import './Dashboard.css';
+import AddUserModal from "../components/AddUserModal";
 
 // Main App Component
 export default function Dashboard() {
-  const [activeGroup, _setActiveGroup] = useState<Group | null>(null);
-  const [activeSubGroup, _setActiveSubGroup] = useState<Group | null>(null);
-  const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<Group | null>(null);
+  const ZACH_USER_ID = "680d9e93497e87670cb8356b"; // Replace with the actual user ID
+
+  const [groups, setGroups] = useState<UserGroup[]>([]);
+  const [activeGroup, _setActiveGroup] = useState<UserGroup | null>(null);
+  const [activeSubGroup, _setActiveSubGroup] = useState<UserGroup | null>(null);
+  const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<UserGroup | null>(null);
 
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(false);
   const [selectedGroupForSubgroup, setSelectedGroupForSubgroup] = useState<string>("");
   const [pageState, setPageState] = useState(1); // Initial state is 1
 
-  const setActiveGroup = (newValue: Group | null) => {
+  const setActiveGroup = (newValue: UserGroup | null) => {
     _setActiveGroup(newValue);
     setPageState(2);
     console.log("Active group set to:", activeGroup);
   };
 
-  const setActiveSubGroup = (newValue: Group | null) => {
+  const setActiveSubGroup = (newValue: UserGroup | null) => {
     _setActiveSubGroup(newValue);
     setPageState(3);
     console.log("Active group set to:", activeGroup);
   };
 
-  const setActiveSubSubGroup = (newValue: Group | null) => {
+  const setActiveSubSubGroup = (newValue: UserGroup | null) => {
     _setActiveSubSubGroup(newValue);
   };
 
@@ -49,164 +53,7 @@ export default function Dashboard() {
   };
 
 
-  // Define mock data
-  const mockGroups: Group[] = [
-    {
-      id: "1",
-      name: "ACM",
-      paid: 1200,
-      owed: 300,
-      members: [
-        { id: "m1", name: "Alice", transaction: "Paid for venue", timeAgo: "2 days ago", amount: 500 },
-        { id: "m2", name: "Bob", transaction: "Paid for snacks", timeAgo: "1 day ago", amount: 200 },
-      ],
-      subGroups: [
-        {
-          id: "1-1",
-          name: "Retreat",
-          paid: 600,
-          owed: 100,
-          members: [
-            { id: "m3", name: "Charlie", transaction: "Paid for lodging", timeAgo: "5 days ago", amount: 400 },
-          ],
-          subGroups: [
-            {
-              id: "1-1-1",
-              name: "Car 1",
-              paid: 200,
-              owed: 0,
-              members: [
-                { id: "m4", name: "Dave", transaction: "Gas money", timeAgo: "4 days ago", amount: 100 },
-              ],
-              subGroups: [],
-            },
-            {
-              id: "1-1-2",
-              name: "Car 2",
-              paid: 150,
-              owed: 50,
-              members: [
-                { id: "m5", name: "Eve", transaction: "Snacks for trip", timeAgo: "3 days ago", amount: 50 },
-              ],
-              subGroups: [],
-            },
-          ],
-        },
-        {
-          id: "1-2",
-          name: "Merch",
-          paid: 300,
-          owed: 50,
-          members: [
-            { id: "m6", name: "Frank", transaction: "Ordered Tote Bags", timeAgo: "1 week ago", amount: 100 },
-          ],
-          subGroups: [
-            {
-              id: "1-2-1",
-              name: "Tote Bags",
-              paid: 100,
-              owed: 0,
-              members: [],
-              subGroups: [],
-            },
-            {
-              id: "1-2-2",
-              name: "Hoodies",
-              paid: 150,
-              owed: 0,
-              members: [],
-              subGroups: [],
-            },
-            {
-              id: "1-2-3",
-              name: "Stickers",
-              paid: 50,
-              owed: 0,
-              members: [],
-              subGroups: [],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "2",
-      name: "Tennis Club",
-      paid: 800,
-      owed: 200,
-      members: [
-        { id: "m7", name: "Grace", transaction: "Paid for court rental", timeAgo: "3 days ago", amount: 300 },
-      ],
-      subGroups: [
-        {
-          id: "2-1",
-          name: "Retreat",
-          paid: 500,
-          owed: 150,
-          members: [
-            { id: "m8", name: "Hank", transaction: "Paid for retreat house", timeAgo: "2 weeks ago", amount: 400 },
-          ],
-          subGroups: [
-            {
-              id: "2-1-1",
-              name: "Food",
-              paid: 200,
-              owed: 50,
-              members: [],
-              subGroups: [],
-            },
-            {
-              id: "2-1-2",
-              name: "Activities",
-              paid: 100,
-              owed: 50,
-              members: [],
-              subGroups: [],
-            },
-          ],
-        },
-        {
-          id: "2-2",
-          name: "Annual Fundraiser",
-          paid: 400,
-          owed: 0,
-          members: [],
-          subGroups: [
-            {
-              id: "2-2-1",
-              name: "Catering",
-              paid: 400,
-              owed: 0,
-              members: [],
-              subGroups: [],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "3",
-      name: "UPE",
-      paid: 400,
-      owed: 0,
-      members: [
-        { id: "m9", name: "Ivan", transaction: "Paid for UPE conference", timeAgo: "1 month ago", amount: 400 },
-      ],
-      subGroups: [
-        {
-          id: "3-1",
-          name: "Fees",
-          paid: 300,
-          owed: 0,
-          members: [],
-          subGroups: [],
-        },
-      ],
-    },
-  ];
-
   // Initialize state with mock data
-  const [groups, setGroups] = useState<Group[]>(mockGroups);
   const [isLoading, setIsLoading] = useState(false);
 
 
@@ -215,39 +62,33 @@ export default function Dashboard() {
     const loadGroups = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchUserGroups();
-        console.log("Fetched groups:", data);
+        const data = await fetchUserGroups(ZACH_USER_ID);
+        console.log("Fetched user groups:", data);
+        setGroups(data);
         // Uncomment the line below if you want to override mock data with fetched data
         // setGroups(data);
       } catch (error) {
-        console.error("Failed to fetch groups", error);
+        console.error("Failed to fetch user groups", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     // Uncomment the line below if you want to fetch data from the API
-    // loadGroups();
+    loadGroups();
   }, []);
 
 
-  const handleAddUser = async (name: String) => {
+  const handleAddUser = async (firstName: string, lastName: string) => {
     try {
       // Create a properly structured group object
-      const newGroup = await createGroup({ 
-        name: name,
-        paid: 0,
-        owed: 0,
-        members: [],
-        subGroups: []
-      });
-      console.log("New group created:", newGroup);
+      const newUser = await createUser( firstName, lastName);
+      console.log("New user created:", newUser);
       
-      // Update the groups state with the new group
-      setGroups(prevGroups => [...prevGroups, newGroup]);
-      setShowAddGroupModal(false);
+      // Update the users state with the new user
+      setShowAddUserModal(false);
     } catch (error) {
-      console.error("Failed to create group:", error);
+      console.error("Failed to create user:", error);
     }
   };
 
@@ -256,64 +97,45 @@ export default function Dashboard() {
   const handleAddGroup = async (groupName: string) => {
     try {
       // Create a properly structured group object
-      const newGroup = await createGroup({ 
-        name: groupName,
-        paid: 0,
-        owed: 0,
-        members: [],
-        subGroups: []
-      });
+      const newGroup = await createGroup(groupName, ZACH_USER_ID, true);
       console.log("New group created:", newGroup);
       
       // Update the groups state with the new group
-      setGroups(prevGroups => [...prevGroups, newGroup]);
+      setGroups(groups => [...groups, newGroup]);
       setShowAddGroupModal(false);
     } catch (error) {
       console.error("Failed to create group:", error);
     }
   };
 
+
   // Handle adding a new subgroup
   const handleAddSubgroup = async (subgroupName: string) => {
     try {
-      // Find the parent group
-      const parentGroup = groups.find(group => group.id === selectedGroupForSubgroup);
+      if (activeGroup === null) { return; }
+      console.log("Create subgroup:", activeGroup.groupId, subgroupName);
+
+      const result = await createSubGroup(activeGroup.groupId, subgroupName);
       
-      if (!parentGroup) {
-        console.error("Parent group not found");
-        return;
-      }
-      
-      // Create a properly structured subgroup object
-      const newSubgroup = {
-        id: `${parentGroup.id}-${parentGroup.subGroups.length + 1}`,
-        name: subgroupName,
-        paid: 0,
-        owed: 0,
-        members: [],
-        subGroups: []
-      };
-      
-      // In a real app, you would call the API here
-      // const newSubgroup = await createSubgroup(parentGroup.id, { name: subgroupName });
-      
-      // Update the groups state with the new subgroup
-      setGroups(prevGroups => {
-        return prevGroups.map(group => {
-          if (group.id === parentGroup.id) {
-            return {
-              ...group,
-              subGroups: [...group.subGroups, newSubgroup]
-            };
-          }
-          return group;
-        });
-      });
-      
-      console.log("New subgroup created:", newSubgroup);
+      console.log("New subgroup created:", result);
       setShowAddSubgroupModal(false);
     } catch (error) {
       console.error("Failed to create subgroup:", error);
+    }
+  };
+
+
+  // Handle adding a new transaction
+  const handleAddTransaction = async (userId: string, amount: number, description: string) => {
+    try {
+      // Create a properly structured subgroup object
+      if (activeGroup === null) { return; }
+
+      const result = await createTransaction(userId, activeGroup.groupId, amount, description);
+      console.log("New transaction created:", result);
+      setShowPaymentModal(false);
+    } catch (error) {
+      console.error("Failed to create transaction:", error);
     }
   };
   
@@ -357,9 +179,10 @@ export default function Dashboard() {
               <GroupSelect 
                 groups={groups} 
                 activeGroup={activeGroup}
-                setActiveGroup={(value) => setActiveGroup(value as Group | null)} 
+                setActiveGroup={(value) => setActiveGroup(value as UserGroup | null)} 
                 setShowAddGroupModal={setShowAddGroupModal}
-              />            
+                setShowAddUserModal={setShowAddUserModal}
+                />            
             </div>
             
 
@@ -371,9 +194,9 @@ export default function Dashboard() {
               <EventSelect 
                 activeGroup={activeGroup}
                 activeSubGroup={activeSubGroup}
-                setActiveSubGroup={(value) => setActiveSubGroup(value as Group | null)}
+                setActiveSubGroup={(value) => setActiveSubGroup(value as UserGroup | null)}
                 activeSubSubGroup={activeSubSubGroup} 
-                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as Group | null)} 
+                setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as UserGroup | null)} 
                 setShowBalanceSheet={setShowBalanceSheet}
                 setShowPaymentModal={setShowPaymentModal}
                 setShowAddSubgroupModal={setShowAddSubgroupModal}
@@ -398,7 +221,18 @@ export default function Dashboard() {
         )}
 
       {showPaymentModal && (
-        <PaymentModal onClose={() => setShowPaymentModal(false)} groups={groups} />
+        <PaymentModal 
+        onClose={() => setShowPaymentModal(false)}  
+        onAdd={handleAddTransaction}
+        group={activeSubGroup} 
+        />
+      )}
+
+      {showAddUserModal && (
+        <AddUserModal 
+          onClose={() => setShowAddUserModal(false)}
+          onAdd={handleAddUser}
+        />
       )}
 
       {showAddGroupModal && (
@@ -412,7 +246,7 @@ export default function Dashboard() {
         <AddSubgroupModal
           onClose={() => setShowAddSubgroupModal(false)}
           onAdd={handleAddSubgroup}
-          parentGroupName={selectedGroupForSubgroup}
+          group={activeGroup}
         />
       )}
       </div>
