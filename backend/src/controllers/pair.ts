@@ -61,9 +61,26 @@ async function createTransaction(
     };
     console.log("groupUser created: ", groupUser);
 
-    const existingUserGroup = user.groups.find(
+    let existingUserGroup = user.groups.find(
       (group) => group?.groupId?.toString() === groupId.toString()
     );
+
+    if (!existingUserGroup) {
+      for (const group of user.groups) {
+        if (group.subGroups) {
+          console.log("Group.subgroups", group.subGroups)
+          const matchingSubgroup = group.subGroups.find(
+            (subgroup) => subgroup?.groupId?.toString() === groupId.toString()
+          );
+          if (matchingSubgroup) {
+            // Found in subgroups, do not add to main group list
+            existingUserGroup = group;
+            break;
+          }
+        }
+      }
+    }
+    
     if (existingUserGroup) {
       existingUserGroup.owed =
         (existingUserGroup.owed as number) + amount;
@@ -75,9 +92,14 @@ async function createTransaction(
     await user.save();
     console.log("User group updated: ", user);
 
+    console.log("existingUserGroup: ", existingUserGroup);
+
+
     const existingGroupUser = group.members.find(
       (member) => member?.userId?.toString() === userId.toString()
     );
+    console.log("existingGroupUser: ", existingGroupUser)
+
     if (existingGroupUser) {
       existingGroupUser.userOwed += amount;
       existingGroupUser.requests.push(request._id);

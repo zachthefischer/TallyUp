@@ -16,7 +16,7 @@ import AddUserModal from "../components/AddUserModal";
 
 // Main App Component
 export default function Dashboard() {
-  const ZACH_USER_ID = "680e022d0986b10805664049";
+  const ZACH_USER_ID = "680e10f496794424d85bb535";
   // Replace with the actual user ID
 
   const [groups, setGroups] = useState<UserGroup[]>([]);
@@ -80,7 +80,7 @@ export default function Dashboard() {
 
     // Uncomment the line below if you want to fetch data from the API
     loadGroups();
-  }, []);
+  }, [showAddGroupModal, showAddSubgroupModal, showAddUserModal, showPaymentModal]);
 
 
   const handleAddUser = async (firstName: string, lastName: string) => {

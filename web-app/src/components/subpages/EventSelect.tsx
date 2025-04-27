@@ -44,17 +44,18 @@ export default function EventSelect(
                         Submit Request
                         </button>
                     <button 
-                        className="action-button action-button-teal"
-                        onClick={() => setShowAddSubgroupModal(1)}>
-                        <Plus size={18} />
-                        Make Payment
+                        className="action-button action-button-secondary"
+                        onClick={() => setShowBalanceSheet(true)}>
+                        <CreditCard size={18} />
+                        Submit Payment
                     </button>
                     <button 
-                        className="action-button action-button-secondary"
-                        onClick={() => setShowAddSubgroupModal(2)}>
-                        <CreditCard size={18} />
-                        AddGroup
+                        className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                        onClick={() => setShowAddSubgroupModal(1)}>
+                        <Plus size={18} />
+                        Add Subgroup
                     </button>
+
                 </div>
             </div>
 

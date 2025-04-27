@@ -6,15 +6,15 @@ import { GroupMember } from "../types/Group";
 // they have been paid:  - paid
 
 export function calculateAmount(member: GroupMember) : number {
-    let amount = (Math.abs(member.owed) + Math.abs(member.paid));
+    let amount = (Math.abs(member.userOwed) + Math.abs(member.userPaid));
     return amount;
 }
 
 export function calculatePercentage(member: GroupMember) : number {
-    let amount =  (Math.abs(member.owed) + Math.abs(member.paid));
+    let amount =  (Math.abs(member.userOwed) + Math.abs(member.userPaid));
     if (amount === 0) {
         return 100;
     } else {
-        return (member.paid / (Math.abs(member.owed) + Math.abs(member.paid)) * 100);
+        return (member.userPaid / (Math.abs(member.userOwed) + Math.abs(member.userPaid)) * 100);
     }
 }

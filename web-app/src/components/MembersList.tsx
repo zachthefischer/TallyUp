@@ -65,7 +65,7 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
                 <div className="flex justify-between items-center">
                   <div>
                     <div className="font-medium text-gray-800">{member.userName}</div>
-                    <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
+                    {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                   </div>
                   <div className="font-semibold text-red-500 text-lg">
                     -${Math.abs(calculateAmount(member))}
@@ -92,7 +92,7 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
                 <div className="flex justify-between items-center">
                   <div>
                     <div className="font-medium text-gray-800">{member.userName}</div>
-                    <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
+                    {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                   </div>
                   <div className="font-semibold text-green-500 text-lg">
                     +${Math.abs(calculateAmount(member))}
@@ -119,7 +119,7 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
                 <div className="flex justify-between items-center">
                   <div>
                     <div className="font-medium text-gray-800">{member.userName}</div>
-                    <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
+                    {/* <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div> */}
                   </div>
                   <div className="font-semibold text-green-500 text-lg">
                     +${Math.abs(calculateAmount(member))}
