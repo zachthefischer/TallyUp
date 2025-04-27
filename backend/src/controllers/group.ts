@@ -1,9 +1,23 @@
 import { RequestHandler } from "express-serve-static-core";
 import GroupModel from "../models/group";
+import UserModel from "../models/user";
 import * as dotenv from "dotenv";
 import { Types } from "mongoose";
 
 dotenv.config();
+
+const findGroupOrSubGroup = (groups: any[], targetGroupId: string): any | null => {
+  for (const group of groups) {
+    if (group.groupId.toString() === targetGroupId) {
+      return group;
+    }
+    const foundSubGroup = findGroupOrSubGroup(group.subGroups, targetGroupId);
+    if (foundSubGroup) {
+      return foundSubGroup;
+    }
+  }
+  return null;
+}
 
 export const createGroup: RequestHandler = async (req, res) => {
   const { name, subGroups } = req.body;
@@ -19,6 +33,7 @@ export const createGroup: RequestHandler = async (req, res) => {
       subGroups: subGroups
         ? subGroups.map((subGroup: string) => new Types.ObjectId(subGroup))
         : [],
+      joinCode: Math.random().toString(36).substring(2, 8),
     });
     console.log("Group created: ", group);
     res.status(201).json(group);
@@ -27,6 +42,108 @@ export const createGroup: RequestHandler = async (req, res) => {
     res.status(500).json({ message: "Error creating group" });
   }
 };
+
+export const addSubGroup: RequestHandler = async (req, res) => {
+  let { parentGroupId, childGroupId, subGroupName } = req.body;
+
+  // If only parentGroupId is provided - add directly to parentGroup
+  
+  // If both are provided - find parentGroupId, then add childGroupId to it
+
+
+
+  try {
+    console.log("Adding subgroup to group: ", childGroupId, subGroupName);
+    const subgroup = await GroupModel.create({
+      name: subGroupName,
+      total: 0,
+      paid: 0,
+      owed: 0,
+      percentage: 0,
+      members: [],
+    });
+    
+    console.log("Subgroup created: ", subgroup);
+
+    const childGroup = await GroupModel.findByIdAndUpdate(
+      childGroupId,
+      { $push: { subGroups: subgroup._id } },
+      { new: true }
+    );
+
+    if (!childGroup) {
+      res.status(404).json({ message: "Child group not found" });
+      return;
+    }
+
+    console.log(childGroup.members);
+    console.log(`Subgroup created inside : ${childGroup}`, subgroup);
+
+    if (childGroup.members && childGroup.members.length > 0) {
+      for (const member of childGroup.members) {
+        console.log("Member: ", member);
+
+        const user = await UserModel.findById(member.userId);
+        console.log("User: ", user);
+
+        const groupUser = await childGroup.members.find(
+          (member) => member.userId.toString() === user?._id.toString()
+        );
+        
+        let userGroup;
+
+        if (parentGroupId) {
+          const userParentGroup = await user?.groups.find(
+            (g) => g.groupId?.toString() === parentGroupId.toString()
+          );
+          const userGroup = await userParentGroup?.subGroups.find(
+            (g) => g.groupId?.toString() === childGroup._id.toString()
+          )
+        }
+        if (!parentGroupId) {
+          const userGroup = await user?.groups.find(
+            (g) => g.groupId?.toString() === childGroup._id.toString()
+          );
+        }
+
+        console.log("User group: ", userGroup);
+        
+        if (user) {
+          const existingSubGroup = userGroup?.subGroups.find(
+            (g) => g.groupId?.toString() == subgroup._id.toString()
+          );
+
+          if (!existingSubGroup) {
+            userGroup?.subGroups.push({
+              groupId: subgroup._id,
+              groupName: subgroup.name,
+              isAdmin: groupUser.isAdmin,
+              balance: 0,
+              transactions: [],
+              requests: [],
+            });
+            await user.save();
+          }
+
+          subgroup.members.push({
+            userId: user._id,
+            userName: user.firstName + " " + user.lastName,
+            isAdmin: groupUser.isAdmin,
+            balance: 0,
+            transactions: [],
+            requests: [],
+          })
+        }
+      }
+    }
+    await subgroup.save();
+    console.log("Subgroup members updated: ", subgroup.members);
+    res.status(201).json(subgroup);
+  } catch (error) {
+    console.error("Error creating subgroup: ", error);
+    res.status(500).json({ message: "Error creating subgroup" });
+  }
+}
 
 export const getGroupById: RequestHandler = async (req, res) => {
   const { id } = req.params;

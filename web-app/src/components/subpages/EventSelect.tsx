@@ -1,21 +1,20 @@
 import {  DollarSign, CreditCard, Plus } from "lucide-react";
-import { Group } from "../../types/Group";
+import { UserGroup } from "../../types/User";
 import { Dispatch, SetStateAction } from 'react';
 import GroupBanner from "../../components/GroupBanner";
 import './Subpages.css';
 
 interface EventSelectProps {
-    activeGroup: Group | null;
-    activeSubGroup: Group | null;
-    setActiveSubGroup: Dispatch<SetStateAction<Group | null>>;
-    activeSubSubGroup: Group | null;
-    setActiveSubSubGroup: Dispatch<SetStateAction<Group | null>>;
-    pageState: number;
+    activeGroup: UserGroup | null;
+    activeSubGroup: UserGroup | null;
+    setActiveSubGroup: Dispatch<SetStateAction<UserGroup | null>>;
+    activeSubSubGroup: UserGroup | null;
+    setActiveSubSubGroup: Dispatch<SetStateAction<UserGroup | null>>;
 
     // Show modals
     setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
     setShowBalanceSheet: Dispatch<SetStateAction<boolean>>;
-    setShowAddSubgroupModal: Dispatch<SetStateAction<boolean>>;
+    setShowAddSubgroupModal: Dispatch<SetStateAction<number>>;
     setSelectedGroupForSubgroup: Dispatch<SetStateAction<string>>;
 }
 
@@ -26,7 +25,6 @@ export default function EventSelect(
         setActiveSubGroup, 
         activeSubSubGroup, 
         setActiveSubSubGroup,
-        pageState,
         setShowPaymentModal,
         setShowBalanceSheet,
         setShowAddSubgroupModal,
@@ -37,90 +35,81 @@ export default function EventSelect(
 
     return (
         <div className="event-select-container">
-        <div className="event-select-header">
-        {activeGroup !== null && <GroupBanner groupName={activeGroup.name}/>}
-        
-        <div className="buttons-container">
-            <button 
-                className="action-button action-button-dark"
-                onClick={() => setShowPaymentModal(true)}>
-                <Plus size={20} />
-                Add Payment
-                </button>
-            <button 
-                className="action-button action-button-secondary"
-                onClick={() => setShowBalanceSheet(true)}>
-                <CreditCard size={18} />
-                Transactions
-            </button>
-            <button 
-                className="action-button action-button-teal"
-                onClick={() => setShowAddSubgroupModal(true)}>
-                <Plus size={18} />
-                Add Subgroup
-            </button>
-        </div>
-        </div>
-
-        <div>
-        {activeGroup?.subGroups.map((subGroup) => (
-            <div 
-                key={subGroup.id} 
-                className="subgroup-item"
-                onClick={() => setActiveSubGroup(activeSubGroup === subGroup ? null : subGroup)}
-            >
-            <div className="flex flex-col gap-4">
-                <div 
-                className={`subgroup-card ${activeSubGroup === subGroup ? "active" : ""}`}
-                >
-                <div className="flex items-center justify-between">
-                    <span className="subgroup-name">
-                    {subGroup.name}
-                    </span>
-                    <button
-                    className="add-subgroup-button"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedGroupForSubgroup(subGroup.id);
-                        setShowAddSubgroupModal(true);
-                    }}
-                    >
-                    <Plus size={18} />
-                    Add Subgroup
+            <div className="event-select-header">
+                {activeGroup !== null && <GroupBanner groupName={activeGroup.groupName}/>}
+                <div className="buttons-container">
+                    <button 
+                        className="action-button action-button-dark"
+                        onClick={() => setShowPaymentModal(true)}>
+                        <Plus size={20} />
+                        Add Payment
+                        </button>
+                    <button 
+                        className="action-button action-button-secondary"
+                        onClick={() => setShowBalanceSheet(true)}>
+                        <CreditCard size={18} />
+                        Transactions
+                    </button>
+                    <button 
+                        className="action-button action-button-teal"
+                        onClick={() => setShowAddSubgroupModal(1)}>
+                        <Plus size={18} />
+                        Add Group
                     </button>
                 </div>
-                <div className="group-details">
-                    <span className="whitespace-nowrap"><span className="font-semibold">${subGroup.owed}</span> to reimburse</span>
-                    <div className="progress-container">
-                        <div className="progress-bar">
-                        {/* TODO - there should be a total due  */}
-                        <div 
-                            className="progress-fill" 
-                            style={{ width: `${subGroup.paid}%` }}
-                        ></div>
-                        </div>
-                        <span className="whitespace-nowrap">{subGroup.paid}% paid</span>
+            </div>
+
+        {/* Display list of sub subgroups */}
+        <div className="border-t border-gray-200">
+            {activeGroup?.subGroups?.map((subGroup) => (
+            <div key={subGroup.groupId} className="p-4">
+                <div className="subgroup-item"
+                    onClick={() => {setActiveSubGroup(activeSubGroup === subGroup ? null : subGroup)}}>
+                    <div 
+                        className={`p-4 rounded-lg border-2 border-gray-300 hover:border-[#396e7c] transition-colors duration-150 ease-in-out
+                        ${activeSubGroup === subGroup ? "border-[#396e7c] bg-[#396e7c]/10" : "border-[#ffffff]"}`}
+                    >
+                    <div className="flex items-center justify-between">
+                        <span className="subgroup-name"> {subGroup.groupName} </span>
+                        <button className="add-subgroup-button" onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveSubGroup(subGroup);
+                            setSelectedGroupForSubgroup(subGroup._id);
+                            setShowAddSubgroupModal(2);
+                        }}>
+                            <Plus size={18} />
+                            Add sub group
+                        </button>
                     </div>
-                </div>
+                    <div className="group-details">
+                        <span className="whitespace-nowrap"><span className="font-semibold">${subGroup.balance}</span> to reimburse</span>
+                        <div className="progress-container">
+                            <div className="progress-bar">
+                            {/* TODO - there should be a total due  */}
+                                <div
+                                    className="progress-fill" 
+                                    style={{ width: `${subGroup.balance}%` }}
+                                ></div>
+                            </div>
+                            <span className="whitespace-nowrap">{subGroup.balance}% paid</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             {/* Display list of subSubGroups - eg Cars for Retreat for UPE */}
-            {activeSubGroup?.id === subGroup?.id && pageState >= 3 && (
+            {activeSubGroup === subGroup && activeSubGroup?.subGroups?.length > 0 && (
                 <div className="subsubgroup-list">
                 {subGroup?.subGroups?.map((subSubGroup) => (
                     <div
-                    key={subSubGroup.id}
-                    className={`subsubgroup-item ${activeSubSubGroup?.id === subSubGroup?.id ? "active" : ""}`}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveSubSubGroup(activeSubSubGroup?.id === subSubGroup?.id ? null : subSubGroup);
-                    }}
-                    >
+                    key={subSubGroup._id}
+                    className={`subsubgroup-item ${activeSubSubGroup?._id === subSubGroup?._id ? "active" : ""}`}
+                    onClick={() => setActiveSubSubGroup(activeSubSubGroup?._id === subSubGroup?._id ? null : subSubGroup)}>
                     <div className="flex items-center justify-between">
-                        <div className="subsubgroup-name">{subSubGroup.name}</div>
+                        <div className="subsubgroup-name"> {subSubGroup.groupName} </div>
                         <div className="subsubgroup-members">
-                        {subSubGroup.members.length} member{subSubGroup.members.length !== 1 ? 's' : ''}
+                            {/* FIX THIS */}
+                            {subSubGroup.transactions.length} member{subSubGroup.transactions.length !== 1 ? 's' : ''}
                         </div>
                     </div>
                     </div>

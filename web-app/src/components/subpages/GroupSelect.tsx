@@ -1,14 +1,15 @@
 import { Dispatch, SetStateAction } from 'react';
 import WelcomeBanner from "../../components/WelcomeBanner";
-import { Group } from "../../types/Group";
+import { UserGroup } from "../../types/User";
 import { Plus } from 'lucide-react';
 import './Subpages.css';
 
 interface GroupSelectProps {
-    groups: Group[];
-    activeGroup: Group | null;
-    setActiveGroup: Dispatch<SetStateAction<Group | null>>;
+    groups: UserGroup[];
+    activeGroup: UserGroup | null;
+    setActiveGroup: Dispatch<SetStateAction<UserGroup | null>>;
     setShowAddGroupModal: Dispatch<SetStateAction<boolean>>;
+    setShowAddUserModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function GroupSelect(
@@ -16,7 +17,10 @@ export default function GroupSelect(
         activeGroup, 
         setActiveGroup, 
         setShowAddGroupModal,
+        setShowAddUserModal,
     }: GroupSelectProps) {
+
+    console.log("GroupSelect", groups);
 
     return (
         <div>
@@ -26,30 +30,26 @@ export default function GroupSelect(
 
         <div>
         {groups.map((group) => (
-            <div 
-                key={group.id} 
-                className="group-item"
-                onClick={() => setActiveGroup(activeGroup === group ? null : group)}
-            >
+            <div key={group.groupId} className="group-item">
             <div className="group-item-inner">
                 <div 
                 className={`group-card ${activeGroup === group ? "active" : ""}`}
                 >
                 <div className="flex items-center justify-between">
-                    <span className="group-name">
-                    {group.name}
+                    <span className="group-name" onClick={() => setActiveGroup(activeGroup === group ? null : group)} >
+                        {group.groupName}
                     </span>
                 </div>
                 <div className="group-details">
-                    <span className="whitespace-nowrap"><span className="font-semibold">${group.owed}</span> to reimburse</span>
+                    <span className="whitespace-nowrap"><span className="font-semibold">${group.balance}</span> to reimburse</span>
                     <div className="progress-container">
                         <div className="progress-bar">
                         <div 
                             className="progress-fill" 
-                            style={{ width: `${group.paid}%` }}
+                            style={{ width: `${group.balance}%` }}
                         ></div>
                         </div>
-                        <span className="whitespace-nowrap">{group.paid}%</span>
+                        <span className="whitespace-nowrap">{group.balance}%</span>
                     </div>
                 </div>
                 </div>
@@ -58,21 +58,20 @@ export default function GroupSelect(
         ))}
 
         <div className="buttons-container">
-            <button
+            <button 
+                className="add-group-button"
+                onClick={() => setShowAddUserModal(true)}>
+                <Plus size={18} />
+                Add User
+            </button>
+
+            <button 
                 className="add-group-button"
                 onClick={() => setShowAddGroupModal(true)}>
                 <Plus size={18} />
                 Add Group
             </button>
-
-            <button
-                className="add-group-button"
-                onClick={() => setShowAddGroupModal(true)}>
-                <Plus size={18} />
-                Join Group
-            </button>
         </div>
-        
 
         </div>
     </div>

@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import { UserGroup } from "../types/User";
 import './Modal.css';
 
 interface AddSubgroupModalProps {
   onClose: () => void;
-  onAdd: (subgroupName: string) => void;
-  parentGroupName: string;
+  onAdd: (groupId ?: string, subGroupId ?: string, subgroupName ?: string) => void;
+  modalType: number;
+  group: UserGroup | null;
+  subGroup : UserGroup | null;
 }
 
-function AddSubgroupModal({ onClose, onAdd, parentGroupName }: AddSubgroupModalProps) {
+function AddSubgroupModal({ 
+  onClose, 
+  onAdd,
+  modalType,
+  group,
+  subGroup,
+}: AddSubgroupModalProps) {
   const [subgroupName, setSubgroupName] = useState("");
+
+  console.log("AddSubgroupModal", group);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onAdd(subgroupName);
+    onAdd(group?.groupId, subGroup?.groupId, subgroupName);
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h3 className="modal-title">Add New Subgroup to {parentGroupName}</h3>
+          <h3 className="modal-title">Add new {modalType === 1 ? 'group' : 'subgroup'} to {group?.groupName}</h3>
           <button 
             onClick={onClose}
             className="modal-close-button"
@@ -54,7 +65,7 @@ function AddSubgroupModal({ onClose, onAdd, parentGroupName }: AddSubgroupModalP
               className="modal-button modal-button-teal"
             >
               <Plus size={16} />
-              Add Subgroup
+              Add SubGroup
             </button>
           </div>
         </form>

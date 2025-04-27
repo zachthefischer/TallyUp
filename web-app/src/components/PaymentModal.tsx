@@ -2,21 +2,29 @@ import React, { useState } from 'react';
 import { ChevronDown, DollarSign } from "lucide-react";
 import { Group } from '../types/Group';
 import './Modal.css';
+import { UserGroup } from '../types/User';
 
 interface PaymentModalProps {
+    group: UserGroup | null;
+    onAdd: (userId: string, amount: number, description: string) => void;
     onClose: () => void;
-    groups: Group[];
   }
     
-function PaymentModal({ onClose, groups }: PaymentModalProps) {
-    const [selectedGroup, setSelectedGroup] = useState("");
-    const [amount, setAmount] = useState("");
+function PaymentModal({ 
+  group,
+  onAdd,
+  onClose,
+}: PaymentModalProps) {
+    const [amount, setAmount] = useState(1.25);
     const [description, setDescription] = useState("");
+    const [userId, setUserId] = useState("680d9e93497e87670cb8356b");
   
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // Here you would handle payment submission
-      console.log({ selectedGroup, amount, description });
+
+      onAdd(userId, amount, description);
+      console.log({amount, description });
       onClose();
     };
   
@@ -34,7 +42,7 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
           </div>
           
           <form onSubmit={handleSubmit}>
-            <div className="modal-form-group">
+            {/* <div className="modal-form-group">
               <label className="modal-label">Category</label>
               <div className="modal-select-container">
                 <select 
@@ -51,20 +59,21 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
                   ))}
                 </select>
               </div>
-            </div>
-            
+            </div> */}
             <div className="modal-form-group">
               <label className="modal-label">Amount</label>
-              <div className="modal-select-container">
-                <div className="modal-input-icon">
-                  <span>$</span>
+              <div className="relative">
+                <div className="modal-select-container">
+                  <span className="modal-input-icon">$</span>
                 </div>
                 <input 
                   type="number" 
+                  step="0.01"
+                  min="0"
                   className="modal-input-with-icon"
                   placeholder="0.00"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(parseFloat(e.target.value))}
                   required
                 />
               </div>
@@ -81,6 +90,19 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
                 required
               />
             </div>
+
+            <div className="mb-6">
+              <label className="block text-gray-700 mb-2 font-medium">Request Payment From:</label>
+              <input 
+                type="text" 
+                className="w-full px-3 py-2 border border-gray-300 text-gray-700 rounded-md"
+                placeholder="User ID"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                required
+              />
+            </div>
+
             
             <div className="modal-actions">
               <button 
@@ -95,7 +117,7 @@ function PaymentModal({ onClose, groups }: PaymentModalProps) {
                 className="modal-button modal-button-navy"
               >
                 <DollarSign size={18} />
-                Submit Payment
+                Submit Request
               </button>
             </div>
           </form>
