@@ -4,47 +4,36 @@ import MembersList from '../MembersList';
 
 interface EventDetailsProps {
     groups: Group[];
-    activeSubGroup: number | null;
-    activeSubSubGroup: number | null;
+    activeSubGroup: Group | null;
+    activeSubSubGroup: Group | null;
 }
 
-export default function EventDetails(
-    {   groups, 
-        activeSubGroup,
-        activeSubSubGroup,
+export default function EventDetails({   
+      activeSubGroup,
+      activeSubSubGroup,
     }: EventDetailsProps) {
-
-      // Check if the active group exists and has subgroups
-    const hasActiveSubGroup = activeSubGroup !== null && activeSubGroup < groups.length;
-    const activeSubGroupData = hasActiveSubGroup ? groups[activeSubGroup] : null;
-    const hasSubSubgroups = activeSubGroupData && activeSubGroupData.subGroups.length > 0;
-    
-    // Check if the active subgroup exists
-    const hasActiveSubSubGroup = hasSubSubgroups && activeSubSubGroup !== null && activeSubSubGroup < activeSubGroupData.subGroups.length;
-    const activeSubSubGroupData = hasActiveSubSubGroup && activeSubGroupData ? activeSubGroupData.subGroups[activeSubSubGroup] : null;
-
 
     return (
         <div className=" bg-white rounded-lg shadow-lg border border-gray-200">
-              {hasActiveSubGroup && hasActiveSubSubGroup && activeSubSubGroupData ? (
+              { activeSubGroup && activeSubSubGroup ? (
                 <MembersList 
-                  members={activeSubSubGroupData.members}
-                  groupName={activeSubGroupData.name}
-                  subCategoryName={activeSubSubGroupData.name}
+                  members={activeSubSubGroup.members}
+                  groupName={activeSubGroup.name}
+                  subCategoryName={activeSubSubGroup.name}
                   onEditMembers={() => {
                     // Here you would handle editing members
-                    console.log('Editing members for:', activeSubSubGroupData.name);
+                    console.log('Editing members for:', activeSubSubGroup.name);
                   }}
                 />
-              ) : hasActiveSubGroup && activeSubGroupData ? (
+              ) : activeSubGroup ? (
                 <div className="p-6">
                   <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-800">{groups[activeSubGroup].name}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">{activeSubSubGroup?.name}</h2>
                     <p className="text-gray-600 mt-1">All Members</p>
                   </div>
-                  {hasSubSubgroups ? (
+                  {activeSubGroup ? (
                     <div className="space-y-4">
-                      {groups[activeSubGroup].subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
+                      {activeSubGroup?.subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
                         <div 
                           key={`${member.id}-${idx}`}
                           className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-200 ease-in-out"
