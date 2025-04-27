@@ -6,12 +6,19 @@ import { UserGroup } from "../types/User";
 
 interface MembersListProps {
   setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
+  setShowAddPairModal: Dispatch<SetStateAction<UserGroup | null>>;
   members: GroupMember[];
   group: UserGroup;
   onEditMembers: () => void;
 }
 
-function MembersList({ members, group, onEditMembers, setShowPaymentModal }: MembersListProps) {
+function MembersList({ 
+  members, 
+  group, 
+  onEditMembers, 
+  setShowPaymentModal,
+  setShowAddPairModal,
+}: MembersListProps) {
   // they owe money: + owed
   // they are owed money: - owed
   // they have paid money: + paid
@@ -29,12 +36,6 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
         <div>
           <h2 className="text-2xl font-semibold text-gray-800">{group.groupName}</h2>
         </div>
-        <button
-          onClick={onEditMembers}
-          className="px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-all duration-200"
-        >
-          Edit Members
-        </button>
       </div>
 
       {membersWhoOwe.length > 0 && (
@@ -123,20 +124,20 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal }: Mem
             <button 
                 className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-semibold text-base hover:bg-[#396e7c]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
                 onClick={() => setShowPaymentModal(group)}>
-                <Plus size={20} />
-                Submit Request
+                <Plus size={18} />
+                Request/Payment
                 </button>
             <button 
-                className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                onClick={() => setShowPaymentModal(group)}>
+                className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                onClick={() => setShowAddPairModal(group)}>
                 <Plus size={18} />
-                Submit Payment
+                Invite Member
             </button>
             <button 
                 className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
                 onClick={() => {}}>
                 <CreditCard size={18} />
-                Reimburse All
+                Reimburse
             </button>
         </div>
       </div>
