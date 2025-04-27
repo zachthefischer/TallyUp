@@ -349,7 +349,6 @@ export default function Dashboard() {
               ${pageState === 3 ? 'box-left' : ''} 
             `}>
               <EventSelect 
-                groups={groups} 
                 activeGroup={activeGroup}
                 activeSubGroup={activeSubGroup}
                 setActiveSubGroup={(value) => setActiveSubGroup(value as Group | null)}
