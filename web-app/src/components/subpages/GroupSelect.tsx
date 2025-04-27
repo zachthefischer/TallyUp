@@ -33,21 +33,25 @@ export default function GroupSelect(
                     <div 
                     className={`group-card ${activeGroup === group ? "active" : ""}`} >
                     <div className="flex items-center justify-between">
-                        <span className="group-name" onClick={() => setActiveGroup(activeGroup === group ? null : group)}>
+                        <span className="group-name ml-2" onClick={() => setActiveGroup(activeGroup === group ? null : group)}>
                             {group.groupName}
                         </span>
                     </div>
-                    <div className="group-details">
-                        <span className="whitespace-nowrap"><span className="font-semibold">${group.balance}</span> to reimburse</span>
-                        <div className="progress-container">
+                    <div className="group-details mt-1">
+                      {group.balance !== null && group.balance !== undefined && (
+                        <>
+                          <span className="whitespace-nowrap"><span className="font-semibold">${group.balance}</span> to reimburse</span>
+                          <div className="progress-container">
                             <div className="progress-bar">
-                            <div 
+                              <div 
                                 className="progress-fill" 
                                 style={{ width: `${group.balance}%` }}
-                            ></div>
+                              ></div>
                             </div>
                             <span className="whitespace-nowrap">{group.balance}%</span>
-                        </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                     </div>
                 </div>

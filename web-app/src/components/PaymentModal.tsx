@@ -16,7 +16,7 @@ function PaymentModal({
   onClose,
 }: PaymentModalProps) {
     const ZACH_USER_ID = "680e10f496794424d85bb535"
-    const [amount, setAmount] = useState(1.25);
+    const [amount, setAmount] = useState(null as unknown as number);
     const [description, setDescription] = useState("");
     const [userId, setUserId] = useState(ZACH_USER_ID);
     console.log("MODAL GROUP", group)
@@ -64,9 +64,6 @@ function PaymentModal({
             <div className="modal-form-group">
               <label className="modal-label">Amount</label>
               <div className="relative">
-                <div className="modal-select-container">
-                  <span className="modal-input-icon">$</span>
-                </div>
                 <input 
                   type="number" 
                   step="0.01"
@@ -77,6 +74,7 @@ function PaymentModal({
                   onChange={(e) => setAmount(parseFloat(e.target.value))}
                   required
                 />
+                <span className="modal-input-icon">$</span>
               </div>
             </div>
             

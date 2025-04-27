@@ -13,7 +13,7 @@ interface MembersListProps {
   onClose?: () => void;
 }
 
-function MembersList({ members, group, onEditMembers, setShowPaymentModal }: MembersListProps) {
+function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClose }: MembersListProps) {
   // they owe money: + owed
   // they are owed money: - owed
   // they have paid money: + paid

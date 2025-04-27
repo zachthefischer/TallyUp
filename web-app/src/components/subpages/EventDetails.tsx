@@ -11,18 +11,20 @@ interface EventDetailsProps {
     activeSubGroup: UserGroup | null;
     activeSubSubGroup: UserGroup | null;
     setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
+    handleBack: () => void;
   }
 
 export default function EventDetails({   
       activeSubGroup,
       activeSubSubGroup,
-      setShowPaymentModal
+      setShowPaymentModal,
+      handleBack,
     }: EventDetailsProps) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [subGroup, setSubGroup] = useState<Group | null>(null);
     const [subSubGroup, setSubSubGroup] = useState<Group | null>(null);
-
+    
   
     useEffect(() => {
       const loadGroups = async () => {
@@ -63,13 +65,8 @@ export default function EventDetails({
                   onEditMembers={() => {
                     console.log('Editing members for:', subGroup?.members);
                   }}
+                  onClose={handleBack}
                 />
-                {/* <button className="close-button"
-                  onClick={handleBack}
-                  aria-label="Go back"
-                >
-                  <X size={20} />
-                </button> */}
                 </>
               ) : ( activeSubSubGroup ? (
                 <div className="event-details-header">

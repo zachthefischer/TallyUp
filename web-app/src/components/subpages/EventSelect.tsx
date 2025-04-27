@@ -40,17 +40,17 @@ export default function EventSelect(
                     <button 
                         className="action-button action-button-dark"
                         onClick={() => setShowPaymentModal(activeGroup)}>
-                        <Plus size={20} />
-                        Submit Request
+                        <CreditCard size={18} />
+                        Pay/Request
                         </button>
                     <button 
-                        className="action-button action-button-secondary"
+                        className="action-button action-button-teal"
                         onClick={() => setShowBalanceSheet(true)}>
-                        <CreditCard size={18} />
-                        Submit Payment
+                        <Plus size={20} />
+                        Add User
                     </button>
                     <button 
-                        className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                        className="action-button action-button-secondary"
                         onClick={() => setShowAddSubgroupModal(1)}>
                         <Plus size={18} />
                         Add Subgroup
@@ -81,19 +81,7 @@ export default function EventSelect(
                             Add sub group
                         </button>
                     </div>
-                    <div className="group-details">
-                        <span className="whitespace-nowrap"><span className="font-semibold">${subGroup.balance}</span> to reimburse</span>
-                        <div className="progress-container">
-                            <div className="progress-bar">
-                            {/* TODO - there should be a total due  */}
-                                <div
-                                    className="progress-fill" 
-                                    style={{ width: `${subGroup.owed}%` }}
-                                ></div>
-                            </div>
-                            <span className="whitespace-nowrap">{subGroup.owed}% paid</span>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
             

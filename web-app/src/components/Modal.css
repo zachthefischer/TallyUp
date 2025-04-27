@@ -69,19 +69,22 @@
 
 .modal-input-icon {
   position: absolute;
-  inset-y: 0;
-  left: 0;
-  padding-left: 0.75rem;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   pointer-events: none;
   color: #6b7280;
+  width: 1.5rem;
 }
 
 .modal-select-container {
   display: flex;
   align-items: center;
   position: relative;
+  justify-content: center;
 }
 
 .modal-select {
@@ -117,6 +120,11 @@
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .modal-button-secondary {
@@ -132,9 +140,6 @@
 .modal-button-navy {
   background-color: #082341;
   color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .modal-button-navy:hover {
