@@ -11,7 +11,7 @@ interface EventSelectProps {
     setActiveSubSubGroup: Dispatch<SetStateAction<UserGroup | null>>;
 
     // Show modals
-    setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
+    setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
     setShowBalanceSheet: Dispatch<SetStateAction<boolean>>;
     setShowAddSubgroupModal: Dispatch<SetStateAction<number>>;
     setSelectedGroupForSubgroup: Dispatch<SetStateAction<string>>;
@@ -39,21 +39,21 @@ export default function EventSelect(
                 <div className="flex gap-4 mb-6">
                     <button 
                         className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-semibold text-base hover:bg-[#396e7c]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => setShowPaymentModal(true)}>
+                        onClick={() => setShowPaymentModal(activeGroup)}>
                         <Plus size={20} />
-                        Add Payment
+                        Submit Request
                         </button>
+                    <button 
+                        className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                        onClick={() => setShowAddSubgroupModal(1)}>
+                        <Plus size={18} />
+                        Submit Payment
+                    </button>
                     <button 
                         className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
                         onClick={() => setShowBalanceSheet(true)}>
                         <CreditCard size={18} />
                         Transactions
-                    </button>
-                    <button 
-                        className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
-                        onClick={() => setShowAddSubgroupModal(1)}>
-                        <Plus size={18} />
-                        Add Group
                     </button>
                 </div>
             </div>
@@ -94,10 +94,10 @@ export default function EventSelect(
                         {/* TODO - there should be a total due  */}
                             <div
                                 className="absolute top-0 left-0 h-full bg-[#396e7c] transition-all duration-500 ease-out" 
-                                style={{ width: `${subGroup.balance}%` }}
+                                style={{ width: `${subGroup.owed}%` }}
                             ></div>
                         </div>
-                        <span className="whitespace-nowrap">{subGroup.balance}% paid</span>
+                        <span className="whitespace-nowrap">{subGroup.owed}% paid</span>
                     </div>
                 </div>
             </div>

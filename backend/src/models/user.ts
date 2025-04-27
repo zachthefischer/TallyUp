@@ -12,7 +12,8 @@ const userGroupSchema = new Schema({
   groupName: { type: String, required: true },
   isAdmin: { type: Boolean, required: true },
 
-  balance: { type: Number, required: true },
+  paid: { type: Number, required: true },
+  owed: { type: Number, required: true },
   transactions: [{ type: Types.ObjectId, required: true }],
   requests: [{ type: Types.ObjectId, required: true }],
 

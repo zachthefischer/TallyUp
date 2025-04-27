@@ -1,16 +1,19 @@
 export interface GroupMember {
-  id: string;
-  name: string;
+  _id: string;
+  userName: string;
   transaction: string;
   timeAgo: string;
-  amount: number;
+  paid: number;
+  owed: number;
+  balance: number;
 }
 
 export interface Group {
-  id: string;
+  _id: string;
   name: string;
   paid: number;
   owed: number;
+  balance: number;
 
   members: GroupMember[];
   subGroups: Group[];

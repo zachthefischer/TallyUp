@@ -28,6 +28,7 @@ export const createGroup: RequestHandler = async (req, res) => {
       total: 0,
       paid: 0,
       owed: 0,
+      balance: 0,
       percentage: 0,
       members: [],
       subGroups: subGroups
@@ -52,9 +53,6 @@ export const addSubGroup: RequestHandler = async (req, res) => {
   if (!childGroupId) {
     groupId = parentGroupId;
 
-
-
-
   // If childGroupId is provided - add to childGroup
   } else {
     groupId = childGroupId;
@@ -64,7 +62,7 @@ export const addSubGroup: RequestHandler = async (req, res) => {
     // Create the subgroup    
     const subgroup = await GroupModel.create({
       name: subGroupName,
-      total: 0,
+      balance: 0,
       paid: 0,
       owed: 0,
       percentage: 0,
@@ -128,23 +126,28 @@ export const addSubGroup: RequestHandler = async (req, res) => {
           (g : any) => g.groupId?.toString() == subgroup._id.toString()
         );
 
+        // Type UserGroup
         if (!existingSubGroup) {
           userGroup?.subGroups.push({
             groupId: subgroup._id,
             groupName: subgroup.name,
             isAdmin: userGroup.isAdmin,
-            balance: 0,
+            paid: 0,
+            owed: 0,
             transactions: [],
             requests: [],
           });
           await user.save();
         }
 
+        // 
         subgroup.members.push({
           userId: user._id,
           userName: user.firstName + " " + user.lastName,
           isAdmin: userGroup?.isAdmin,
-          balance: 0,
+          userPaid: 0,
+          userOwed: 0,
+          userBalance: 0,
           transactions: [],
           requests: [],
         })
@@ -161,11 +164,11 @@ export const addSubGroup: RequestHandler = async (req, res) => {
 
 export const getGroupById: RequestHandler = async (req, res) => {
   const { id } = req.params;
+  console.log("Group ID: ", id);
   try {
+    console.log(id);
+
     const group = await GroupModel.findById(id)
-      .populate("members")
-      .populate("paidMembers")
-      .populate("owedMembers")
       .populate("subGroups");
     if (!group) {
       res.status(404).json({ message: "Group not found" });
@@ -181,9 +184,6 @@ export const getGroupById: RequestHandler = async (req, res) => {
 export const getAllGroups: RequestHandler = async (req, res) => {
   try {
     const groups = await GroupModel.find()
-      .populate("members")
-      .populate("paidMembers")
-      .populate("owedMembers")
       .populate("subGroups");
     res.status(200).json(groups);
   } catch (error) {

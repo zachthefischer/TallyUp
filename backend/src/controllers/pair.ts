@@ -43,7 +43,8 @@ async function createTransaction(
       groupId: group._id,
       groupName: group.name,
       isAdmin: false,
-      balance: amount,
+      paid: 0,
+      owed: amount,
       transactions: [],
       requests: [request._id],
     };
@@ -52,7 +53,9 @@ async function createTransaction(
       userId: user?._id,
       userName: user?.firstName + " " + user?.lastName,
       isAdmin: false,
-      balance: amount,
+      balance: user?.balance,
+      userPaid: 0,
+      userOwed: amount,
       transactions: [],
       requests: [request._id],
     };
@@ -62,8 +65,8 @@ async function createTransaction(
       (group) => group?.groupId?.toString() === groupId.toString()
     );
     if (existingUserGroup) {
-      existingUserGroup.balance =
-        (existingUserGroup.balance as number) + amount;
+      existingUserGroup.owed =
+        (existingUserGroup.owed as number) + amount;
       existingUserGroup.requests.push(request._id);
     } else {
       user.groups.push(userGroup);
@@ -76,7 +79,7 @@ async function createTransaction(
       (member) => member?.userId?.toString() === userId.toString()
     );
     if (existingGroupUser) {
-      existingGroupUser.balance += amount;
+      existingGroupUser.userOwed += amount;
       existingGroupUser.requests.push(request._id);
     } else {
       group.members.push(groupUser);
@@ -93,11 +96,7 @@ async function createTransaction(
 }
 
 export const addPair: RequestHandler = async (req, res) => {
-  console.log("userId : ");
   const { userId, groupId, isAdmin } = req.body;
-  console.log("userId : ", userId);
-  console.log("groupId : ", groupId);
-  console.log("isAdmin : ", isAdmin);
   
   try {
     const group = await GroupModel.findById(groupId);
@@ -115,6 +114,8 @@ export const addPair: RequestHandler = async (req, res) => {
       groupId: group?._id,
       groupName: group?.name,
       isAdmin: isAdmin,
+      paid: 0,
+      owed: 0,
       balance: 0,
       transactions: [],
       requests: [],
@@ -124,7 +125,9 @@ export const addPair: RequestHandler = async (req, res) => {
       userId: user?._id,
       userName: user?.firstName + " " + user?.lastName,
       isAdmin: isAdmin,
-      balance: 0,
+      userOwed: 0,
+      userPaid: 0,
+      userBalance: 0,
       transactions: [],
       requests: [],
     };
@@ -342,7 +345,7 @@ export const updateRequest: RequestHandler = async (req, res) => {
       (group) => group?.groupId?.toString() === groupId.toString()
     );
     if (userGroup) {
-      userGroup.balance += amount;
+      userGroup.owed += amount;
       user.totalOwed += amount;
       user.totalPaid -= amount;
       user.markModified("totalPaid");
@@ -363,6 +366,8 @@ export const updateRequest: RequestHandler = async (req, res) => {
     );
     if (groupUser) {
       groupUser.balance += amount;
+      groupUser.owed += amount;
+      groupUser.paid = (groupUser.paid as number) - amount;
       group.owed += amount;
       group.paid = (group.paid as number) - amount;
       group.markModified("paid");
@@ -410,8 +415,8 @@ export const deleteTransaction: RequestHandler = async (req, res) => {
       (group) => group?.groupId?.toString() === groupId.toString()
     );
     if (userGroup) {
-      if (typeof userGroup.balance === "number") {
-        userGroup.balance -= request.amount;
+      if (typeof userGroup.owed === "number") {
+        userGroup.owed -= request.amount;
       }
       userGroup.transactions.pull(transactionId);
       user.totalOwed = (user.totalOwed as number) - request.amount;
@@ -427,8 +432,8 @@ export const deleteTransaction: RequestHandler = async (req, res) => {
       (member) => member?.userId?.toString() === userId.toString()
     );
     if (groupUser) {
-      if (typeof groupUser.balance === "number") {
-        groupUser.balance -= request.amount;
+      if (typeof groupUser.owed === "number") {
+        groupUser.owed -= request.amount;
       }
       groupUser.transactions.pull(transactionId);
       group.owed = (group.owed as number) - request.amount;

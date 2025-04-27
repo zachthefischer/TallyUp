@@ -13,10 +13,11 @@ function PaymentModal({
   onAdd,
   onClose,
 }: PaymentModalProps) {
+    const ZACH_USER_ID = "680e022d0986b10805664049"
     const [amount, setAmount] = useState(1.25);
     const [description, setDescription] = useState("");
-    const [userId, setUserId] = useState("680d9e93497e87670cb8356b");
-  
+    const [userId, setUserId] = useState(ZACH_USER_ID);
+    console.log("MODAL GROUP", group)
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // Here you would handle payment submission
@@ -30,7 +31,7 @@ function PaymentModal({
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold  text-black">Log Payment</h3>
+            <h3 className="text-lg font-semibold  text-black">Log Payment for {group?.groupName}</h3>
             <button 
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
