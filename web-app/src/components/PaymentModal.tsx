@@ -33,7 +33,7 @@ function PaymentModal({
       <div className="modal-overlay">
         <div className="modal-container">
           <div className="modal-header">
-            <h3 className="modal-title">Log Payment for {group?.groupName}</h3>
+            <h3 className="modal-title">Request or Send for {group?.groupName}</h3>
             <button 
               onClick={onClose}
               className="modal-close-button"

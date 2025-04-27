@@ -133,25 +133,25 @@ function MembersList({ members, group, onEditMembers, setShowPaymentModal, onClo
 
       <div className="flex gap-4 flex-col">
       <div className="flex gap-4 mb-6">
-        <button 
-            className="flex-1 action-button action-button-teal"
-            onClick={() => setShowPaymentModal(group)}>
-            <Plus size={20} />
-            Submit Request
+            <button 
+                className="flex-1 action-button action-button-teal"
+                onClick={() => setShowPaymentModal(group)}>
+                <Plus size={20} />
+                Submit Request
+                </button>
+            <button 
+                className="flex-1 action-button action-button-teal"
+                onClick={() => setShowPaymentModal(group)}>
+                <Plus size={18} />
+                Submit Payment
             </button>
-        <button 
-            className="flex-1 action-button action-button-teal"
-            onClick={() => setShowPaymentModal(group)}>
-            <Plus size={18} />
-            Submit Payment
-        </button>
-        <button 
-            className="flex-1 action-button action-button-dark"
-            onClick={() => {}}>
-            <CreditCard size={18} />
-            Reimburse All
-        </button>
-    </div>
+            <button 
+                className="flex-1 action-button action-button-dark"
+                onClick={() => {}}>
+                <CreditCard size={18} />
+                Reimburse All
+            </button>
+        </div>
       </div>
     </div>
   );

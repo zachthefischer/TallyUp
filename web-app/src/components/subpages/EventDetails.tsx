@@ -35,7 +35,7 @@ export default function EventDetails({
             setSubGroup(subGroupData);
           }
 
-          if (activeSubSubGroup) {
+          if (activeSubSubGroup?.groupId) {
             const subSubGroupData = await getGroupById(activeSubSubGroup?.groupId);
             setSubSubGroup(subSubGroupData);
           };

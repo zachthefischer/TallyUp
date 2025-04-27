@@ -31,7 +31,7 @@ function AddUserModal({ onClose, onAdd }: AddUserModalProps) {
         
         <form onSubmit={handleSubmit}>
           <div className="modal-form-group">
-            <label className="modal-label">First Name</label>
+            <label className="modal-label">First</label>
             <input 
               type="text" 
               className="modal-input"
@@ -42,7 +42,7 @@ function AddUserModal({ onClose, onAdd }: AddUserModalProps) {
             />
           </div>
           <div className="modal-form-group">
-            <label className="modal-label">Last Name</label>
+            <label className="modal-label">Last</label>
             <input 
               type="text" 
               className="modal-input"

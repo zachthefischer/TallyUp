@@ -46,6 +46,17 @@ export const createGroup = async (groupName: string, userId: string, isAdmin: bo
   return response.data;
 };
 
+
+export const addToGroup = async (userId: string, groupId: string) => {
+  console.log("ADD GROUP: ", groupId);
+
+  const response = await api.post("/pair/add", {userId: userId, groupId: groupId, isAdmin: true});
+  return response.data;
+};
+
+
+
+
 // Create a new transaction
 export const createTransaction = async (userId: string, groupId: string, amount: number, description: string) => {
   console.log("Called createTransaction");

@@ -7,16 +7,17 @@ import BalanceSheet from "../components/BalanceSheet";
 import PaymentModal from "../components/PaymentModal";
 import EventDetails from "../components/subpages/EventDetails";
 
-import { fetchUserGroups, createGroup, createUser, createTransaction, createSubGroup } from "../services/apiService";
+import { fetchUserGroups, createGroup, createUser, createTransaction, createSubGroup, addToGroup } from "../services/apiService";
 import GroupSelect from "../components/subpages/GroupSelect";
 import AddGroupModal from "../components/AddGroupModal";
 import AddSubgroupModal from "../components/AddSubgroupModal";
 import './Dashboard.css';
 import AddUserModal from "../components/AddUserModal";
+import AddPairModal from "../components/AddPairModal";
 
 // Main App Component
 export default function Dashboard() {
-  const ZACH_USER_ID = "680e10f496794424d85bb535";
+  const ZACH_USER_ID = "680e1ba6a3b6cd1dffc43805";
   // Replace with the actual user ID
 
   const [groups, setGroups] = useState<UserGroup[]>([]);
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<UserGroup | null>(null);
 
   const [showPaymentModal, setShowPaymentModal] = useState<UserGroup | null>(null);
+  const [showAddPairModal, setShowAddPairModal] = useState<UserGroup | null>(null);
 
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
@@ -145,6 +147,22 @@ export default function Dashboard() {
     }
   };
   
+
+  const handleAddPair = async (userId: string) => {
+    try {
+      // Create a properly structured subgroup object
+      if (showAddPairModal === null) { return; }
+
+      const result = await addToGroup(userId, showAddPairModal.groupId);
+      console.log("New group created:", result);
+      setShowAddPairModal(null);
+    } catch (error) {
+      console.error("Failed to create transaction:", error);
+    }
+  };
+  
+
+
   const balanceSheetData: BalanceSheetItem[] = [
     { group: "Spring Retreat", budget: 2000, spent: 1650, reimbursed: 1245, balance: 405 },
     { group: "Tournament Travel", budget: 3500, spent: 2850, reimbursed: 1282.5, balance: 1567.5 },
@@ -203,6 +221,7 @@ export default function Dashboard() {
                 setActiveSubGroup={(value) => setActiveSubGroup(value as UserGroup | null)}
                 activeSubSubGroup={activeSubSubGroup} 
                 setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as UserGroup | null)} 
+                setShowAddPairModal={setShowAddPairModal}
                 setShowBalanceSheet={setShowBalanceSheet}
                 setShowPaymentModal={setShowPaymentModal}
                 setShowAddSubgroupModal={setShowAddSubgroupModal}
@@ -242,6 +261,15 @@ export default function Dashboard() {
           onAdd={handleAddUser}
         />
       )}
+
+      {showAddPairModal && (
+        <AddPairModal 
+          group={showAddPairModal}
+          onClose={() => setShowAddPairModal(null)}
+          onAdd={handleAddPair}
+        />
+      )}
+
 
       {showAddGroupModal && (
         <AddGroupModal 
