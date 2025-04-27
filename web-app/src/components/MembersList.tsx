@@ -139,7 +139,7 @@ function MembersList({
                 className="flex-1 action-button action-button-dark"
                 onClick={() => setShowPaymentModal(group)}>
                 <CreditCard size={18} />
-                Request/Payment
+                Request/Reimburse
                 </button>
             <button 
                 className="flex-1 action-button action-button-teal"
@@ -147,12 +147,12 @@ function MembersList({
                 <Plus size={18} />
                 Invite Member
             </button>
-            <button 
+            {/* <button 
                 className="flex-1 action-button action-button-secondary"
                 onClick={() => {}}>
                 <BanknoteArrowUp size={18} />
                 Reimburse
-            </button>
+            </button> */}
         </div>
       </div>
     </div>
