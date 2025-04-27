@@ -16,15 +16,17 @@ import AddUserModal from "../components/AddUserModal";
 
 // Main App Component
 export default function Dashboard() {
-  const ZACH_USER_ID = "680d9e93497e87670cb8356b"; // Replace with the actual user ID
+  const ZACH_USER_ID = "680e022d0986b10805664049";
+  // Replace with the actual user ID
 
   const [groups, setGroups] = useState<UserGroup[]>([]);
   const [activeGroup, _setActiveGroup] = useState<UserGroup | null>(null);
   const [activeSubGroup, _setActiveSubGroup] = useState<UserGroup | null>(null);
   const [activeSubSubGroup, _setActiveSubSubGroup ] = useState<UserGroup | null>(null);
 
+  const [showPaymentModal, setShowPaymentModal] = useState<UserGroup | null>(null);
+
   const [showBalanceSheet, setShowBalanceSheet] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showAddSubgroupModal, setShowAddSubgroupModal] = useState(0);
@@ -41,6 +43,7 @@ export default function Dashboard() {
     console.log("Active sub group set to:", newValue);
 
     _setActiveSubGroup(newValue);
+    _setActiveSubSubGroup(null);
     setPageState(3);
   };
 
@@ -99,7 +102,6 @@ export default function Dashboard() {
     try {
       // Create a properly structured group object
       const newGroup = await createGroup(groupName, ZACH_USER_ID, true);
-      console.log("New group created:", newGroup);
       
       // Update the groups state with the new group
       setGroups(groups => [...groups, newGroup]);
@@ -111,15 +113,15 @@ export default function Dashboard() {
 
 
   // Handle adding a new subgroup
-  const handleAddSubgroup = async (groupId ?: string, subgroupName ?: string) => {
+  const handleAddSubgroup = async (groupId ?: string, subgroupName ?: string, subgroupId ?: string) => {
     if (!groupId || !subgroupName) {
       console.error("Group ID and subgroup name are required");
       return;
     }
     try {
-      console.log("Create subgroup:", groupId, subgroupName);
+      console.log("Create subgroup:", groupId, subgroupName, ZACH_USER_ID);
 
-      const result = await createSubGroup( groupId, subgroupName);
+      const result = await createSubGroup( groupId, subgroupName, ZACH_USER_ID, subgroupId);
       
       console.log("New subgroup created:", result);
       setShowAddSubgroupModal(0);
@@ -133,11 +135,11 @@ export default function Dashboard() {
   const handleAddTransaction = async (userId: string, amount: number, description: string) => {
     try {
       // Create a properly structured subgroup object
-      if (activeGroup === null) { return; }
+      if (showPaymentModal === null) { return; }
 
-      const result = await createTransaction(userId, activeGroup.groupId, amount, description);
+      const result = await createTransaction(userId, showPaymentModal.groupId, amount, description);
       console.log("New transaction created:", result);
-      setShowPaymentModal(false);
+      setShowPaymentModal(null);
     } catch (error) {
       console.error("Failed to create transaction:", error);
     }
@@ -215,6 +217,7 @@ export default function Dashboard() {
               ${pageState === 3 ? 'box-right' : ''} 
             `}>
             <EventDetails 
+              setShowPaymentModal={setShowPaymentModal}
               groups={groups} 
               activeSubGroup={activeSubGroup} 
               activeSubSubGroup={activeSubSubGroup} 
@@ -227,9 +230,9 @@ export default function Dashboard() {
 
       {showPaymentModal && (
         <PaymentModal 
-        onClose={() => setShowPaymentModal(false)}  
+        group={showPaymentModal}
+        onClose={() => setShowPaymentModal(null)}  
         onAdd={handleAddTransaction}
-        group={activeSubGroup} 
         />
       )}
 

@@ -1,65 +1,96 @@
 import { CreditCard, ArrowLeft, X } from "lucide-react";
-import { Group } from "../../types/Group";
 import MembersList from '../MembersList';
-import './Subpages.css';
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { getGroupById } from "../../services/apiService";
+import { Group, GroupMember } from "../../types/Group";
+import { calculateAmount } from "../../services/calculateAmount";
+import { UserGroup } from "../../types/User";
 
 interface EventDetailsProps {
-    groups: Group[];
-    activeSubGroup: Group | null;
-    activeSubSubGroup: Group | null;
-    handleBack: () => void;
-}
+    groups: UserGroup[];
+    activeSubGroup: UserGroup | null;
+    activeSubSubGroup: UserGroup | null;
+    setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
+  }
 
 export default function EventDetails({   
       activeSubGroup,
       activeSubSubGroup,
-      handleBack,
+      setShowPaymentModal
     }: EventDetailsProps) {
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [subGroup, setSubGroup] = useState<Group | null>(null);
+    const [subSubGroup, setSubSubGroup] = useState<Group | null>(null);
+
+  
+    useEffect(() => {
+      const loadGroups = async () => {
+        setIsLoading(true);
+        try {
+          if (activeSubGroup?.groupId) {
+            const subGroupData = await getGroupById(activeSubGroup?.groupId);
+            setSubGroup(subGroupData);
+          }
+
+          if (activeSubSubGroup) {
+            const subSubGroupData = await getGroupById(activeSubSubGroup?.groupId);
+            setSubSubGroup(subSubGroupData);
+          };
+
+
+          // Uncomment the line below if you want to override mock data with fetched data
+          // setGroups(data);
+        } catch (error) {
+          console.error("Failed to fetch user groups", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      // Uncomment the line below if you want to fetch data from the API
+      loadGroups();
+    }, [activeSubGroup, activeSubSubGroup]);
 
     return (
         <div className="event-details-container">
-              { activeSubGroup && activeSubSubGroup ? (
+              { activeSubGroup && !activeSubSubGroup ? (
                 <>
-                  <MembersList 
-                    members={activeSubSubGroup.members}
-                    groupName={activeSubGroup.name}
-                    subCategoryName={activeSubSubGroup.name}
-                    onEditMembers={() => {
-                      // Here you would handle editing members
-                      console.log('Editing members for:', activeSubSubGroup.name);
-                    }}
-                    onClose={handleBack}
-                  />
+                <MembersList 
+                  setShowPaymentModal={setShowPaymentModal}
+                  members={subGroup?.members || []}
+                  group={activeSubGroup}
+                  onEditMembers={() => {
+                    console.log('Editing members for:', subGroup?.members);
+                  }}
+                />
+                {/* <button className="close-button"
+                  onClick={handleBack}
+                  aria-label="Go back"
+                >
+                  <X size={20} />
+                </button> */}
                 </>
-              ) : activeSubGroup ? (
-                <>
-                  <div className="event-details-header">
-                    <div className="event-details-title">
-                      <h2>{activeSubSubGroup?.name}</h2>
-                      <p>All Members</p>
-                    </div>
-                    <button 
-                      className="close-button"
-                      onClick={handleBack}
-                      aria-label="Go back"
-                    >
-                      <X size={20} />
-                    </button>
+              ) : ( activeSubSubGroup ? (
+                <div className="event-details-header">
+                  <div className="mb-6">
+                    <h2 className="event-details-title">{activeSubSubGroup?.groupName}</h2>
+                    <p className="text-gray-600 mt-1">All Members</p>
                   </div>
                   {activeSubGroup ? (
                     <div className="members-list">
-                      {activeSubGroup?.subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
+                      {subGroup?.subGroups.flatMap(subCat => subCat.members).map((member, idx) => (
                         <div 
-                          key={`${member.id}-${idx}`}
+                          key={`${member._id}-${idx}`}
                           className="member-card"
                         >
                           <div className="member-info">
                             <div>
-                              <div className="member-name">{member.name}</div>
+                              <div className="member-name">{member.userName}</div>
                               <div className="member-transaction">{member.transaction} • {member.timeAgo}</div>
                             </div>
-                            <div className={`member-amount ${member.amount < 0 ? 'negative' : 'positive'}`}>
-                              {member.amount < 0 ? '-' : '+'}${Math.abs(member.amount)}
+                            <div className={`member-amount ${calculateAmount(member) < 0 ? 'negative' : 'positive'}`}>
+                              {calculateAmount(member) < 0 ? '-' : '+'}${Math.abs(calculateAmount(member))}
                             </div>
                           </div>
                         </div>
@@ -71,8 +102,9 @@ export default function EventDetails({
                       <p className="small">Add members to see them here.</p>
                     </div>
                   )}
-                </>
-              ) : (
+                </div>
+              ) : 
+                // No subgroup selected
                 <div className="select-group-prompt">
                   <div className="prompt-icon">
                     <CreditCard size={32} className="text-gray-400" />

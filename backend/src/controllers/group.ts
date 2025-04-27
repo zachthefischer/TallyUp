@@ -28,6 +28,7 @@ export const createGroup: RequestHandler = async (req, res) => {
       total: 0,
       paid: 0,
       owed: 0,
+      balance: 0,
       percentage: 0,
       members: [],
       subGroups: subGroups
@@ -44,101 +45,117 @@ export const createGroup: RequestHandler = async (req, res) => {
 };
 
 export const addSubGroup: RequestHandler = async (req, res) => {
-  let { parentGroupId, childGroupId, subGroupName } = req.body;
+  let { parentGroupId, subGroupName, memberId, childGroupId } = req.body;
+
+  let groupId;
 
   // If only parentGroupId is provided - add directly to parentGroup
-  
-  // If both are provided - find parentGroupId, then add childGroupId to it
+  if (!childGroupId) {
+    groupId = parentGroupId;
 
-
+  // If childGroupId is provided - add to childGroup
+  } else {
+    groupId = childGroupId;
+  }
 
   try {
-    console.log("Adding subgroup to group: ", childGroupId, subGroupName);
+    // Create the subgroup    
     const subgroup = await GroupModel.create({
       name: subGroupName,
-      total: 0,
+      balance: 0,
       paid: 0,
       owed: 0,
       percentage: 0,
       members: [],
     });
-    
+    // Checks if subgroup is created successfully
     console.log("Subgroup created: ", subgroup);
-
-    const childGroup = await GroupModel.findByIdAndUpdate(
-      childGroupId,
+    // Finds the parent group for the subgroup + adds the subgroup to the parent group
+    const group = await GroupModel.findByIdAndUpdate(
+      groupId,
       { $push: { subGroups: subgroup._id } },
       { new: true }
     );
-
-    if (!childGroup) {
+    // Checks if parent group is found
+    if (!group) {
       res.status(404).json({ message: "Child group not found" });
       return;
     }
+    // Checks if the group has memberId
+    console.log("Group: ", group);
+    console.log("MemberId: ", memberId);
+    console.log("MemberIds: ", group.members.map((member) => member.userId.toString()));
+  
+    const groupMember = group.members.find(
+      (member) => member.userId.toString() === memberId
+    );
+    // Checks if the member is found
+    if (!groupMember) {
+      res.status(404).json({ message: "Member not found in group" });
+      return;
+    }
 
-    console.log(childGroup.members);
-    console.log(`Subgroup created inside : ${childGroup}`, subgroup);
+    if (groupMember) {
 
-    if (childGroup.members && childGroup.members.length > 0) {
-      for (const member of childGroup.members) {
-        console.log("Member: ", member);
+      const user = await UserModel.findById(memberId);
+      console.log("User: ", user);
 
-        const user = await UserModel.findById(member.userId);
-        console.log("User: ", user);
-
-        const groupUser = await childGroup.members.find(
-          (member) => member.userId.toString() === user?._id.toString()
+      let userGroup;
+      
+      if (!childGroupId) {
+        // childGroupId is not provided - creating a subgroup
+        userGroup = await user?.groups.find(
+          (g) => g.groupId?.toString() === group._id.toString()
         );
-        
-        let userGroup;
-
-        if (parentGroupId) {
-          const userParentGroup = await user?.groups.find(
-            (g) => g.groupId?.toString() === parentGroupId.toString()
-          );
-          const userGroup = await userParentGroup?.subGroups.find(
-            (g) => g.groupId?.toString() === childGroup._id.toString()
-          )
-        }
-        if (!parentGroupId) {
-          const userGroup = await user?.groups.find(
-            (g) => g.groupId?.toString() === childGroup._id.toString()
-          );
-        }
-
         console.log("User group: ", userGroup);
         
-        if (user) {
-          const existingSubGroup = userGroup?.subGroups.find(
-            (g) => g.groupId?.toString() == subgroup._id.toString()
-          );
+        
+      } else {
+        // childGroupId given – creating a sub sub group
+        const parentUserGroup = await user?.groups.find(
+          (g) => g.groupId?.toString() === parentGroupId.toString()
+        );
+        userGroup = await parentUserGroup?.subGroups.find(
+          (g) => g.groupId?.toString() === group._id.toString()
+        )
+      }
+        
+      // Checks if the user is found
+      if (user) {
+        const existingSubGroup = userGroup?.subGroups.find(
+          (g : any) => g.groupId?.toString() == subgroup._id.toString()
+        );
 
-          if (!existingSubGroup) {
-            userGroup?.subGroups.push({
-              groupId: subgroup._id,
-              groupName: subgroup.name,
-              isAdmin: groupUser.isAdmin,
-              balance: 0,
-              transactions: [],
-              requests: [],
-            });
-            await user.save();
-          }
-
-          subgroup.members.push({
-            userId: user._id,
-            userName: user.firstName + " " + user.lastName,
-            isAdmin: groupUser.isAdmin,
-            balance: 0,
+        // Type UserGroup
+        if (!existingSubGroup) {
+          userGroup?.subGroups.push({
+            groupId: subgroup._id,
+            groupName: subgroup.name,
+            isAdmin: userGroup.isAdmin,
+            paid: 0,
+            owed: 0,
             transactions: [],
             requests: [],
-          })
+          });
+          await user.save();
         }
+
+        // 
+        subgroup.members.push({
+          userId: user._id,
+          userName: user.firstName + " " + user.lastName,
+          isAdmin: userGroup?.isAdmin,
+          userPaid: 0,
+          userOwed: 0,
+          userBalance: 0,
+          transactions: [],
+          requests: [],
+        })
       }
     }
-    await subgroup.save();
-    console.log("Subgroup members updated: ", subgroup.members);
-    res.status(201).json(subgroup);
+  await subgroup.save();
+  console.log("Subgroup members updated: ", subgroup.members);
+  res.status(201).json(subgroup);
   } catch (error) {
     console.error("Error creating subgroup: ", error);
     res.status(500).json({ message: "Error creating subgroup" });
@@ -147,11 +164,11 @@ export const addSubGroup: RequestHandler = async (req, res) => {
 
 export const getGroupById: RequestHandler = async (req, res) => {
   const { id } = req.params;
+  console.log("Group ID: ", id);
   try {
+    console.log(id);
+
     const group = await GroupModel.findById(id)
-      .populate("members")
-      .populate("paidMembers")
-      .populate("owedMembers")
       .populate("subGroups");
     if (!group) {
       res.status(404).json({ message: "Group not found" });
@@ -167,9 +184,6 @@ export const getGroupById: RequestHandler = async (req, res) => {
 export const getAllGroups: RequestHandler = async (req, res) => {
   try {
     const groups = await GroupModel.find()
-      .populate("members")
-      .populate("paidMembers")
-      .populate("owedMembers")
       .populate("subGroups");
     res.status(200).json(groups);
   } catch (error) {

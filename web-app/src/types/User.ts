@@ -7,6 +7,8 @@ export interface UserGroup {
     groupName: string;
     isAdmin: boolean;
 
+    paid: number;
+    owed: number;
     balance: number;
     transactions: Transaction[];
     requests: Transaction[];

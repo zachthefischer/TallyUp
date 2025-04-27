@@ -12,7 +12,7 @@ interface EventSelectProps {
     setActiveSubSubGroup: Dispatch<SetStateAction<UserGroup | null>>;
 
     // Show modals
-    setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
+    setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
     setShowBalanceSheet: Dispatch<SetStateAction<boolean>>;
     setShowAddSubgroupModal: Dispatch<SetStateAction<number>>;
     setSelectedGroupForSubgroup: Dispatch<SetStateAction<string>>;
@@ -40,21 +40,21 @@ export default function EventSelect(
                 <div className="buttons-container">
                     <button 
                         className="action-button action-button-dark"
-                        onClick={() => setShowPaymentModal(true)}>
+                        onClick={() => setShowPaymentModal(activeGroup)}>
                         <Plus size={20} />
-                        Add Payment
+                        Submit Request
                         </button>
+                    <button 
+                        className="action-button action-button-teal"
+                        onClick={() => setShowAddSubgroupModal(1)}>
+                        <Plus size={18} />
+                        Submit Payment
+                    </button>
                     <button 
                         className="action-button action-button-secondary"
                         onClick={() => setShowBalanceSheet(true)}>
                         <CreditCard size={18} />
                         Transactions
-                    </button>
-                    <button 
-                        className="action-button action-button-teal"
-                        onClick={() => setShowAddSubgroupModal(1)}>
-                        <Plus size={18} />
-                        Add Group
                     </button>
                 </div>
             </div>
@@ -88,10 +88,10 @@ export default function EventSelect(
                             {/* TODO - there should be a total due  */}
                                 <div
                                     className="progress-fill" 
-                                    style={{ width: `${subGroup.balance}%` }}
+                                    style={{ width: `${subGroup.owed}%` }}
                                 ></div>
                             </div>
-                            <span className="whitespace-nowrap">{subGroup.balance}% paid</span>
+                            <span className="whitespace-nowrap">{subGroup.owed}% paid</span>
                         </div>
                     </div>
                 </div>

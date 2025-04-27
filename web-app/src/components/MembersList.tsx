@@ -1,24 +1,34 @@
-import { DollarSign, CreditCard, ArrowDown, ArrowUp, X } from "lucide-react";
+import { DollarSign, CreditCard, ArrowDown, ArrowUp, Minus, Plus } from "lucide-react";
 import { GroupMember } from "../types/Group";
+import { calculateAmount } from "../services/calculateAmount";
+import { Dispatch, SetStateAction } from "react";
+import { UserGroup } from "../types/User";
 
 interface MembersListProps {
+  setShowPaymentModal: Dispatch<SetStateAction<UserGroup | null>>;
   members: GroupMember[];
-  groupName: string;
-  subCategoryName: string;
+  group: UserGroup;
   onEditMembers: () => void;
   onClose?: () => void;
 }
 
-function MembersList({ members, groupName, subCategoryName, onEditMembers, onClose }: MembersListProps) {
-  const membersWhoOwe = members.filter(member => member.amount < 0);
-  const membersOwed = members.filter(member => member.amount > 0);
+function MembersList({ members, group, onEditMembers, setShowPaymentModal }: MembersListProps) {
+  // they owe money: + owed
+  // they are owed money: - owed
+  // they have paid money: + paid
+  // they have been paid: - paid
+  
+  const membersWhoOwe = members.filter(member => calculateAmount(member) < 0);
+  const membersOwed = members.filter(member => calculateAmount(member) > 0);
+  const membersEven = members.filter(member => calculateAmount(member) == 0);
+
+  console.log("Members: ", members);
 
   return (
     <div className="p-6">
       <div className="mb-8 flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-semibold text-gray-800">{groupName}</h2>
-          <p className="text-gray-600 mt-1">{subCategoryName}</p>
+          <h2 className="text-2xl font-semibold text-gray-800">{group.groupName}</h2>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -48,16 +58,16 @@ function MembersList({ members, groupName, subCategoryName, onEditMembers, onClo
           <div className="space-y-3">
             {membersWhoOwe.map((member) => (
               <div 
-                key={member.id} 
+                key={member._id} 
                 className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-red-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="font-medium text-gray-800">{member.name}</div>
+                    <div className="font-medium text-gray-800">{member.userName}</div>
                     <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
                   </div>
                   <div className="font-semibold text-red-500 text-lg">
-                    -${Math.abs(member.amount)}
+                    -${Math.abs(calculateAmount(member))}
                   </div>
                 </div>
               </div>
@@ -75,16 +85,16 @@ function MembersList({ members, groupName, subCategoryName, onEditMembers, onClo
           <div className="space-y-3">
             {membersOwed.map((member) => (
               <div 
-                key={member.id} 
-                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-[#396e7c] hover:shadow-md transition-shadow duration-200 ease-in-out"
+                key={member._id} 
+                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <div className="font-medium text-gray-800">{member.name}</div>
+                    <div className="font-medium text-gray-800">{member.userName}</div>
                     <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
                   </div>
-                  <div className="font-semibold text-[#396e7c] text-lg">
-                    +${Math.abs(member.amount)}
+                  <div className="font-semibold text-green-500 text-lg">
+                    +${Math.abs(calculateAmount(member))}
                   </div>
                 </div>
               </div>
@@ -93,15 +103,54 @@ function MembersList({ members, groupName, subCategoryName, onEditMembers, onClo
         </div>
       )}
 
-      <div className="flex gap-4">
-        <button className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-medium hover:bg-green-600 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md">
-          <DollarSign size={18} />
-          Process Reimbursements
-        </button>
-        <button className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md">
-          <CreditCard size={18} />
-          Settle All
-        </button>
+      {membersEven.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-4 text-gray-500 font-medium">
+            <Minus size={18} />
+            <h3 className="text-lg">Other Users</h3>
+          </div>
+          <div className="space-y-3">
+            {membersEven.map((member) => (
+              <div 
+                key={member._id}
+                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="font-medium text-gray-800">{member.userName}</div>
+                    <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
+                  </div>
+                  <div className="font-semibold text-green-500 text-lg">
+                    +${Math.abs(calculateAmount(member))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="flex gap-4 flex-col">
+      <div className="flex gap-4 mb-6">
+                    <button 
+                        className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-semibold text-base hover:bg-[#396e7c]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                        onClick={() => setShowPaymentModal(group)}>
+                        <Plus size={20} />
+                        Submit Request
+                        </button>
+                    <button 
+                        className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold text-base hover:bg-green-700 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                        onClick={() => setShowPaymentModal(group)}>
+                        <Plus size={18} />
+                        Submit Payment
+                    </button>
+                    <button 
+                        className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                        onClick={() => {}}>
+                        <CreditCard size={18} />
+                        Reimburse All
+                    </button>
+                </div>
       </div>
     </div>
   );

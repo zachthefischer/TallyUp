@@ -1,5 +1,4 @@
 import axios from "axios";
-import { User } from "../types/User";
 
 // Create an axios instance with default settings
 const api = axios.create({
@@ -63,9 +62,9 @@ export const createTransaction = async (userId: string, groupId: string, amount:
 }
 
 // Create a new subgroup
-export const createSubGroup = async (groupId: string, subGroupName: string ) => {
-  console.log("Group ID: ", groupId);
-  const response = await api.post(`/group/subgroup`, { groupId, subGroupName });
+export const createSubGroup = async (parentGroupId: string, subGroupName: string, memberId: string, childGroupId ?: string) => {
+  // console.log("Group ID: ", groupId);
+  const response = await api.post(`/group/subgroup`, { parentGroupId, subGroupName, memberId, childGroupId });
   return response.data;
 }
 
@@ -88,15 +87,11 @@ export const fetchUserGroups = async (userId: string) => {
   return response.data.groups;
 };
 
-// Example function: update a group's balance
-export const updateGroupBalance = async (groupId: string, balance: number) => {
-  const response = await api.put(`/groups/${groupId}/balance`, { balance });
-  return response.data;
-};
 
 // Create a new subgroup
-export const createSubgroup = async (groupId: string, subgroupData: any) => {
-  const response = await api.post(`/groups/${groupId}/subgroups`, subgroupData);
+export const getGroupById = async (groupId ?: string) => {
+  const response = await api.get(`/group/${groupId}`);
+  console.log("Group data", response.data);
   return response.data;
 };
 
