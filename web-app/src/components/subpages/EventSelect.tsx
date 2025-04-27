@@ -2,6 +2,7 @@ import {  DollarSign, CreditCard, Plus } from "lucide-react";
 import { Group } from "../../types/Group";
 import { Dispatch, SetStateAction } from 'react';
 import GroupBanner from "../../components/GroupBanner";
+import './Subpages.css';
 
 interface EventSelectProps {
     activeGroup: Group | null;
@@ -33,25 +34,25 @@ export default function EventSelect(
 
 
     return (
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200">
-        <div className="p-6">
+        <div className="event-select-container">
+        <div className="event-select-header">
         {activeGroup !== null && <GroupBanner groupName={activeGroup.name}/>}
         
-        <div className="flex gap-4 mb-2">
+        <div className="event-select-actions">
             <button 
-                className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-semibold text-base hover:bg-[#396e7c]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                className="action-button action-button-primary"
                 onClick={() => setShowPaymentModal(true)}>
                 <Plus size={20} />
                 Add Payment
                 </button>
             <button 
-                className="flex-1 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-semibold text-base text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                className="action-button action-button-secondary"
                 onClick={() => setShowBalanceSheet(true)}>
                 <CreditCard size={18} />
                 Transactions
             </button>
             <button 
-                className="flex-1 px-4 py-3 bg-[#082341] text-white rounded-lg font-semibold text-base hover:bg-[#082341]/90 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md"
+                className="action-button action-button-dark"
                 onClick={() => setShowAddSubgroupModal(true)}>
                 <Plus size={18} />
                 Add Group
@@ -61,21 +62,20 @@ export default function EventSelect(
 
         <div>
         {activeGroup?.subGroups.map((subGroup) => (
-            <div key={subGroup.id} className="p-4">
+            <div key={subGroup.id} className="subgroup-item">
             <div className="flex flex-col gap-4">
                 <div 
-                className={`p-4 rounded-lg border-2 border-gray-300 hover:border-[#396e7c] transition-colors duration-150 ease-in-out
-                    ${activeSubGroup === subGroup ? "border-[#396e7c] bg-[#396e7c]/10" : ""}`}
+                className={`subgroup-card ${activeSubGroup === subGroup ? "active" : ""}`}
                 >
                 <div className="flex items-center justify-between">
                     <span 
-                    className="font-medium text-gray-800 flex-1 cursor-pointer"
+                    className="subgroup-name"
                     onClick={() => setActiveSubGroup(activeSubGroup === subGroup ? null : subGroup)}
                     >
                     {subGroup.name}
                     </span>
                     <button
-                    className="p-2 hover:bg-[#396e7c]/10 rounded-lg transition-colors duration-150 flex items-center gap-2 text-gray-700"
+                    className="add-subgroup-button"
                     onClick={(e) => {
                         e.stopPropagation();
                         setSelectedGroupForSubgroup(subGroup.id);
@@ -86,13 +86,13 @@ export default function EventSelect(
                     Add Subgroup
                     </button>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600 mt-3">
+                <div className="group-details">
                     <span className="whitespace-nowrap"><span className="font-semibold">${subGroup.owed}</span> to reimburse</span>
-                    <div className="flex items-center gap-2 ml-auto">
-                        <div className="relative w-72 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="progress-container">
+                        <div className="progress-bar">
                         {/* TODO - there should be a total due  */}
                         <div 
-                            className="absolute top-0 left-0 h-full bg-[#396e7c] transition-all duration-500 ease-out" 
+                            className="progress-fill" 
                             style={{ width: `${subGroup.paid}%` }}
                         ></div>
                         </div>
@@ -104,19 +104,16 @@ export default function EventSelect(
             
             {/* Display list of subSubGroups - eg Cars for Retreat for UPE */}
             {activeSubGroup?.id === subGroup?.id && (
-                <div className="mt-2 ml-4 space-y-2">
+                <div className="subsubgroup-list">
                 {subGroup?.subGroups?.map((subSubGroup) => (
                     <div
                     key={subSubGroup.id}
-                    className={`p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out
-                        ${activeSubSubGroup?.id === subSubGroup?.id ? 
-                        "bg-gray-100 border-l-4 border-l-[#396e7c]" : ""
-                        }`}
+                    className={`subsubgroup-item ${activeSubSubGroup?.id === subSubGroup?.id ? "active" : ""}`}
                     onClick={() => setActiveSubSubGroup(activeSubSubGroup?.id === subSubGroup?.id ? null : subSubGroup)}
                     >
                     <div className="flex items-center justify-between">
-                        <div className="font-medium text-sm text-gray-700">{subSubGroup.name}</div>
-                        <div className="text-xs text-gray-500">
+                        <div className="subsubgroup-name">{subSubGroup.name}</div>
+                        <div className="subsubgroup-members">
                         {subSubGroup.members.length} member{subSubGroup.members.length !== 1 ? 's' : ''}
                         </div>
                     </div>

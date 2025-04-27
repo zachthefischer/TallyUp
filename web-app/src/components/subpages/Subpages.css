@@ -1,0 +1,366 @@
+/* Common styles */
+.subpage-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.subpage-padding {
+  padding: 1.5rem;
+}
+
+/* GroupSelect styles */
+.group-select-container {
+  padding: 0;
+}
+
+.group-item {
+  padding: 0.5rem 0;
+}
+
+.group-item-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.group-card {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid #d1d5db;
+  transition: all 150ms ease-in-out;
+  background-color: white;
+  width: 100%;
+}
+
+.group-card:hover {
+  border-color: #396e7c;
+}
+
+.group-card.active {
+  border-color: #396e7c;
+  background-color: rgba(57, 110, 124, 0.1);
+}
+
+.group-name {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #1f2937;
+  flex: 1;
+  cursor: pointer;
+}
+
+.group-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-top: 0.75rem;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.progress-bar {
+  position: relative;
+  width: 18rem;
+  height: 0.5rem;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #396e7c;
+  transition: all 500ms ease-out;
+}
+
+.add-group-button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background-color: #082341;
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 200ms ease-in-out;
+  margin-top: 1rem;
+}
+
+.add-group-button:hover {
+  background-color: rgba(8, 35, 65, 0.9);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* EventSelect styles */
+.event-select-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.event-select-header {
+  padding: 1.5rem;
+}
+
+.event-select-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.action-button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 200ms ease-in-out;
+}
+
+.action-button:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.action-button-primary {
+  background-color: #396e7c;
+  color: white;
+}
+
+.action-button-primary:hover {
+  background-color: rgba(57, 110, 124, 0.9);
+}
+
+.action-button-secondary {
+  background-color: white;
+  border: 2px solid #d1d5db;
+  color: #374151;
+}
+
+.action-button-secondary:hover {
+  background-color: #f9fafb;
+}
+
+.action-button-dark {
+  background-color: #082341;
+  color: white;
+}
+
+.action-button-dark:hover {
+  background-color: rgba(8, 35, 65, 0.9);
+}
+
+.subgroup-item {
+  padding: 1rem;
+}
+
+.subgroup-card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #d1d5db;
+  transition: all 150ms ease-in-out;
+}
+
+.subgroup-card:hover {
+  border-color: #396e7c;
+}
+
+.subgroup-card.active {
+  border-color: #396e7c;
+  background-color: rgba(57, 110, 124, 0.1);
+}
+
+.subgroup-name {
+  font-weight: 500;
+  color: #1f2937;
+  flex: 1;
+  cursor: pointer;
+}
+
+.add-subgroup-button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 150ms ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #374151;
+}
+
+.add-subgroup-button:hover {
+  background-color: rgba(57, 110, 124, 0.1);
+}
+
+.subsubgroup-list {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subsubgroup-item {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+}
+
+.subsubgroup-item:hover {
+  background-color: #f3f4f6;
+}
+
+.subsubgroup-item.active {
+  background-color: #f3f4f6;
+  border-left: 4px solid #396e7c;
+}
+
+.subsubgroup-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.subsubgroup-members {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* EventDetails styles */
+.event-details-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.event-details-header {
+  padding: 1.5rem;
+}
+
+.event-details-title {
+  margin-bottom: 1.5rem;
+}
+
+.event-details-title h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.event-details-title p {
+  color: #4b5563;
+  margin-top: 0.25rem;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.member-card {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: all 200ms ease-in-out;
+}
+
+.member-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.member-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.member-transaction {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.member-amount {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.member-amount.negative {
+  color: #ef4444;
+}
+
+.member-amount.positive {
+  color: #396e7c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.empty-state p {
+  color: #4b5563;
+}
+
+.empty-state p.small {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.select-group-prompt {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.prompt-icon {
+  background-color: #f9fafb;
+  border-radius: 9999px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prompt-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.prompt-description {
+  color: #4b5563;
+  max-width: 28rem;
+}
