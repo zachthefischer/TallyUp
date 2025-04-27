@@ -154,9 +154,27 @@ export const addPair: RequestHandler = async (req, res) => {
       requests: [],
     };
 
-    const existingUserGroup = user?.groups.find(
+    let existingUserGroup = user?.groups.find(
       (group) => group?.groupId?.toString() === groupId.toString()
     );
+    
+    if (user) {
+      if (!existingUserGroup) {
+        for (const group of user.groups) {
+          if (group.subGroups) {
+            console.log("Group.subgroups", group.subGroups)
+            const matchingSubgroup = group.subGroups.find(
+              (subgroup) => subgroup?.groupId?.toString() === groupId.toString()
+            );
+            if (matchingSubgroup) {
+              // Found in subgroups, do not add to main group list
+              existingUserGroup = group;
+              break;
+            }
+          }
+        }
+      }
+    }
 
     if (existingUserGroup) {
       return;
