@@ -13,7 +13,6 @@
 .buttons-container {
     display: flex;
     gap: 1rem;
-    margin-bottom: -0.75rem;
   }
 
 /* GroupSelect styles */

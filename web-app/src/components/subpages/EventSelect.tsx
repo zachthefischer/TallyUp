@@ -96,17 +96,18 @@ export default function EventSelect(
                         Add Event
                     </button>
                 </div>
-                {membersWhoOwe?.length > 0 && (
-                        <div className="mb-8">
-                        <div className="flex items-center gap-2 mb-4 text-red-600 font-medium">
+                <div className="mt-6 space-y-6">
+                    {membersWhoOwe && membersWhoOwe.length > 0 && (
+                        <div>
+                        <div className="flex items-center gap-2 mb-3 text-red-600 font-medium">
                             <ArrowDown size={18} />
                             <h3 className="text-lg">Members Who Owe Money</h3>
                         </div>
-                        <div className="space-y-3">
-                            {membersWhoOwe?.map((member) => (
+                        <div className="space-y-2">
+                            {membersWhoOwe.map((member) => (
                             <div 
                                 key={member._id} 
-                                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-red-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                                className="p-3 border border-gray-200 rounded-lg border-l-4 border-l-red-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
                             >
                                 <div className="flex justify-between items-center">
                                 <div>
@@ -123,17 +124,17 @@ export default function EventSelect(
                         </div>
                     )}
 
-                    {membersOwed?.length > 0 && (
-                        <div className="mb-8">
-                        <div className="flex items-center gap-2 mb-4 text-gray-600 font-medium">
+                    {membersOwed && membersOwed.length > 0 && (
+                        <div>
+                        <div className="flex items-center gap-2 mb-3 text-gray-600 font-medium">
                             <ArrowUp size={18} />
                             <h3 className="text-lg">Reimbursements to Process</h3>
                         </div>
-                        <div className="space-y-3">
-                            {membersOwed?.map((member) => (
+                        <div className="space-y-2">
+                            {membersOwed.map((member) => (
                             <div 
                                 key={member._id} 
-                                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-gray-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                                className="p-3 border border-gray-200 rounded-lg border-l-4 border-l-gray-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
                             >
                                 <div className="flex justify-between items-center">
                                 <div>
@@ -150,17 +151,17 @@ export default function EventSelect(
                         </div>
                     )}
 
-                    {membersEven?.length > 0 && (
-                        <div className="mb-8">
-                        <div className="flex items-center gap-2 mb-4 text-gray-500 font-medium">
+                    {membersEven && membersEven.length > 0 && (
+                        <div>
+                        <div className="flex items-center gap-2 mb-3 text-gray-500 font-medium">
                             <Minus size={18} />
                             <h3 className="text-lg">Other Users</h3>
                         </div>
-                        <div className="space-y-3">
-                            {membersEven?.map((member) => (
+                        <div className="space-y-2">
+                            {membersEven.map((member) => (
                             <div 
                                 key={member._id}
-                                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                                className="p-3 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
                             >
                                 <div className="flex justify-between items-center">
                                 <div>
@@ -176,6 +177,7 @@ export default function EventSelect(
                         </div>
                         </div>
                     )}
+                </div>
             </div>
 
         {/* Display list of sub subgroups */}
