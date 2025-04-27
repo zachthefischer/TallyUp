@@ -46,6 +46,7 @@ export default function Dashboard() {
 
   const handleBack = () => {
     setPageState(Math.max(pageState - 1, 1)); // Transition to state 3
+    setActiveSubSubGroup(null); // Reset the active sub-subgroup
   };
 
 
@@ -374,6 +375,7 @@ export default function Dashboard() {
                 setActiveSubGroup={(value) => setActiveSubGroup(value as Group | null)}
                 activeSubSubGroup={activeSubSubGroup} 
                 setActiveSubSubGroup={(value) => setActiveSubSubGroup(value as Group | null)} 
+                pageState={pageState}
                 setShowBalanceSheet={setShowBalanceSheet}
                 setShowPaymentModal={setShowPaymentModal}
                 setShowAddSubgroupModal={setShowAddSubgroupModal}
@@ -391,6 +393,7 @@ export default function Dashboard() {
               groups={groups} 
               activeSubGroup={activeSubGroup} 
               activeSubSubGroup={activeSubSubGroup} 
+              handleBack={handleBack}
             />
             </div>
       

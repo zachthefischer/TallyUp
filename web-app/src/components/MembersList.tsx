@@ -1,4 +1,4 @@
-import { DollarSign, CreditCard, ArrowDown, ArrowUp } from "lucide-react";
+import { DollarSign, CreditCard, ArrowDown, ArrowUp, X } from "lucide-react";
 import { GroupMember } from "../types/Group";
 
 interface MembersListProps {
@@ -6,9 +6,10 @@ interface MembersListProps {
   groupName: string;
   subCategoryName: string;
   onEditMembers: () => void;
+  onClose?: () => void;
 }
 
-function MembersList({ members, groupName, subCategoryName, onEditMembers }: MembersListProps) {
+function MembersList({ members, groupName, subCategoryName, onEditMembers, onClose }: MembersListProps) {
   const membersWhoOwe = members.filter(member => member.amount < 0);
   const membersOwed = members.filter(member => member.amount > 0);
 
@@ -19,12 +20,23 @@ function MembersList({ members, groupName, subCategoryName, onEditMembers }: Mem
           <h2 className="text-2xl font-semibold text-gray-800">{groupName}</h2>
           <p className="text-gray-600 mt-1">{subCategoryName}</p>
         </div>
-        <button
-          onClick={onEditMembers}
-          className="px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-all duration-200"
-        >
-          Edit Members
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onEditMembers}
+            className="px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-all duration-200"
+          >
+            Edit Members
+          </button>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="close-button"
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+          )}
+        </div>
       </div>
 
       {membersWhoOwe.length > 0 && (
@@ -56,22 +68,22 @@ function MembersList({ members, groupName, subCategoryName, onEditMembers }: Mem
 
       {membersOwed.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4 text-green-600 font-medium">
-            <ArrowUp size={18} />
+          <div className="flex items-center gap-2 mb-4 text-[#396e7c] font-medium">
+            {/* <ArrowUp size={18} /> */}
             <h3 className="text-lg">Reimbursements to Process</h3>
           </div>
           <div className="space-y-3">
             {membersOwed.map((member) => (
               <div 
                 key={member.id} 
-                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-green-500 hover:shadow-md transition-shadow duration-200 ease-in-out"
+                className="p-4 border border-gray-200 rounded-lg border-l-4 border-l-[#396e7c] hover:shadow-md transition-shadow duration-200 ease-in-out"
               >
                 <div className="flex justify-between items-center">
                   <div>
                     <div className="font-medium text-gray-800">{member.name}</div>
                     <div className="text-sm text-gray-500 mt-1">{member.transaction} • {member.timeAgo}</div>
                   </div>
-                  <div className="font-semibold text-green-500 text-lg">
+                  <div className="font-semibold text-[#396e7c] text-lg">
                     +${Math.abs(member.amount)}
                   </div>
                 </div>
@@ -82,7 +94,7 @@ function MembersList({ members, groupName, subCategoryName, onEditMembers }: Mem
       )}
 
       <div className="flex gap-4">
-        <button className="flex-1 px-4 py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md">
+        <button className="flex-1 px-4 py-3 bg-[#396e7c] text-white rounded-lg font-medium hover:bg-green-600 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 ease-in-out hover:shadow-md">
           <DollarSign size={18} />
           Process Reimbursements
         </button>

@@ -1,4 +1,4 @@
-import { CreditCard } from "lucide-react";
+import { CreditCard, ArrowLeft, X } from "lucide-react";
 import { Group } from "../../types/Group";
 import MembersList from '../MembersList';
 import './Subpages.css';
@@ -7,30 +7,44 @@ interface EventDetailsProps {
     groups: Group[];
     activeSubGroup: Group | null;
     activeSubSubGroup: Group | null;
+    handleBack: () => void;
 }
 
 export default function EventDetails({   
       activeSubGroup,
       activeSubSubGroup,
+      handleBack,
     }: EventDetailsProps) {
 
     return (
         <div className="event-details-container">
               { activeSubGroup && activeSubSubGroup ? (
-                <MembersList 
-                  members={activeSubSubGroup.members}
-                  groupName={activeSubGroup.name}
-                  subCategoryName={activeSubSubGroup.name}
-                  onEditMembers={() => {
-                    // Here you would handle editing members
-                    console.log('Editing members for:', activeSubSubGroup.name);
-                  }}
-                />
+                <>
+                  <MembersList 
+                    members={activeSubSubGroup.members}
+                    groupName={activeSubGroup.name}
+                    subCategoryName={activeSubSubGroup.name}
+                    onEditMembers={() => {
+                      // Here you would handle editing members
+                      console.log('Editing members for:', activeSubSubGroup.name);
+                    }}
+                    onClose={handleBack}
+                  />
+                </>
               ) : activeSubGroup ? (
-                <div className="event-details-header">
-                  <div className="event-details-title">
-                    <h2>{activeSubSubGroup?.name}</h2>
-                    <p>All Members</p>
+                <>
+                  <div className="event-details-header">
+                    <div className="event-details-title">
+                      <h2>{activeSubSubGroup?.name}</h2>
+                      <p>All Members</p>
+                    </div>
+                    <button 
+                      className="close-button"
+                      onClick={handleBack}
+                      aria-label="Go back"
+                    >
+                      <X size={20} />
+                    </button>
                   </div>
                   {activeSubGroup ? (
                     <div className="members-list">
@@ -57,7 +71,7 @@ export default function EventDetails({
                       <p className="small">Add members to see them here.</p>
                     </div>
                   )}
-                </div>
+                </>
               ) : (
                 <div className="select-group-prompt">
                   <div className="prompt-icon">

@@ -10,6 +10,7 @@ interface EventSelectProps {
     setActiveSubGroup: Dispatch<SetStateAction<Group | null>>;
     activeSubSubGroup: Group | null;
     setActiveSubSubGroup: Dispatch<SetStateAction<Group | null>>;
+    pageState: number;
 
     // Show modals
     setShowPaymentModal: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ export default function EventSelect(
         setActiveSubGroup, 
         activeSubSubGroup, 
         setActiveSubSubGroup,
+        pageState,
         setShowPaymentModal,
         setShowBalanceSheet,
         setShowAddSubgroupModal,
@@ -62,16 +64,17 @@ export default function EventSelect(
 
         <div>
         {activeGroup?.subGroups.map((subGroup) => (
-            <div key={subGroup.id} className="subgroup-item">
+            <div 
+                key={subGroup.id} 
+                className="subgroup-item"
+                onClick={() => setActiveSubGroup(activeSubGroup === subGroup ? null : subGroup)}
+            >
             <div className="flex flex-col gap-4">
                 <div 
                 className={`subgroup-card ${activeSubGroup === subGroup ? "active" : ""}`}
                 >
                 <div className="flex items-center justify-between">
-                    <span 
-                    className="subgroup-name"
-                    onClick={() => setActiveSubGroup(activeSubGroup === subGroup ? null : subGroup)}
-                    >
+                    <span className="subgroup-name">
                     {subGroup.name}
                     </span>
                     <button
@@ -103,13 +106,16 @@ export default function EventSelect(
             </div>
             
             {/* Display list of subSubGroups - eg Cars for Retreat for UPE */}
-            {activeSubGroup?.id === subGroup?.id && (
+            {activeSubGroup?.id === subGroup?.id && pageState >= 3 && (
                 <div className="subsubgroup-list">
                 {subGroup?.subGroups?.map((subSubGroup) => (
                     <div
                     key={subSubGroup.id}
                     className={`subsubgroup-item ${activeSubSubGroup?.id === subSubGroup?.id ? "active" : ""}`}
-                    onClick={() => setActiveSubSubGroup(activeSubSubGroup?.id === subSubGroup?.id ? null : subSubGroup)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveSubSubGroup(activeSubSubGroup?.id === subSubGroup?.id ? null : subSubGroup);
+                    }}
                     >
                     <div className="flex items-center justify-between">
                         <div className="subsubgroup-name">{subSubGroup.name}</div>
